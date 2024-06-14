@@ -81,13 +81,13 @@
           </li>
           <li class="nav-item dropdown">
             <a class="nav-link dropbtn dropdown-toggle" href="#" id="navbarDropdown" role="button" onclick="toggleDropdown(event)">
-              Username
+              {{ user.username }}
             </a>
             <div class="dropdown-content dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
               <a class="dropdown-item" href="#">Thông tin</a>
               <a class="dropdown-item" href="#">Chỉnh sửa</a>
               <div class="dropdown-divider"></div>
-              <a class="dropdown-item" href="#">Đăng xuất</a>
+              <a class="dropdown-item" href="/auth/logout">Đăng xuất</a>
             </div>
           </li>
         </ul>
