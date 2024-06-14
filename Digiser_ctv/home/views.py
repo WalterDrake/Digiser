@@ -1,18 +1,12 @@
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
-from Digiser_ctv.services import get_all_rows
+from Digiser_ctv.services import get_all_rows, add_row, count_row
 from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
 from .forms import UploadFileForm
 from authentication.forms import CustomUserCreationForm
-from Digiser_ctv.services import add_row, count_row
 import pandas as pd
 import os
-
-# Create your views here.
-@login_required
-def home(request):
-    return render(request, 'pages/home.html')
 
 @csrf_exempt
 def upload_import(request):
@@ -47,6 +41,21 @@ def upload_import(request):
             return JsonResponse({'error': 'Form is not valid'}, status=400)
     return JsonResponse({'error': 'Invalid request'}, status=400)
 
+@login_required
+def home(request):
+    doc_name = os.getenv("DOC_LIST").split(",")[0]
+    raw_data = get_all_rows(doc_name, 1)
+    num_rows = request.GET.get('rows', 30)
+    try:
+        num_rows = int(num_rows)
+    except ValueError:
+        num_rows = 30
+    raw_data = raw_data[:num_rows]
+    context = {
+        'data': raw_data
+    }
+    return render(request, 'pages/home.html', context )
+  
 def insert(request):
     return render(request, 'pages/insert.html')
 def check(request):

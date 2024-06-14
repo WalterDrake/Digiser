@@ -48,14 +48,31 @@
                 }
             });
         </script>
-        <ul class="horizontal-list">
-            <li>ID</li>
-            <li>Dự án</li>
-            <li>Dữ liệu nhập</li>
-            <li>Số phiếu</li>
-            <li>Tổng trường</li>
-            <li>Trạng thái</li>
-            <li>Thực hiện</li>
-        </ul>
+        <table class="user_table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Dự án</th>
+                    <th>Dữ liệu nhập</th>
+                    <th>Số phiếu</th>
+                    <th>Tổng trường</th>
+                    <th>Trạng thái</th>
+                    <th>Thực hiện</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for row in data %}
+                    <tr>
+                        <td>{{ row.ID }}</td>
+                        <td>{{ row.DuAn }}</td>
+                        <td>{{ row.loaiCV }}</td>
+                        <td>{{ row.sophieu_thucte}}</td>
+                        <td>{{ row.Sotruong_thucte}}</td>
+                        <td>{{ row.status_check }}</td>
+                        <td>{{ row.log_sup }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
     </div>
 {% endblock %}
