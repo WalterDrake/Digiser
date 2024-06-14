@@ -49,15 +49,6 @@
       text-align: center;
     }
 
-    .button-container {
-      display: flex;
-      padding: 4px;
-      width: 100%;
-      align-items: center;
-      justify-content: end;
-      margin-bottom: 6px;
-    }
-
     /* Style for the table */
     .user_table {
       width: 100%;
@@ -89,7 +80,34 @@
     .user_table tbody tr:hover {
       background-color: #f1f1f1;
     }
+    .home .mainPage{
+        font-size: 30px;
+        font-weight: 500;
+        color: var(--text-color);
+        padding: 12px 60px;
+    }
 
+    .sidebar.close ~ .home{
+        left: 78px;
+        height: 100vh;
+        width: calc(100% - 78px);
+    }
+    body.dark .home .text{
+        color: var(--text-color);
+    }
+    .import-container {
+      display: flex;
+      padding: 4px;
+      width: 100%;
+      align-items: center;
+      justify-content: end;
+      margin-bottom: 6px;
+    }
+
+    .import-container input {
+      display: none;
+    }
+  
     /* Style for the status check cell */
     .user_table tbody td.status_check {
       font-weight: bold;
