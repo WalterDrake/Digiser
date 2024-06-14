@@ -47,7 +47,6 @@ def add_row(doc_name: str, sheet_id: id = None, last_row: int = None, formatted_
         sh = settings.GSPREAD_CLIENT.open(doc_name)
         worksheet = sh.get_worksheet(
             sheet_id) if sheet_id else sh.get_worksheet(0)
-        print(worksheet)
         print(formatted_data)
         worksheet.update(f'A{last_row+1}:C{last_row+1}',
                          [[
