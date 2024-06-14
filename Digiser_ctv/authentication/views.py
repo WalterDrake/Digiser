@@ -27,7 +27,7 @@ def REGISTER(request):
             }
             add_row(doc_name, 0, cnt, user_dict)
             login(request, user)
-            return redirect('home')
+            return redirect('/home')
     else:
         form = CustomUserCreationForm()
     return render(request, 'register.html')
@@ -52,9 +52,5 @@ def LOGIN(request):
 
 def LOGOUT(request):
     logout(request)
-    return redirect('home')
-
-
-def home(request):
-    return render(request, 'home.html')
+    return redirect('/home')
 
