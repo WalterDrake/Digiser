@@ -5,15 +5,16 @@ from django.contrib import messages
 from .forms import CustomUserCreationForm
 # Create your views here.
 
-
+@csrf_protect
 def REGISTER(request):
     if request.method == "POST":
         form = CustomUserCreationForm(request.POST)
         if form.is_valid():
             user = form.save(commit=False)
             # Set the username to email if necessary
-            user.username = form.cleaned_data.get('email')
+            user.username = form.cleaned_data.get('email').split("@")[0]
             user.save()  # Save the user instance
+            print(user.id)
             login(request, user)
             return redirect('home')
     else:
