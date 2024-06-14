@@ -131,10 +131,11 @@
         <div class="split right">
             <strong class="welcome">Chào mừng tham gia DGS!</strong>
             <div class="container">
-                <form action="Login" method="POST">
+                <form method="POST">
+                  {% csrf_token %}
                     <div class="input-group">
-                        <label for="phonenumber">Số Điện Thoại:</label>
-                        <input type="tel" id="phonenumber" name="phonenumber" placeholder="Số Điện Thoại" maxlength="10" pattern="[0-9]*" required onkeypress="validateNumberInput(event)">
+                        <label for="phone_no">Số Điện Thoại:</label>
+                        <input type="tel" id="phone_no" name="phone_no" placeholder="Số Điện Thoại" maxlength="10" pattern="[0-9]*" required onkeypress="validateNumberInput(event)">
                     </div>
                     <div class="input-group">
                         <label for="password">Mật Khẩu:</label>

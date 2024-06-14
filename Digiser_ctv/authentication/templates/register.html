@@ -131,18 +131,23 @@
         <div class="split right">
             <strong class="welcome">Chào mừng tham gia DGS!</strong>
             <div class="container">
-                <form action="Login" method="POST">
+                <form method="POST">
+                  {% csrf_token %}
                     <div class="input-group">
-                        <label for="username">Số Điện Thoại:</label>
-                        <input type="tel" id="phonenumber" name="phonenumber" placeholder="Số Điện Thoại" pattern="[0-9]*" maxlength="10" required onkeypress="validateNumberInput(event)">
+                        <label for="phone_no">Số Điện Thoại:</label>
+                        <input type="tel" id="phone_no" name="phone_no" placeholder="Số Điện Thoại" pattern="[0-9]*" maxlength="10" required onkeypress="validateNumberInput(event)">
                     </div>
                     <div class="input-group">
-                        <label for="password">Mật Khẩu:</label>
-                        <input type="password" id="password" name="password" placeholder="Mật Khẩu" required>
+                        <label for="password1">Mật Khẩu:</label>
+                        <input type="password" id="password1" name="password1" placeholder="Mật Khẩu" required>
                     </div>
                     <div class="input-group">
-                        <label for="password">Nhập Lại Mật Khẩu:</label>
-                        <input type="password" id="repassword" name="repassword" placeholder="Mật Khẩu" required>
+                        <label for="password2">Nhập Lại Mật Khẩu:</label>
+                        <input type="password" id="password2" name="password2" placeholder="Mật Khẩu" required>
+                    </div>
+                    <div class="input-group">
+                      <label for="email">Gmail quản lý CTV</label>
+                      <input type="email" id="email" name="email" placeholder="Email" required>
                     </div>
                     <div class="btn-container">
                         <button type="submit" class="btn">Đăng Ký</button>
