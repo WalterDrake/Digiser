@@ -1,0 +1,112 @@
+<style>
+    .navbar{
+        background-color: var(--body-color);
+    }
+    .dropdown {
+        position: relative;
+        display: inline-block;
+      }
+
+      .dropdown-content {
+        display: none;
+        position: absolute;
+        right: 0;
+        background-color: #f9f9f9;
+        min-width: 10   0px;
+        box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+        z-index: 1;
+      }
+
+      .dropdown-content a {
+        color: black;
+        padding: 12px 16px;
+        text-decoration: none;
+        display: block;
+        font-size: 14px; /* Adjusted font size */
+      }
+
+      .dropdown-content a:hover {
+        background-color: #f1f1f1;
+      }
+
+      .dropdown.show .dropdown-content {
+        display: block;
+      }
+      .search-container {
+        display: flex;
+        align-items: center;
+        width: 1100px;
+    }
+
+    .search-container input[type=text] {
+        flex: 1;
+        padding: 13px;
+        margin-right: 4px;
+        font-size: 14px;
+        border: none;
+        border-radius: 4px;
+    }
+
+    .search-container button {
+        padding: 0px 40px;
+        background-color: #007bff;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        
+    }
+
+    .search-container button:hover {
+        background-color: #0056b3;
+    }
+</style>
+<nav class="navbar navbar-expand-lg navbar-light ">
+    <div class="container-fluid">
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+            <li class="nav-link">
+                <div class="search-container">
+                    <input type="text" placeholder="Tìm kiếm..." name="search">
+                    <button type="submit"><i class='bx bx-search'></i></button>
+                </div>
+            </li>
+          <li class="nav-link">
+            <a href="" class="nav-link" style='padding: 4px'>
+                <i class='bx bxs-bell-ring'></i>
+            </a>
+          </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropbtn dropdown-toggle" href="#" id="navbarDropdown" role="button" onclick="toggleDropdown(event)">
+              Username
+            </a>
+            <div class="dropdown-content dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+              <a class="dropdown-item" href="#">Thông tin</a>
+              <a class="dropdown-item" href="#">Chỉnh sửa</a>
+              <div class="dropdown-divider"></div>
+              <a class="dropdown-item" href="#">Đăng xuất</a>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+</nav>
+<script>
+    function toggleDropdown(event) {
+        event.preventDefault();
+        const dropdown = event.target.closest('.dropdown');
+        dropdown.classList.toggle('show');
+      }
+
+      window.onclick = function(event) {
+        if (!event.target.matches('.dropbtn')) {
+          const dropdowns = document.querySelectorAll('.dropdown');
+          dropdowns.forEach(dropdown => {
+            dropdown.classList.remove('show');
+          });
+        }
+      }
+</script>
