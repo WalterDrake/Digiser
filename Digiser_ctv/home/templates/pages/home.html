@@ -27,7 +27,7 @@
                     formData.append('file', file);
                     
                     // Post the form data to the endpoint
-                    fetch('{% url 'import_upload' %}', {
+                    fetch('{% url "import_upload" %}', {
                         method: 'POST',
                         body: formData,
                         headers: {
