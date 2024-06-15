@@ -1,4 +1,185 @@
 {% extends 'bases/base.html' %}
 {% block content %}
-    System Page
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        display: block;
+        justify-content: center;
+        align-items: center;
+    }
+    
+    .container {
+        background-color: white;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        padding: 20px;
+    }
+    
+    .header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    
+    .balance {
+        display: flex;
+        align-items: center;
+    }
+    
+    .money-bag-icon {
+        width: 50px;
+        height: 50px;
+        margin-right: 10px;
+    }
+    
+    .balance-info {
+        margin-right: 20px;
+    }
+    
+    .balance-info h2 {
+        margin: 0;
+        color: #f39c12;
+    }
+    
+    .balance-info p {
+        margin: 0;
+        color: gray;
+    }
+    
+    .withdraw-button {
+        background-color: #3498db;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        padding: 10px 20px;
+        cursor: pointer;
+    }
+    
+    .ctv-score {
+        text-align: center;
+    }
+    
+    .ctv-score p {
+        margin: 0;
+        color: gray;
+    }
+    
+    .score {
+        background-color: #3498db;
+        color: white;
+        border-radius: 5px;
+        padding: 10px;
+        font-size: 1.2em;
+    }
+    
+    .notifications {
+        margin-top: 20px;
+    }
+    
+    .notifications h3 {
+        margin-bottom: 10px;
+    }
+    
+    .tabs {
+        display: flex;
+        margin-bottom: 10px;
+    }
+    
+    .tab-button {
+        background-color: white;
+        border: none;
+        border-bottom: 2px solid transparent;
+        padding: 10px;
+        cursor: pointer;
+    }
+    
+    .tab-button.active {
+        border-bottom: 2px solid #3498db;
+    }
+    
+    .notification-item {
+        border-bottom: 1px solid #f4f4f4;
+        padding: 10px 0;
+    }
+    
+    .notification-item p {
+        margin: 0;
+    }
+    
+    .notification-item .date {
+        color: gray;
+        font-size: 0.8em;
+    }
+    
+</style>
+<div class="container">
+    <div class="header">
+        <div class="balance">
+            <img src="https://th.bing.com/th/id/OIP.Kil4FrWUa1uEBRdA9D6IQAHaHa?rs=1&pid=ImgDetMain" alt="Money Bag" class="money-bag-icon">
+            <div class="balance-info">
+                <h2>2.334.000</h2>
+                <p>Tiền lương tích luỹ</p>
+            </div>
+            <button class="withdraw-button">Nhận tiền</button>
+        </div>
+        <div class="ctv-score">
+            <p>Điểm đánh giá CTV</p>
+            <div class="score">142</div>
+        </div>
+    </div>
+    <div class="notifications">
+        <h3>Thông báo</h3>
+        <div class="tabs">
+            <button class="tab-button active" onclick="openTab('system')">Từ hệ thống</button>
+            <button class="tab-button" onclick="openTab('personal')">Cho bạn</button>
+        </div>
+        <div id="system" class="tab-content">
+            <div class="notification-item">
+                <p><strong>Thông báo dự án Số Hoá Bến Tre đang hoạt động trong tháng 5?</strong><br>
+                Kích hoạt dự án hoạt động trong tháng 5, dự án đang tuyển dụng liên tục các bạn có thể thay đổi thêm...</p>
+                <span class="date">20/5/2024</span>
+            </div>
+            <div class="notification-item">
+                <p><strong>Thông báo dự án Số Hoá Bến Tre đang hoạt động trong tháng 5?</strong><br>
+                Kích hoạt dự án hoạt động trong tháng 5, dự án đang tuyển dụng liên tục các bạn có thể thay đổi thêm...</p>
+                <span class="date">20/5/2024</span>
+            </div>
+        </div>
+        <div id="personal" class="tab-content" style="display:none;">
+            <div class="notification-item">
+                <p><strong>Personal notification 1</strong><br>
+                This is a personal notification.</p>
+                <span class="date">20/5/2024</span>
+            </div>
+            <div class="notification-item">
+                <p><strong>Personal notification 2</strong><br>
+                This is another personal notification.</p>
+                <span class="date">20/5/2024</span>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    function openTab(tabName) {
+        var i, tabcontent, tablinks;
+        tabcontent = document.getElementsByClassName("tab-content");
+        for (i = 0; i < tabcontent.length; i++) {
+            tabcontent[i].style.display = "none";
+        }
+        tablinks = document.getElementsByClassName("tab-button");
+        for (i = 0; i < tablinks.length; i++) {
+            tablinks[i].className = tablinks[i].className.replace(" active", "");
+        }
+        document.getElementById(tabName).style.display = "block";
+        document.querySelector(`[onclick="openTab('${tabName}')"]`).className += " active";
+    }
+    
+    // Default open tab
+    document.addEventListener('DOMContentLoaded', (event) => {
+        document.getElementById('system').style.display = "block";
+    });
+    
+</script>
 {% endblock %}

@@ -1,4 +1,242 @@
 {% extends 'bases/base.html' %}
 {% block content %}
-    Courses Page
+<style>
+    body {
+        font-family: Arial, sans-serif;
+    }
+    
+    .tab-container {
+        padding-top:2%;
+        width: 80%;
+        margin: 0 auto;
+    }
+    
+    .tabs {
+        display: flex;
+        justify-content: space-between;
+    }
+    
+    .tab-button {
+        color:#707070;
+        background-color: #E4E9F7;
+        border: none;
+        padding: 10px 20px;
+        cursor: pointer;
+        flex-grow: 1;
+        text-align: center;
+    }
+    
+    .tab-button.active {
+        background-color: #9ac1f6;
+    }
+    
+    .tab-content {
+        display: none;
+    }
+    
+    .tab-content.active {
+        display: flex;
+        flex-direction: column;
+        gap: 20%;
+    }
+    
+    .row {
+        padding-top:5%;
+        display: flex;
+        justify-content: space-between;
+        padding-right: 0;
+        --bs-gutter-x: 0rem;
+        padding-left: 0;
+        margin-bottom: 5%;
+    }
+    
+    
+    .card {
+        background-color: #E4E9F7;
+        width: 23%; 
+        text-align: center;
+        box-sizing: border-box;
+        font-size: 16px; /* Control the text size here */
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-decoration: none
+    }
+    
+    .card img {
+        border-radius: 5px;
+        width: 100%;
+        height: auto;
+        margin-bottom: 10px;
+    }
+
+    .card .itemcard-text {
+        padding-bottom: 10px;
+    }
+    
+    
+</style>
+<div>
+    <h1>
+        <center>
+        Học Viện DGS
+        </center>
+    <h1>
+</div>
+<div class="tab-container">
+    <div class="tabs">
+        <button class="tab-button active" data-tab="tab-1">Hộ tịch</button>
+        <button class="tab-button" data-tab="tab-2">Văn bản hành chánh</button>
+        <button class="tab-button" data-tab="tab-3">Giấy tờ khác</button>
+    </div>
+    <div class="tab-content active" id="tab-1">
+        <div class="row">
+            <a href="https://example.com/destination-page.html" class="card">
+                <img src="https://static.ybox.vn/2023/3/6/1677940647778-Logo-DGS.jpg" alt="Image 1">
+                <div class="itemcard-text">Hướng dẫn nhập liệu</div>
+            </a>
+            
+            <a href="https://example.com/destination-page1.html" class="card">
+                <img src="https://static.ybox.vn/2023/3/6/1677940647778-Logo-DGS.jpg" alt="Image 2">
+                <div class="itemcard-text">Hướng dẫn gửi bài</div>
+            </a>
+        
+            <a href="https://example.com/destination-page2.html" class="card">
+                <img src="https://static.ybox.vn/2023/3/6/1677940647778-Logo-DGS.jpg" alt="Image 3">
+                <div class="itemcard-text">Hướng dẫn xử lý lỗi dữ liệu</div>
+            </a>
+        
+            <a href="https://example.com/destination-page3.html" class="card">
+                <img src="https://static.ybox.vn/2023/3/6/1677940647778-Logo-DGS.jpg" alt="Image 4">
+                <div class="itemcard-text">Hướng dẫn nhập liệu</div>
+            </a>
+        </div>
+        <div class="row second-row">
+            <a href="https://example.com/destination-page4.html" class="card">
+                <img src="https://static.ybox.vn/2023/3/6/1677940647778-Logo-DGS.jpg" alt="Image 5">
+                <div class="itemcard-text">Hướng dẫn nhập liệu</div>
+            </a>
+        
+            <a href="https://example.com/destination-page5.html" class="card">
+                <img src="https://static.ybox.vn/2023/3/6/1677940647778-Logo-DGS.jpg" alt="Image 6">
+                <div class="itemcard-text">Hướng dẫn gửi bài</div>
+            </a>
+        
+            <a href="https://example.com/destination-page6.html" class="card">
+                <img src="https://static.ybox.vn/2023/3/6/1677940647778-Logo-DGS.jpg" alt="Image 7">
+                <div class="itemcard-text">Hướng dẫn xử lý lỗi dữ liệu</div>
+            </a>
+        
+            <a href="https://example.com/destination-page7.html" class="card">
+                <img src="https://static.ybox.vn/2023/3/6/1677940647778-Logo-DGS.jpg" alt="Image 8">
+                <div class="itemcard-text">Hướng dẫn nhập liệu</div>
+            </a>
+        </div>
+    </div>
+    <div class="tab-content" id="tab-2">
+        <div class="row">
+            <a href="https://example.com/destination-page.html" class="card">
+                <img src="https://static.ybox.vn/2023/3/6/1677940647778-Logo-DGS.jpg" alt="Image 1">
+                <div class="itemcard-text">Hướng dẫn nhập liệu</div>
+            </a>
+            
+            <a href="https://example.com/destination-page1.html" class="card">
+                <img src="https://static.ybox.vn/2023/3/6/1677940647778-Logo-DGS.jpg" alt="Image 2">
+                <div class="itemcard-text">Hướng dẫn gửi bài</div>
+            </a>
+        
+            <a href="https://example.com/destination-page2.html" class="card">
+                <img src="https://static.ybox.vn/2023/3/6/1677940647778-Logo-DGS.jpg" alt="Image 3">
+                <div class="itemcard-text">Hướng dẫn xử lý lỗi dữ liệu</div>
+            </a>
+        
+            <a href="https://example.com/destination-page3.html" class="card">
+                <img src="https://static.ybox.vn/2023/3/6/1677940647778-Logo-DGS.jpg" alt="Image 4">
+                <div class="itemcard-text">Hướng dẫn nhập liệu</div>
+            </a>
+        </div>
+        <div class="row second-row">
+            <a href="https://example.com/destination-page4.html" class="card">
+                <img src="https://static.ybox.vn/2023/3/6/1677940647778-Logo-DGS.jpg" alt="Image 5">
+                <div class="itemcard-text">Hướng dẫn nhập liệu</div>
+            </a>
+        
+            <a href="https://example.com/destination-page5.html" class="card">
+                <img src="https://static.ybox.vn/2023/3/6/1677940647778-Logo-DGS.jpg" alt="Image 6">
+                <div class="itemcard-text">Hướng dẫn gửi bài</div>
+            </a>
+        
+            <a href="https://example.com/destination-page6.html" class="card">
+                <img src="https://static.ybox.vn/2023/3/6/1677940647778-Logo-DGS.jpg" alt="Image 7">
+                <div class="itemcard-text">Hướng dẫn xử lý lỗi dữ liệu</div>
+            </a>
+        
+            <a href="https://example.com/destination-page7.html" class="card">
+                <img src="https://static.ybox.vn/2023/3/6/1677940647778-Logo-DGS.jpg" alt="Image 8">
+                <div class="itemcard-text">Hướng dẫn nhập liệu</div>
+            </a>
+        </div>
+    </div>
+    <div class="tab-content" id="tab-3">
+        <div class="row">
+            <a href="https://example.com/destination-page.html" class="card">
+                <img src="https://static.ybox.vn/2023/3/6/1677940647778-Logo-DGS.jpg" alt="Image 1">
+                <div class="itemcard-text">Hướng dẫn nhập liệu</div>
+            </a>
+            
+            <a href="https://example.com/destination-page1.html" class="card">
+                <img src="https://static.ybox.vn/2023/3/6/1677940647778-Logo-DGS.jpg" alt="Image 2">
+                <div class="itemcard-text">Hướng dẫn gửi bài</div>
+            </a>
+        
+            <a href="https://example.com/destination-page2.html" class="card">
+                <img src="https://static.ybox.vn/2023/3/6/1677940647778-Logo-DGS.jpg" alt="Image 3">
+                <div class="itemcard-text">Hướng dẫn xử lý lỗi dữ liệu</div>
+            </a>
+        
+            <a href="https://example.com/destination-page3.html" class="card">
+                <img src="https://static.ybox.vn/2023/3/6/1677940647778-Logo-DGS.jpg" alt="Image 4">
+                <div class="itemcard-text">Hướng dẫn nhập liệu</div>
+            </a>
+        </div>
+        <div class="row second-row">
+            <a href="https://example.com/destination-page4.html" class="card">
+                <img src="https://static.ybox.vn/2023/3/6/1677940647778-Logo-DGS.jpg" alt="Image 5">
+                <div class="itemcard-text">Hướng dẫn nhập liệu</div>
+            </a>
+        
+            <a href="https://example.com/destination-page5.html" class="card">
+                <img src="https://static.ybox.vn/2023/3/6/1677940647778-Logo-DGS.jpg" alt="Image 6">
+                <div class="itemcard-text">Hướng dẫn gửi bài</div>
+            </a>
+        
+            <a href="https://example.com/destination-page6.html" class="card">
+                <img src="https://static.ybox.vn/2023/3/6/1677940647778-Logo-DGS.jpg" alt="Image 7">
+                <div class="itemcard-text">Hướng dẫn xử lý lỗi dữ liệu</div>
+            </a>
+        
+            <a href="https://example.com/destination-page7.html" class="card">
+                <img src="https://static.ybox.vn/2023/3/6/1677940647778-Logo-DGS.jpg" alt="Image 8">
+                <div class="itemcard-text">Hướng dẫn nhập liệu</div>
+            </a>
+        </div>
+    </div>
+</div>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const tabs = document.querySelectorAll('.tab-button');
+        const contents = document.querySelectorAll('.tab-content');
+    
+        tabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                tabs.forEach(t => t.classList.remove('active'));
+                contents.forEach(content => content.classList.remove('active'));
+    
+                tab.classList.add('active');
+                document.getElementById(tab.getAttribute('data-tab')).classList.add('active');
+            });
+        });
+    });
+    
+</script>
 {% endblock %}
