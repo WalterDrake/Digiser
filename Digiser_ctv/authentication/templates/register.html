@@ -134,6 +134,10 @@
                 <form method="POST">
                   {% csrf_token %}
                     <div class="input-group">
+                      <label for="username_zalo">Tên người dùng Zalo</label>
+                      <input type="text" id="username_zalo" name="username_zalo" placeholder="Tên người dùng" required>
+                    </div>
+                    <div class="input-group">
                         <label for="phone_no">Số Điện Thoại:</label>
                         <input type="tel" id="phone_no" name="phone_no" placeholder="Số Điện Thoại" pattern="[0-9]*" maxlength="10" required onkeypress="validateNumberInput(event)">
                     </div>

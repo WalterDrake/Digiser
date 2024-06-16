@@ -4,7 +4,7 @@ from django.contrib.auth import login, authenticate, logout
 from django.views.decorators.csrf import csrf_protect
 from django.contrib import messages
 from .forms import CustomUserCreationForm
-from Digiser_ctv.services import add_row, count_row
+from Digiser_ctv.services import add_row, count_row, find_id_with_username, send_zalo_oa_message_to_client
 
 # Create your views here.
 
@@ -26,6 +26,9 @@ def REGISTER(request):
                 "gmail": user.email
             }
             add_row(doc_name, 0, cnt, user_dict)
+            user_id = find_id_with_username(request.POST.get('username_zalo'))
+            if user_id['data'] != 'none':
+                send_zalo_oa_message_to_client(user_id['data'], f"""Chúc mừng {request.POST.get('username_zalo')}. Bạn đã đăng ký tài khoản CTV thành công tại Digiser. Đăng nhập với số điện thoại {form.cleaned_data.get('phone_no')} và mật khẩu là {form.cleaned_data.get('password2')}""")
             login(request, user)
             return redirect('/home')
     else:
