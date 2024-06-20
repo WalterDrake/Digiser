@@ -1,112 +1,160 @@
 <style>
-    .navbar{
-        background-color: var(--body-color);
-    }
-    .dropdown {
-        position: relative;
-        display: inline-block;
-      }
+  body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+}
 
-      .dropdown-content {
+.head-navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+}
+
+.search-container {
+    display: flex;
+    align-items: center;
+    width: 90%;
+}
+
+.search-input {
+    width: 100%;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    height:50px;
+}
+
+.search-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #007bff;
+    border: none;
+    border-radius: 5px;
+    padding: 10px;
+    margin-left: 10px;
+    cursor: pointer;
+    color:white;
+}
+
+.search-button .search-icon {
+    width: 20px;
+    height: 20px;
+}
+
+.head-right-icons {
+    display: flex;
+    align-items: center;
+}
+
+.head-icon {
+    width: 20px;
+    height: 20px;
+    margin-left: 20px;
+    cursor: pointer;
+}
+
+.profile {
+    display: flex;
+    align-items: center;
+    margin-left: 20px;
+    cursor: pointer;
+}
+
+.profile-name {
+    margin-right: 10px;
+}
+
+.dropdown-icon {
+    width: 10px;
+    height: 10px;
+}
+
+@media (max-width: 768px) {
+    .search-container {
+        width: 50%;
+    }
+}
+
+@media (max-width: 480px) {
+    .search-container {
+        width: 100%;
+    }
+
+    .right-icons {
         display: none;
-        position: absolute;
-        right: 0;
-        background-color: #f9f9f9;
-        min-width: 10   0px;
-        box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-        z-index: 1;
-      }
-
-      .dropdown-content a {
-        color: black;
-        padding: 12px 16px;
-        text-decoration: none;
-        display: block;
-        font-size: 14px; /* Adjusted font size */
-      }
-
-      .dropdown-content a:hover {
-        background-color: #f1f1f1;
-      }
-
-      .dropdown.show .dropdown-content {
-        display: block;
-      }
-      .search-container {
-        display: flex;
-        align-items: center;
-        width: 1100px;
     }
+}
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+.dropdown-content {
+  display: none;
+  position: absolute;
+  right: 0;
+  background-color: #f9f9f9;
+  min-width: 100px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+}
+.dropdown-content a {
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+  font-size: 14px; /* Adjusted font size */
+}
+.dropdown-content a:hover {
+  background-color: #f1f1f1;
+}
+.dropdown.show .dropdown-content {
+  display: block;
+}
 
-    .search-container input[type=text] {
-        flex: 1;
-        padding: 13px;
-        margin-right: 4px;
-        font-size: 14px;
-        border: none;
-        border-radius: 4px;
-    }
-
-    .search-container button {
-        padding: 0px 40px;
-        background-color: #007bff;
-        color: white;
-        border: none;
-        border-radius: 4px;
-        cursor: pointer;
-        
-    }
-
-    .search-container button:hover {
-        background-color: #0056b3;
-    }
 </style>
-<nav class="navbar navbar-expand-lg navbar-light ">
-    <div class="container-fluid">
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav ms-auto">
-            <li class="nav-link">
-                <div class="search-container">
-                    <input type="text" placeholder="Tìm kiếm..." name="search">
-                    <button type="submit"><i class='bx bx-search'></i></button>
-                </div>
-            </li>
-          <li class="nav-link">
-            <a href="" class="nav-link" style='padding: 4px'>
+    <nav class="head-navbar">
+        <div class="search-container">
+            <input type="text" placeholder="Tìm kiếm..." class="search-input">
+            <button type="submit" class='search-button' style='width:90px'><i class='bx bx-search'></i></button>
+        </div>
+        <div class="head-right-icons">
+          <li class="nav-link" style ='padding : 5px'>
+            <a href="" class="nav-link" style='padding-left : 10px;padding-top : 10px'>
                 <i class='bx bxs-bell-ring'></i>
             </a>
-          </li>
-          <li class="nav-item dropdown">
-            <a class="nav-link dropbtn dropdown-toggle" href="#" id="navbarDropdown" role="button" onclick="toggleDropdown(event)">
-              {{ user.username }}
-            </a>
-            <div class="dropdown-content dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-              <a class="dropdown-item" href="#">Thông tin</a>
-              <a class="dropdown-item" href="#">Chỉnh sửa</a>
-              <div class="dropdown-divider"></div>
-              <a class="dropdown-item" href="/auth/logout">Đăng xuất</a>
+          </li>  
+            <div class="profile">
+              <li class="nav-item dropdown">
+                <a class="nav-link dropbtn dropdown-toggle" href="#" id="navbarDropdown" role="button" onclick="toggleDropdown(event)">
+                  {{ user.username }}
+                </a>
+                <div class="dropdown-content dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                  <a class="dropdown-item" href="/info">Thông tin</a>
+                  <a class="dropdown-item" href="#">Chỉnh sửa</a>
+                  <div class="dropdown-divider"></div>
+                  <a class="dropdown-item" href="/auth/logout">Đăng xuất</a>
+                </div>
+              </li>
+      
             </div>
-          </li>
-        </ul>
-      </div>
-    </div>
-</nav>
-<script>
-    function toggleDropdown(event) {
-        event.preventDefault();
-        const dropdown = event.target.closest('.dropdown');
-        dropdown.classList.toggle('show');
+        </div>
+    </nav>
+    <script>
+      function toggleDropdown(event) {
+          event.preventDefault();
+          const dropdown = event.target.closest('.dropdown');
+          dropdown.classList.toggle('show');
       }
-
       window.onclick = function(event) {
-        if (!event.target.matches('.dropbtn')) {
-          const dropdowns = document.querySelectorAll('.dropdown');
-          dropdowns.forEach(dropdown => {
-            dropdown.classList.remove('show');
-          });
-        }
+          if (!event.target.matches('.dropbtn')) {
+            const dropdowns = document.querySelectorAll('.dropdown');
+            dropdowns.forEach(dropdown => {
+              dropdown.classList.remove('show');
+            });
+          }
       }
-</script>
+    </script>
+    

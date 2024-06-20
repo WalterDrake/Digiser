@@ -68,3 +68,5 @@ def wiki(request):
     return render(request, 'pages/wiki.html')
 def courses(request):
     return render(request, 'pages/courses.html')
+def info(request):
+    return render(request, 'pages/info.html')
