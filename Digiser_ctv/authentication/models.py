@@ -11,7 +11,8 @@ from .managers import CustomUserManager
 class CustomUser(AbstractUser):
     email = models.EmailField(_('email address'), unique=True)
     phone_no = models.CharField(_('phone number'), max_length=20, unique=True)
-    USERNAME_FIELD = 'phone_no'
+    is_verified = models.BooleanField(_('is verified'), default=False)
+    USERNAME_FIELD = 'phone_no' 
     REQUIRED_FIELDS = ['username','email']
 
     objects = CustomUserManager()

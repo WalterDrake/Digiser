@@ -5,7 +5,7 @@ from django.views.decorators.csrf import csrf_protect
 from django.contrib import messages
 from .forms import CustomUserCreationForm
 from Digiser_ctv.services import add_row, count_row, find_id_with_username, send_zalo_oa_message_to_client
-
+from django.contrib.auth.models import Group
 # Create your views here.
 
 
@@ -18,6 +18,8 @@ def REGISTER(request):
             # Set the username to email if necessary
             user.username = form.cleaned_data.get('email').split("@")[0]
             user.save()  # Save the user instance
+            group = Group.objects.get(name='CTV')
+            group.user_set.add(user)
             doc_name = os.getenv("DOC_LIST").split(",")[0]
             cnt = count_row(doc_name, 0)
             user_dict = {
@@ -42,16 +44,16 @@ def LOGIN(request):
         phone_no = request.POST.get('phone_no')
         password = request.POST.get('password')
         user = authenticate(request, username=phone_no, password=password)
-        print(user)
         if user is not None:
-            login(request, user)
+            print(user.is_verified)
+            request.session['user_id'] = user.id
+            login(request, user) 
             # Replace 'home' with the name of your home URL pattern
             return redirect('home')
         else:
             messages.error(request, 'Invalid phone number or password.')
 
     return render(request, 'login.html')
-
 
 def LOGOUT(request):
     logout(request)
