@@ -203,68 +203,6 @@
   .menu-bar::-webkit-scrollbar{
       display: none;
   }
-  .sidebar .menu-bar .mode{
-      border-radius: 6px;
-      background-color: var(--primary-color-light);
-      position: relative;
-      transition: var(--tran-05);
-  }
-  
-  .menu-bar .mode .sun-moon{
-      height: 50px;
-      width: 60px;
-  }
-
-  .mode .sun-moon i{
-      position: absolute;
-  }
-  .mode .sun-moon i.sun{
-      opacity: 0;
-  }
-  body.dark .mode .sun-moon i.sun{
-      opacity: 1;
-  }
-  body.dark .mode .sun-moon i.moon{
-      opacity: 0;
-  }
-
-  .menu-bar .bottom-content .toggle-switch{
-      position: absolute;
-      right: 0;
-      height: 100%;
-      min-width: 60px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      border-radius: 6px;
-      cursor: pointer;
-  }
-  .toggle-switch .switch{
-      position: relative;
-      height: 22px;
-      width: 40px;
-      border-radius: 25px;
-      background-color: var(--toggle-color);
-      transition: var(--tran-05);
-  }
-
-  .switch::before{
-      content: '';
-      position: absolute;
-      height: 15px;
-      width: 15px;
-      border-radius: 50%;
-      top: 50%;
-      left: 5px;
-      transform: translateY(-50%);
-      background-color: var(--sidebar-color);
-      transition: var(--tran-04);
-  }
-
-  body.dark .switch::before{
-      left: 20px;
-  }
-
   .home{
       position: absolute;
       top: 0;
@@ -354,16 +292,6 @@
                 <span class="text nav-text">Wiki DGS</span>
             </a>
           </li>
-          <li class="mode">
-              <div class="sun-moon">
-                  <i class='bx bx-moon icon moon'></i>
-                  <i class='bx bx-sun icon sun'></i>
-              </div>
-              <span class="mode-text text">Dark mode</span>
-              <div class="toggle-switch">
-                  <span class="switch"></span>
-              </div>
-          </li>
           
       </div>
   </div>
@@ -378,14 +306,4 @@
     toggle.addEventListener("click" , () =>{
     sidebar.classList.toggle("close");
     })
-    modeSwitch.addEventListener("click" , () =>{
-    body.classList.toggle("dark");
-
-    if(body.classList.contains("dark")){
-    modeText.innerText = "Light mode";
-    }else{
-    modeText.innerText = "Dark mode";
-    
-    }
-    });
 </script>
