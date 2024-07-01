@@ -11,146 +11,162 @@
         background-color: #f4f4f4;
         align-items: flex-start;
     }
-    
+
     .hm-container {
-        font-size:18px;
+        font-size: 18px;
         width: 100%;
         background-color: #E4E9F7;
         padding: 20px;
         box-sizing: border-box;
     }
-    
+
     .hm-header {
         display: flex;
         justify-content: space-between;
         align-items: center;
         margin-bottom: 20px;
     }
-    
+
     .hm-header .date-range {
         font-size: 14px;
         background-color: #f0f0f0;
         padding: 5px;
         border-radius: 3px;
     }
-    
+
     .hm-header .date-range input {
         border: none;
         background: none;
         font-size: 14px;
         width: auto;
     }
-    
+
     table {
         width: 100%;
         border-collapse: collapse;
     }
-    
+
     table thead th {
         border-bottom: 2px solid #000000;
         padding: 10px 0;
         text-align: left;
     }
-    
+
     table tbody td {
         padding: 10px 0;
         font-size: 14px;
         vertical-align: top;
     }
+
     .middle-container {
-                display: flex;
-                height: 100vh;
-                font-size:13px;
-            }
-            .middle-sidebar {
-                width: 200px;
-                background-color: #E4E9F7;
-                padding: 20px;
-                border-right: 2px solid #000000;
-            }
-            .middle-sidebar img {
-                width: 100px;
-                height: 100px;
-                border-radius: 50%;
-                display: block;
-                margin: 0 auto;
-                margin-top: 10px;
-                border: 1px solid #ccc;
-            }
-            .middle-sidebar .verified {
-                text-align: center;
-                color: green;
-                margin-top: 10px;
-            }
-            .middle-sidebar nav ul {
-                list-style-type: none;
-                padding: 0;
-                margin-top: 10px;
-            }
-            .middle-sidebar nav ul li {
-                margin-top: 0px;
-                padding: 5px;
-                text-align: left;
-                cursor: pointer;    
-                border-radius: 5px;
-                position: relative;
-                padding-right: 20px;
-            }
-        
-            .middle-sidebar nav ul li.active {
-                font-weight: bold;
-                color: black;
-            }
-        
-            .middle-sidebar nav ul li.active::after {
-                content: ' \2192';
-                position: absolute;
-                right: 10px;
-            }
-            .middle-sizebar strong{
-                font-size: 18px;
-            }
-            .middle-content {
-                flex: 1;
-                padding: 20px;
-            }
-            .middle-content h2 {
-                margin-bottom: 20px;
-            }
-            .middle-content .info {
-                margin-bottom: 10px;
-            }
-            .middle-content .info span {
-                display: inline-block;
-                width: 150px;
-                font-weight: bold;
-            }
-            .middle-content .info input {
-                display: inline-block;
-                height: 20px;
-                width: 200px;
-                border-radius: 20px;
-                border: 1px solid #ccc;
-                padding: 5px;
-                background-color : #d1d1d1;
-            }
-            .middle-content .notes {
-                width: 200px;
-                height: 200px;
-                border-radius: 20px;
-                border: 1px solid #ccc;
-                padding: 5px;
-                background-color : #d1d1d1;
-                margin-left:153px;
-            }
-    .ctv{
-        font-size:13px;
-        padding: 10px;
-        font:caption;
+        display: flex;
+        height: 100vh;
+        font-size: 13px;
     }
-    .ctv-status{
+
+    .middle-sidebar {
+        width: 200px;
+        background-color: #E4E9F7;
+        padding: 20px;
+        border-right: 2px solid #000000;
+    }
+
+    .middle-sidebar img {
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
+        display: block;
+        margin: 0 auto;
+        margin-top: 10px;
+        border: 1px solid #ccc;
+    }
+
+    .middle-sidebar .verified {
+        text-align: center;
+        color: green;
+        margin-top: 10px;
+    }
+
+    .middle-sidebar nav ul {
+        list-style-type: none;
+        padding: 0;
+        margin-top: 10px;
+    }
+
+    .middle-sidebar nav ul li {
+        margin-top: 0px;
+        padding: 5px;
+        text-align: left;
+        cursor: pointer;
+        border-radius: 5px;
+        position: relative;
+        padding-right: 20px;
+    }
+
+    .middle-sidebar nav ul li.active {
+        font-weight: bold;
+        color: black;
+    }
+
+    .middle-sidebar nav ul li.active::after {
+        content: ' \2192';
+        position: absolute;
+        right: 10px;
+    }
+
+    .middle-sizebar strong {
+        font-size: 18px;
+    }
+
+    .middle-content {
+        flex: 1;
+        padding: 20px;
+    }
+
+    .middle-content h2 {
+        margin-bottom: 20px;
+    }
+
+    .middle-content .info {
+        margin-bottom: 10px;
+    }
+
+    .middle-content .info span {
+        display: inline-block;
+        width: 150px;
+        font-weight: bold;
+    }
+
+    .middle-content .info input {
+        display: inline-block;
+        height: 20px;
+        width: 200px;
+        border-radius: 20px;
+        border: 1px solid #ccc;
+        padding: 5px;
+        background-color: #d1d1d1;
+    }
+
+    .middle-content .notes {
+        width: 200px;
+        height: 200px;
+        border-radius: 20px;
+        border: 1px solid #ccc;
+        padding: 5px;
+        background-color: #d1d1d1;
+        margin-left: 153px;
+    }
+
+    .ctv {
+        font-size: 13px;
+        padding: 10px;
+        font: caption;
+    }
+
+    .ctv-status {
         color: #000000;
     }
+
     .tab-content {
         display: none;
     }
@@ -163,7 +179,8 @@
     <div class="hm-container">
         <div class="hm-header">
             <strong>Cài đặt tài khoản</strong>
-            <span class="date-range">Thời gian thực hiện: <input type="hm-text" value="20/04/24 - 03/05/24" readonly></span>
+            <span class="date-range">Thời gian thực hiện: <input type="hm-text" value="20/04/24 - 03/05/24"
+                    readonly></span>
         </div>
         <table>
             <thead>
@@ -176,12 +193,14 @@
         </table>
     </div>
     <div class="ctv">
-        <strong>Bạn đang ở trạng thái CTV <span class="ctv-status">TỐT</span>. Chú ý: Nếu CTV sai nhập liệu và bị đánh giá sai sót >5% thì sẽ bị đóng tài khoản</strong>
+        <strong>Bạn đang ở trạng thái CTV <span class="ctv-status">TỐT</span>. Chú ý: Nếu CTV sai nhập liệu và bị đánh
+            giá sai sót >5% thì sẽ bị đóng tài khoản</strong>
     </div>
     <div class="middle-container">
         <div class="middle-sidebar">
             <strong>Thông tin cơ bản</strong>
-            <img src="https://yt3.ggpht.com/a/AATXAJzsHPys1EoSnxprcPapwsQsb1gr97KzKfnRBw=s900-c-k-c0xffffffff-no-rj-mo" alt="Profile">
+            <img src="https://yt3.ggpht.com/a/AATXAJzsHPys1EoSnxprcPapwsQsb1gr97KzKfnRBw=s900-c-k-c0xffffffff-no-rj-mo"
+                alt="Profile">
             <div class="verified">Tài khoản đã xác thực</div>
             <nav>
                 <ul>
@@ -192,31 +211,85 @@
         </div>
         <div class="middle-content">
             <div id="tab-1" class="tab-content active">
-                <div class="info"><span>Mã CTV:</span> <input type="text"></div>
-                <div class="info"><span>Tên cá nhân:</span> <input type="text"></div>
-                <div class="info"><span>Ngày sinh:</span> <input type="date"></div>
-                <div class="info"><span>Số ĐT:</span> <input type="tel"></div>
-                <div class="info"><span>Địa chỉ hiện tại:</span> <input type="text"></div>
-                <div class="info"><span>Trình độ:</span> <input type="text"></div>
-                <div class="info"><span>Số CCCD:</span> <input type="text"></div>
-                <div class="info"><span>Mã CTV:</span> <input type="text"></div>
-                <div class="info"><span>Địa chỉ trên CCCD:</span> <input type="text"></div>
-                <div class="info"><span>Ghi chú CTV:</span></div><textarea class="notes"></textarea>
+                <form method="POST">
+                    {% csrf_token %}
+                    <div class="info">
+                        <label for="ma-ctv">Mã CTV:</label>
+                        <input type="text" id="ma-ctv" name="ma-ctv" value={{ code_ctv }}>
+                    </div>
+                    <div class="info">
+                        <label for="ten-ca-nhan">Tên cá nhân:</label>
+                        <input type="text" id="ten-ca-nhan" name="full_name" value={{ full_name }}>
+                    </div>
+                    <div class="info">
+                        <label for="ngay-sinh">Ngày sinh:</label>
+                        <input type="date" id="ngay-sinh" name="birthday" value={{ birthday }}>
+                    </div>
+                    <div class="info">
+                        <label for="so-dt">Số ĐT:</label>
+                        <input type="tel" id="so-dt" name="phone_no" value={{ phone_no }}>
+                    </div>
+                    <div class="info">
+                        <label for="dia-chi-hien-tai">Địa chỉ hiện tại:</label>
+                        <input type="text" id="dia-chi-hien-tai" name="address" value={{ address }}>
+                    </div>
+                    <div class="info">
+                        <label for="trinh-do">Trình độ:</label>
+                        <input type="text" id="trinh-do" name="qualification" value={{ qualification }}>
+                    </div>
+                    <div class="info">
+                        <label for="so-cccd">Số CCCD:</label>
+                        <input type="text" id="so-cccd" name="identification" value={{ identification }}>
+                    </div>
+                    <div class="info">
+                        <label for="dia-chi-cccd">Địa chỉ trên CCCD:</label>
+                        <input type="text" id="dia-chi-cccd" name="identification_address" value={{
+                            identification_address }}>
+                    </div>
+                    <div class="info">
+                        <label for="ghi-chu-ctv">Ghi chú CTV:</label>
+                        <textarea id="ghi-chu-ctv" name="note" class="notes" value={{ note }}></textarea>
+                    </div>
+                    <div class="info">
+                        <button type="submit">Save</button>
+                    </div>
+                </form>
             </div>
             <div id="tab-2" class="tab-content">
                 <!-- Add bank information fields here -->
-                <div class="info"><span>Số tài khoản:</span> <input type="text"></div>
-                <div class="info"><span>Ngân hàng:</span> <input type="text"></div>
-                <div class="info"><span>Chi nhánh:</span> <input type="text"></div>
-                <div class="info"><span>Tên chủ tài khoản:</span> <input type="text"></div>
-                <div class="info"><span>Mã ngân hàng:</span> <input type="text"></div>
+                <form method="POST">
+                    {% csrf_token %}
+                    <div class="info">
+                        <label for="so-tai-khoan">Số tài khoản:</label>
+                        <input type="text" id="so-tai-khoan" name="account_number" value={{ account_number }}>
+                    </div>
+                    <div class="info">
+                        <label for="ngan-hang">Ngân hàng:</label>
+                        <input type="text" id="ngan-hang" name="bank_name" value={{ bank_name }}>
+                    </div>
+                    <div class="info">
+                        <label for="chi-nhanh">Chi nhánh:</label>
+                        <input type="text" id="chi-nhanh" name="branch" value={{ branch }}>
+                    </div>
+                    <div class="info">
+                        <label for="ten-chu-tai-khoan">Tên chủ tài khoản:</label>
+                        <input type="text" id="ten-chu-tai-khoan" name="owner" value={{ owner }}>
+                    </div>
+                    <div class="info">
+                        <label for="ma-ngan-hang">Mã ngân hàng:</label>
+                        <input type="text" id="ma-ngan-hang" name="code_bank" value={{ code_bank }}>
+                    </div>
+                    <div class="info">
+                        <button type="submit">Save</button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
 </div>
 <script>
     document.querySelectorAll('.tab-link').forEach(link => {
-        link.addEventListener('click', function() {
+        link.addEventListener('click', function () {
             document.querySelectorAll('.tab-link').forEach(link => {
                 link.classList.remove('active');
             });
