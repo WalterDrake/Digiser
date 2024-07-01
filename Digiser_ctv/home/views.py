@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from Digiser_ctv.services import get_all_rows, add_row, count_row
 from django.views.decorators.csrf import csrf_exempt
@@ -7,7 +7,7 @@ from .forms import UploadFileForm
 from authentication.forms import CustomUserCreationForm
 import pandas as pd
 import os
-
+from authentication.models import CustomUser
 @csrf_exempt
 def upload_import(request):
     if request.method == 'POST':
@@ -43,18 +43,33 @@ def upload_import(request):
 
 @login_required
 def home(request):
-    doc_name = os.getenv("DOC_LIST").split(",")[0]
-    raw_data = get_all_rows(doc_name, 1)
-    num_rows = request.GET.get('rows', 30)
-    try:
-        num_rows = int(num_rows)
-    except ValueError:
-        num_rows = 30
-    raw_data = raw_data[:num_rows]
-    context = {
-        'data': raw_data
-    }
-    return render(request, 'pages/home.html', context )
+    if request.method == 'POST':
+        email = request.POST.get('gmail')
+        print(email)
+        user = get_object_or_404(CustomUser, email=email)
+        user.is_verified = True
+        user.save()
+        return render (request, 'pages/home_manager.html')
+    elif request.method == 'GET':
+        doc_name = os.getenv("DOC_LIST").split(",")[0]
+        raw_data = get_all_rows(doc_name, 1)
+        num_rows = request.GET.get('rows', 30)
+        try:
+            num_rows = int(num_rows)
+        except ValueError:
+            num_rows = 30
+        raw_data = raw_data[:num_rows]
+        context = {
+            'data': raw_data
+        }
+        user_id = request.session.get('user_id')
+        user = get_object_or_404(CustomUser, id=user_id)
+        
+
+        if checkManager(user):
+            return render (request, 'pages/home_manager.html', context)
+
+        return render(request, 'pages/home_ctv.html', context )
   
 def insert(request):
     return render(request, 'pages/insert.html')
@@ -70,3 +85,7 @@ def courses(request):
     return render(request, 'pages/courses.html')
 def info(request):
     return render(request, 'pages/info.html')
+def checkManager(user):
+    if user.groups.filter(name='Manager').exists():
+        return True
+    return False
