@@ -1,0 +1,78 @@
+{% extends 'bases/base.html' %}
+{% block content %}
+    <div>
+        <div class="import-container">
+            <form id="file-upload-form" action="/your-endpoint-url" method="POST" enctype="multipart/form-data">
+                <button type="button" class="btn btn-outline-primary import-btn" onclick="document.getElementById('file-input').click();">Import data</button>
+                <input type="file" id="file-input" class="file-input" accept=".xlsx">
+            </form>
+        </div>
+         <!-- Overlay and spinner -->
+        <div id="overlay" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.5); z-index: 9999;">
+            <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center; color: white;">
+                <i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i>
+                <p>Updating Database...</p>
+            </div>
+        </div>
+        <script>
+            document.getElementById('file-input').addEventListener('change', function(event) {
+                const file = event.target.files[0];
+                if (file) {
+                    console.log('Selected file:', file.name);
+                    // Show overlay while uploading
+                    document.getElementById('overlay').style.display = 'block';
+
+                    // Create a new FormData object
+                    const formData = new FormData();
+                    formData.append('file', file);
+                    
+                    // Post the form data to the endpoint
+                    fetch('{% url "import_upload" %}', {
+                        method: 'POST',
+                        body: formData,
+                        headers: {
+                            'X-CSRFToken': '{{ csrf_token }}'  // Include CSRF token
+                        }
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        console.log('Success:', data);
+                        // Hide overlay after successful upload
+                        document.getElementById('overlay').style.display = 'none';
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        // Hide overlay on error (handle error display as needed)
+                        document.getElementById('overlay').style.display = 'none';
+                    });
+                }
+            });
+        </script>
+        <table class="user_table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Dự án</th>
+                    <th>Dữ liệu nhập</th>
+                    <th>Số phiếu</th>
+                    <th>Tổng trường</th>
+                    <th>Trạng thái</th>
+                    <th>Thực hiện</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for row in data %}
+                    <tr>
+                        <td>{{ row.ID }}</td>
+                        <td>{{ row.DuAn }}</td>
+                        <td>{{ row.loaiCV }}</td>
+                        <td>{{ row.sophieu_thucte}}</td>
+                        <td>{{ row.Sotruong_thucte}}</td>
+                        <td>{{ row.status_check }}</td>
+                        <td>{{ row.log_sup }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}
