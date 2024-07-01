@@ -16,19 +16,19 @@ def REGISTER(request):
         if form.is_valid():
             user = form.save(commit=False)
             # Set the username to email if necessary
-            user.username = form.cleaned_data.get('email').split("@")[0]
+            user.username = form.cleaned_data.get('username_zalo')
             user.save()  # Save the user instance
             group = Group.objects.get(name='CTV')
             group.user_set.add(user)
             doc_name = os.getenv("DOC_LIST").split(",")[0]
             cnt = count_row(doc_name, 0)
             user_dict = {
-                "ID": "DGS" + str(cnt),
+                "ID": "",
                 "password": form.cleaned_data.get('password2'),
                 "gmail": user.email
             }
             add_row(doc_name, 0, cnt, user_dict)
-            user_id = find_id_with_username(request.POST.get('username_zalo'))
+            user_id = find_id_with_username(form.cleaned_data.get('username_zalo'))
             if user_id['data'] != 'none':
                 send_zalo_oa_message_to_client(user_id['data'], f"""Chúc mừng {request.POST.get('username_zalo')}. Bạn đã đăng ký tài khoản CTV thành công tại Digiser. Đăng nhập với số điện thoại {form.cleaned_data.get('phone_no')} và mật khẩu là {form.cleaned_data.get('password2')}""")
             login(request, user)
