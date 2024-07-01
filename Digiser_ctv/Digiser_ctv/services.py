@@ -95,11 +95,25 @@ def add_row(doc_name: str, sheet_id: id = None, last_row: int = None, formatted_
         worksheet = sh.get_worksheet(
             sheet_id) if sheet_id else sh.get_worksheet(0)
         print(formatted_data)
-        worksheet.update(f'A{last_row+1}:C{last_row+1}',
+        worksheet.update(f'A{last_row+1}:Q{last_row+1}',
                          [[
                            formatted_data['ID'],
                            formatted_data['password'],
-                           formatted_data['gmail']
+                           formatted_data['gmail'],
+                           formatted_data['phone'],
+                           formatted_data['full name'],
+                           formatted_data['birthday'],
+                           formatted_data['address'],
+                           formatted_data['qualification'],
+                           formatted_data['identification'],
+                           formatted_data['identification address'],
+                           formatted_data['note'],
+                           formatted_data['role'],
+                           formatted_data['account number'],
+                           formatted_data['bank name'],
+                           formatted_data['branch'],
+                           formatted_data['owner'],
+                           formatted_data['code bank'],
                            ]])
         return {"Response": "Success"}
     except Exception as e:

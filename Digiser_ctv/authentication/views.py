@@ -8,29 +8,44 @@ from Digiser_ctv.services import add_row, count_row, find_id_with_username, send
 from django.contrib.auth.models import Group
 # Create your views here.
 
-
 @csrf_protect
 def REGISTER(request):
     if request.method == "POST":
         form = CustomUserCreationForm(request.POST)
         if form.is_valid():
+            doc_name = os.getenv("DOC_LIST").split(",")[0]
+            cnt = count_row(doc_name, 0)
             user = form.save(commit=False)
             # Set the username to email if necessary
-            user.username = form.cleaned_data.get('username_zalo')
+            user.username = form.cleaned_data.get('email').split("@")[0]
+            user.row = cnt
             user.save()  # Save the user instance
             group = Group.objects.get(name='CTV')
             group.user_set.add(user)
-            doc_name = os.getenv("DOC_LIST").split(",")[0]
-            cnt = count_row(doc_name, 0)
             user_dict = {
-                "ID": "",
+                "ID": "undefined",
                 "password": form.cleaned_data.get('password2'),
-                "gmail": user.email
+                "gmail": user.email,
+                "phone": user.phone_no,
+                "birthday": "undefined",
+                "full name": "undefined",
+                "address": "undefined",
+                "qualification": "undefined",
+                "identification": "undefined",
+                "identification address": "undefined",
+                "note": "undefined",
+                "role": "undefined",
+                "account number": "undefined",
+                "bank name": "undefined",
+                "branch": "undefined",
+                "owner": "undefined",
+                "code bank": "undefined",
             }
-            add_row(doc_name, 0, cnt, user_dict)
-            user_id = find_id_with_username(form.cleaned_data.get('username_zalo'))
-            if user_id['data'] != 'none':
-                send_zalo_oa_message_to_client(user_id['data'], f"""Chúc mừng {request.POST.get('username_zalo')}. Bạn đã đăng ký tài khoản CTV thành công tại Digiser. Đăng nhập với số điện thoại {form.cleaned_data.get('phone_no')} và mật khẩu là {form.cleaned_data.get('password2')}""")
+            print(add_row(doc_name, 0, cnt, user_dict))
+            # user_id = find_id_with_username(form.cleaned_data.get('username_zalo'))
+            # if user_id['data'] != 'none':
+            #     send_zalo_oa_message_to_client(user_id['data'], f"""Chúc mừng {request.POST.get('username_zalo')}. Bạn đã đăng ký tài khoản CTV thành công tại Digiser. Đăng nhập với số điện thoại {form.cleaned_data.get('phone_no')} và mật khẩu là {form.cleaned_data.get('password2')}""")
+            request.session['user_id'] = user.id
             login(request, user)
             return redirect('/home')
     else:
