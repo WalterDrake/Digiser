@@ -29,7 +29,7 @@ def upload_import(request):
                 doc_name = os.getenv("DOC_LIST").split(",")[0]
                 if form.is_valid():
                     user = form.save(commit=False)
-                    user.username = form.cleaned_data.get('username')
+                    user.username = form.cleaned_data.get('email').split("@")[0]
                     user.save()  # Save the user instance
                     cnt = count_row(doc_name, 0)
                     user_dict = {
@@ -48,14 +48,14 @@ def upload_import(request):
 @login_required
 def home(request):
     if request.method == 'POST':
-        if (checkManager(user)):
+        if (checkManager(request.user)):
             email = request.POST.get('gmail')
             doc_name = os.getenv("DOC_LIST").split(",")[0]
             cnt = count_row(doc_name, 0)
             user = get_object_or_404(CustomUser, email=email)
             user.is_verified = True
             user.role = 'CTV'
-            user.code_ctv = 'NV' + str(cnt)
+            user.code_ctv = 'NV' + str(cnt-1)
             user.save()
             return render(request, 'pages/home_manager.html')
     elif request.method == 'GET':
@@ -104,12 +104,36 @@ def courses(request):
 
 
 def info(request):
+    user_id = request.session.get('user_id')
+    user = get_object_or_404(CustomUser, id=user_id)
     if request.method == 'POST':
         form = CustomUserChangeForm(request.POST, instance=request.user)
         if form.is_valid():
-            print(form.cleaned_data)
             user = form.save(commit=False)
             user.save()
+            doc_name = os.getenv("DOC_LIST").split(",")[0]
+            cnt = count_row(doc_name, 0)
+            print(cnt)
+            user_dict = {
+                "ID" : user.code_ctv,
+                "gmail": user.email,
+                "password": user.password, # fixed hash password
+                "phone": user.phone_no,
+                "birthday": user.birthday,
+                "full name": user.full_name,
+                "address": user.address,
+                "qualification": user.qualification,
+                "identification": user.identification,
+                "identification address": user.identification_address,
+                "note": user.note,
+                "role": user.role,
+                "account number": user.account_number,
+                "bank name": user.bank_name,
+                "branch": user.branch,
+                "owner": user.owner,
+                "code bank": user.code_bank
+            }
+            add_row(doc_name, 0, user.row, user_dict)
             context = {
                 "code_ctv": user.code_ctv,
                 "phone_no": user.phone_no,
@@ -127,7 +151,7 @@ def info(request):
                 "code_bank": user.code_bank
             }
             return render(request, 'pages/info.html', context)
-    else:
+    elif user.is_verified == True:
         user_id = request.session.get('user_id')
         user = get_object_or_404(CustomUser, id=user_id)
         context = {
@@ -147,6 +171,8 @@ def info(request):
             "code_bank": user.code_bank
         }
         return render(request, 'pages/info.html', context)
+    else:
+        return render(request, 'pages/home_ctv.html')
 
 
 def checkManager(user):
