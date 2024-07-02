@@ -1,5 +1,5 @@
 {% load static %}
-<!doctype html>
+<!DOCTYPE HTML>
 <html lang="en">
 
 <head>
@@ -14,113 +14,8 @@
   <script src="https://cdn.jsdelivr.net/npm/chart.js@3.0.2/dist/chart.min.js"></script>
   <link rel="stylesheet" href="{% static 'style.css' %}">
   <link href='https://unpkg.com/boxicons@2.1.1/css/boxicons.min.css' rel='stylesheet'>
+  <link rel="stylesheet" href="{% static 'css/base/base.css' %}">
   <title>Home Pages</title>
-  <style>
-    .home {
-      position: absolute;
-      top: 0;
-      top: 0;
-      left: 250px;
-      height: 100vh;
-      width: calc(100% - 250px);
-      background-color: var(--body-color);
-      transition: var(--tran-05);
-    }
-
-    .home .mainPage {
-      font-size: 30px;
-      font-weight: 500;
-      color: var(--text-color);
-      padding: 12px 60px;
-    }
-
-    .sidebar.close~.home {
-      left: 78px;
-      height: 100vh;
-      width: calc(100% - 78px);
-    }
-
-    body.dark .home .text {
-      color: var(--text-color);
-    }
-
-    .horizontal-list li {
-      flex: 1;
-      text-align: center;
-    }
-
-    /* Style for the table */
-    .user_table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-top: 15px;
-      font-size: 16px;
-    }
-
-    /* Style for the table headers */
-    .user_table thead th {
-      background-color: #f8f9fa;
-      font-weight: bold;
-      padding: 10px;
-      text-align: left;
-      border-bottom: 2px solid #dee2e6;
-    }
-
-    /* Style for the table rows */
-    .user_table tbody tr {
-      border-bottom: 1px solid #dee2e6;
-    }
-
-    /* Style for the table cells */
-    .user_table tbody td {
-      padding: 10px;
-    }
-
-    /* Add hover effect to table rows */
-    .user_table tbody tr:hover {
-      background-color: #f1f1f1;
-    }
-    .home .mainPage{
-        font-size: 30px;
-        font-weight: 500;
-        color: var(--text-color);
-        padding: 12px 60px;
-    }
-
-    .sidebar.close ~ .home{
-        left: 78px;
-        height: 100vh;
-        width: calc(100% - 78px);
-    }
-    body.dark .home .text{
-        color: var(--text-color);
-    }
-    .import-container {
-      display: flex;
-      padding: 4px;
-      width: 100%;
-      align-items: center;
-      justify-content: end;
-      margin-bottom: 6px;
-    }
-
-    .import-container input {
-      display: none;
-    }
-  
-    /* Style for the status check cell */
-    .user_table tbody td.status_check {
-      font-weight: bold;
-      color: #28a745;
-      /* You can change this color based on the status */
-    }
-
-    /* Style for the log sup cell */
-    .user_table tbody td.log_sup {
-      color: #6c757d;
-      font-style: italic;
-    }
-  </style>
 </head>
 
 <body>
