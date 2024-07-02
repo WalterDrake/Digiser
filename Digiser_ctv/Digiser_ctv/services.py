@@ -86,7 +86,7 @@ def get_all_rows(doc_name: str, sheet_id: int = None) -> List[dict]:
     return worksheet.get_all_records()
 
 
-def add_row(doc_name: str, sheet_id: id = None, last_row: int = None, formatted_data: dict[str, any] = None):
+def update_row(doc_name: str, sheet_id: id = None, last_row: int = None, formatted_data: dict[str, any] = None):
     """
     Add row from a given Google Sheet worksheet.
     """
@@ -129,25 +129,3 @@ def count_row(doc_name: str, sheet_id: int = None):
         return cnt
     except Exception as e:
         raise e
-
-# def add_row(doc_name:str, sheet_name: str = None, records: List[dict] = None, formatted_data: dict[str, any] = None):
-#   """
-#   Update row from a given Google Sheet worksheet.
-#   """
-#   try:
-#     sh = settings.GSPREAD_CLIENT.open(doc_name)
-#     worksheet = sh.worksheet[sheet_name] if sheet_name else sh.get_worksheet(0)
-#     for i, record in enumerate(records):
-#       if record['MaNV'] == formatted_data['MaNV']:
-#       # Update the entire row with the new data
-#           row = i + 2  # Adjust for header row (indexing starts from 0)
-#           worksheet.update(f'A{row}:E{row}', [[
-#               formatted_data['MaNV'],
-#               formatted_data['Ten'],
-#               formatted_data['CCCD'],
-#               formatted_data['Email'],
-#               formatted_data['Role']
-#       ]])
-#     return {"Response":"Success"}
-#   except Exception as e:
-#     return {"Response": e.message}
