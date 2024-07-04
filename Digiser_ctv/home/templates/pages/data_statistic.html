@@ -1,0 +1,73 @@
+{% extends 'bases/base.html' %}
+{% block content %}
+<h1>Thống kê dữ liệu</h1>
+
+<style>
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 20px;
+    }
+    th, td {
+        padding: 10px;
+        text-align: left;
+        border: 1px solid #dddddd; /* Add border for cells */
+    }
+    th {
+        background-color: #f2f2f2;
+    }
+    .project-header {
+        background-color: #f9f9f9;
+    }
+</style>
+
+<table>
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Dự Án</th>
+            <th>Loại</th>
+            <th>Gói dữ liệu</th>
+            <th>Số phiếu</th>
+            <th>Đã nhập</th>
+            <th>Chưa nhập</th>
+            <th>Số trường lỗi</th>
+            <th>Trạng thái</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for category, details in data.items %}
+        {% if details.Du_An %}
+        {% for project, project_details in details.Du_An.items %}
+        {% for magoiCV, magoiCV_details in project_details.magoiCV.items %}
+        <tr>
+            {% if forloop.parentloop.first %}
+            <td rowspan="{{ details.total_sophieu }}">{{ category }}</td>
+            {% endif %}
+            {% if forloop.parent.first and forloop.first %}
+            <td rowspan="{{ project_details.magoiCV|length }}">{{ project }}</td>
+            <td rowspan="{{ project_details.magoiCV|length }}">{{ category }}</td>
+            {% endif %}
+            <td>{{ magoiCV }}</td>
+            <td>{{ magoiCV_details.sophieu.0 }}</td>
+            <td>{{ details.total_danhap }}</td>
+            <td>{{ details.total_chuanhap }}</td>
+            <td>{{ details.total_error }}</td>
+            <td>{{ magoiCV_details.trangthai.0 }}</td>
+        </tr>
+        {% endfor %}
+        {% endfor %}
+        <tr>
+            <td colspan="2">Tổng</td>
+            <td>{{ details.total_sophieu }}</td>
+            <td>{{ details.total_danhap }}</td>
+            <td>{{ details.total_chuanhap }}</td>
+            <td>{{ details.total_error }}</td>
+            <td></td>
+        </tr>
+        {% endif %}
+        {% endfor %}
+    </tbody>
+</table>
+
+{% endblock %}
