@@ -125,7 +125,7 @@ def count_row(doc_name: str, sheet_id: int = None):
         sh = settings.GSPREAD_CLIENT.open(doc_name)
         worksheet = sh.get_worksheet(
             sheet_id) if sheet_id else sh.get_worksheet(0)
-        cnt = len(worksheet.col_values(1))
+        cnt = len(worksheet.col_values(2))
         return cnt
     except Exception as e:
         raise e
