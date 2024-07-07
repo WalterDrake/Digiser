@@ -9,14 +9,16 @@
         <script src="{% static "scripts/authentication/auth.js" %}"></script>
     </head>
     <body>
-        <div class="split left">
-            <div class="centered-left">
-            <img src="{% static "images/logo.png" %}" alt="Logo">
+        <div class="split left" style="background-color: #eeecec; border-radius: 16px 0px 0px 16px">
+            <div class="flex-centered">
+              <img src="{% static "images/logo.png" %}" alt="Logo" class="big-logo">
             </div>
-        </div>
+          </div>
         
         <div class="split right">
-            <strong class="welcome">Chào mừng tham gia DGS!</strong>
+            <div  class="welcome">
+                <strong class="welcometext">Chào mừng tham gia DGS!</strong>
+            </div>
             <div class="container">
                 <form method="POST">
                   {% csrf_token %}
@@ -40,11 +42,11 @@
                       <label for="email">Gmail quản lý CTV</label>
                       <input type="email" id="email" name="email" placeholder="Email" required>
                     </div>
-                    <div class="btn-container">
-                        <button type="submit" class="btn">Đăng Ký</button>
+                    <div class="input-radio">
+                        <button type="submit" id="regis-btn">Đăng Ký</button>
                       </div>
                 </form>
-                <a href="../login" class="custom-link">Đã có tài khoản?</a>
+                <span href="../login" class="custom-link">Đã có tài khoản? <a href="../login">Đăng nhập ngay!!!</a></span>
             </div>
         </div>
     </body>
