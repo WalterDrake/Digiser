@@ -8,6 +8,7 @@ from authentication.forms import CustomUserCreationForm, CustomUserChangeForm
 import pandas as pd
 import os
 from authentication.models import CustomUser
+from django.contrib.auth.models import Group
 
 
 @csrf_exempt
@@ -96,15 +97,22 @@ def generate_code(base_str, number):
 
 
 def handle_get_request(request):
-    doc_name = os.getenv("DOC_LIST").split(",")[0]
-    raw_data = get_all_rows(doc_name, 0)
-    num_rows = int(request.GET.get('rows', 10))
-    context = {'data': raw_data[:num_rows]}
 
     user_id = request.session.get('user_id')
     user = get_object_or_404(CustomUser, id=user_id)
 
+    doc_name = os.getenv("DOC_LIST").split(",")[0]
+
+    total_salary = statistic_salary(doc_name, user)
+    total_project_details = statistic_project(doc_name, user)
+
+    context = {
+        'total_project_details' : total_project_details,
+        'total_salary' : total_salary
+    }
     if checkManager(user):
+        data = statistic_human()
+        print(data)
         return render(request, 'pages/home_manager.html', context)
     return render(request, 'pages/home_ctv.html', context)
 
@@ -217,148 +225,107 @@ def checkManager(user):
     return user.groups.filter(name='Manager').exists()
 
 
-def data_statistics(request):  # split 2 function pass request and docname
+def data_statistics(request):
     doc_name = os.getenv("DOC_LIST").split(",")[0]
     user_id = request.session.get('user_id')
     user = get_object_or_404(CustomUser, id=user_id)
     statistics = {
         "Nhap": {},
         "Check": {},
-        "total_sophieu": 0,
-        "total_danhap": 0,
-        "total_chuanhap": 0,
-        "total_error": 0
     }
-    statistics["Nhap"] = statistic_Nhap(doc_name, user)
-    statistics["Check"] = statistic_Check(doc_name, user)
-    statistics["total_sophieu"] = statistics["Nhap"]["total_sophieu"] + \
-        statistics["Check"]["total_sophieu"]
-    # Return or display the statistics
+    statistics["Nhap"] = statistic_Nhap(doc_name, user)[0]
+    statistics["Check"] = statistic_Check(doc_name, user)[0]
     return statistics
 
+def process_statistics(raw_data, user_code_ctv, id_key):
+    statistics = {"Du_An": {}}
+    total_salary = 0
+    total_project_details = 0
+
+    for row in raw_data:
+        if row[id_key].split("_")[0] == user_code_ctv:
+            project = row["DuAn"].split("_")[0]
+            project_package = row["magoiCV"]
+            votes = row["Số phiếu"]
+            status = row["Trạng thái nhập"]
+            salary = row['Thành tiền']
+
+            if project not in statistics["Du_An"]:
+                statistics["Du_An"][project] = {
+                    "magoiCV": {},
+                    "total_votes": 0,
+                    "total_acceptances": 0,
+                    "total_rejections": 0,
+                    "total_error": 0
+                }
+
+            if project_package not in statistics["Du_An"][project]["magoiCV"]:
+                statistics["Du_An"][project]["magoiCV"][project_package] = {
+                    "votes": set(),
+                    "status": set(),
+                    "acceptances": set(),
+                    "rejections": set(),
+                    "errors": set()
+                }
+                total_project_details += 1
+
+            statistics["Du_An"][project]["magoiCV"][project_package]["votes"].add(votes)
+            statistics["Du_An"][project]["magoiCV"][project_package]["status"].add(status)
+            statistics["Du_An"][project]["magoiCV"][project_package]["acceptances"].add(0)
+            statistics["Du_An"][project]["magoiCV"][project_package]["rejections"].add(0)
+            statistics["Du_An"][project]["magoiCV"][project_package]["errors"].add(0)
+
+            votes_value = int(votes) if votes else 0
+            salary_value = int(salary) if salary else 0
+
+            statistics["Du_An"][project]["total_votes"] += votes_value
+            total_salary += salary_value
+
+    for project in statistics["Du_An"]:
+        for project_package in statistics["Du_An"][project]["magoiCV"]:
+            for key in ["votes", "status", "acceptances", "rejections", "errors"]:
+                statistics["Du_An"][project]["magoiCV"][project_package][key] = list(
+                    statistics["Du_An"][project]["magoiCV"][project_package][key])
+
+    return statistics, total_project_details, total_salary
 
 def statistic_Nhap(doc_name, user):
     raw_data = get_all_rows(doc_name, 2)
-    user_code_ctv = user.code_ctv
-
-    # Initialize statistics dictionary
-    statistics = {
-        "Du_An": {},
-        "total_sophieu": 0,
-        "total_danhap": 0,
-        "total_chuanhap": 0,
-        "total_error": 0
-    }
-
-    for row in raw_data:
-        if row["ID CTV nhập"].split("_")[0] == user_code_ctv:
-            du_an = row["DuAn"].split("_")[0]
-            magoi = row["magoiCV"]
-            sophieu = row["Số phiếu"]
-            trangthai = row["Trạng thái nhập"]
-
-            # Ensure the dictionary entry exists for the project (DuAn)
-            if du_an not in statistics["Du_An"]:
-                statistics["Du_An"][du_an] = {
-                    "magoiCV": {},
-                }
-
-            # Ensure the dictionary entry exists for each magoiCV within the project
-            if magoi not in statistics["Du_An"][du_an]["magoiCV"]:
-                statistics["Du_An"][du_an]["magoiCV"][magoi] = {
-                    "sophieu": set(),
-                    "trangthai": set(),
-                    # "danhap": set(),
-                    # "chuanhap": set(),
-                    # "sotruongloi": set()
-                }
-
-            # Aggregate data for each DuAn and magoiCV
-            statistics["Du_An"][du_an]["magoiCV"][magoi]["sophieu"].add(
-                sophieu)
-            statistics["Du_An"][du_an]["magoiCV"][magoi]["trangthai"].add(
-                trangthai)
-
-            # Handle sophieu as integer or default to 0 if it's not an integer or empty string
-            try:
-                statistics["total_sophieu"] += int(sophieu)
-            except ValueError:
-                # Handle case where sophieu is not a valid integer (including '')
-                statistics["total_sophieu"] += 0
-
-    # Convert sets to lists for serialization
-    for du_an in statistics["Du_An"]:
-        for magoi in statistics["Du_An"][du_an]["magoiCV"]:
-            statistics["Du_An"][du_an]["magoiCV"][magoi]["sophieu"] = list(
-                statistics["Du_An"][du_an]["magoiCV"][magoi]["sophieu"])
-            statistics["Du_An"][du_an]["magoiCV"][magoi]["trangthai"] = list(
-                statistics["Du_An"][du_an]["magoiCV"][magoi]["trangthai"])
-
-    return statistics
+    return process_statistics(raw_data, user.code_ctv, "ID CTV nhập")
 
 
 def statistic_Check(doc_name, user):
     raw_data = get_all_rows(doc_name, 3)
-    user_code_ctv = user.code_ctv
-    # Initialize statistics dictionary
-    statistics = {
-        "Du_An": {},
-        "total_sophieu": 0,
-        "total_danhap": 0,
-        "total_chuanhap": 0,
-        "total_error": 0
-    }
-    for row in raw_data:
-        if row["ID CTV check"].split("_")[0] == user_code_ctv:
-            du_an = row["DuAn"].split("_")[0]
-            magoi = row["magoiCV"]
-            sophieu = row["Số phiếu"]
-            trangthai = row["Trạng thái nhập"]
-
-            # Ensure the dictionary entry exists for the project (DuAn)
-            if du_an not in statistics["Du_An"]:
-                statistics["Du_An"][du_an] = {
-                    "magoiCV": {},
-                }
-
-            # Ensure the dictionary entry exists for each magoiCV within the project
-            if magoi not in statistics["Du_An"][du_an]["magoiCV"]:
-                statistics["Du_An"][du_an]["magoiCV"][magoi] = {
-                    "sophieu": set(),
-                    "trangthai": set(),
-                    # "danhap": set(),
-                    # "chuanhap": set(),
-                    # "sotruongloi": set()
-                }
-
-            # Aggregate data for each DuAn and magoiCV
-            statistics["Du_An"][du_an]["magoiCV"][magoi]["sophieu"].add(
-                sophieu)
-            statistics["Du_An"][du_an]["magoiCV"][magoi]["trangthai"].add(
-                trangthai)
-
-            # Handle sophieu as integer or default to 0 if it's not an integer or empty string
-            try:
-                statistics["total_sophieu"] += int(sophieu)
-            except ValueError:
-                # Handle case where sophieu is not a valid integer (including '')
-                statistics["total_sophieu"] += 0
-
-    # Convert sets to lists for serialization
-    for du_an in statistics["Du_An"]:
-        for magoi in statistics["Du_An"][du_an]["magoiCV"]:
-            statistics["Du_An"][du_an]["magoiCV"][magoi]["sophieu"] = list(
-                statistics["Du_An"][du_an]["magoiCV"][magoi]["sophieu"])
-            statistics["Du_An"][du_an]["magoiCV"][magoi]["trangthai"] = list(
-                statistics["Du_An"][du_an]["magoiCV"][magoi]["trangthai"])
-
-    return statistics
+    return process_statistics(raw_data, user.code_ctv, "ID CTV check")
 
 
 def show_data_statistic(request):
     data = data_statistics(request)
-    print(data)
     context = {
         'data': data
     }
     return render(request, 'pages/data_statistic.html', context)
+
+
+def statistic_project(doc_name,user):
+    total_project_details = statistic_Nhap(doc_name, user)[1] + statistic_Check(doc_name,user)[1]
+    return total_project_details
+
+
+def statistic_salary(doc_name, user):
+    total_salary = statistic_Nhap(doc_name,user)[2] + statistic_Check(doc_name, user)[2]
+    return total_salary
+
+
+def statistic_human():
+    group_id = Group.objects.get(name='CTV')
+    users = CustomUser.objects.filter(groups=group_id)
+    user_dict = {}
+
+    for user in users:
+        if user.email not in user_dict:
+            user_dict[user.email] = []
+        user_dict[user.email].extend([user.code_ctv, user.role, user.is_verified, user.note])
+
+    user_list = [{email: attributes} for email, attributes in user_dict.items()]
+    return user_list
