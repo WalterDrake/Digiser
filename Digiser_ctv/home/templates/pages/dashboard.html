@@ -1,0 +1,279 @@
+{% extends 'bases/base.html' %} {% block content %}
+<style>
+  .dashboard-container {
+    margin-top: 20px;
+  }
+  .stats-card-container {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    margin-top: 30px;
+    width: 100%;
+    gap: 24px;
+  }
+
+  .stats-card-container .card {
+    box-shadow: 0 2px 2px rgba(0, 0, 0, 0.1);
+    border-left: 4px solid var(--primary-color);
+    min-width: 15rem;
+  }
+
+  .card-body {
+    display: flex;
+    flex-direction: column;
+    row-gap: 10px;
+  }
+
+  .card h6 {
+    color: var(--text-color);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-weight: 600;
+    text-wrap: pretty;
+    margin: 0;
+  }
+
+  .card-body button {
+    font-size: small;
+    margin: 0;
+    border: 1px solid var(--text-color);
+    align-self: center;
+    width: 70%;
+  }
+
+  .card-body button:hover {
+    background-color: royalblue;
+    color: white;
+  }
+
+  .card h6 > i {
+    font-size: 45px;
+    color: royalblue;
+  }
+  .stats-value {
+    font-size: 40px;
+    font-weight: bolder;
+  }
+
+  .card-info {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0;
+    column-gap: 12px;
+    height: 50px;
+  }
+
+  .card-info .performance-value {
+    font-size: small;
+    height: fit-content;
+    width: fit-content;
+    display: flex;
+    align-items: center;
+    border-radius: 2px;
+    padding: 2px 2px;
+  }
+
+  .performance-value.positive {
+    background-color: lightgreen;
+  }
+
+  .performance-value.negative {
+    background-color: lightsalmon;
+  }
+
+  #total-salary > .card-body > .card-info > .stats-value {
+    font-size: 20px !important;
+  }
+
+  .charts-card-container {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    margin-top: 30px;
+    width: 100%;
+    gap: 24px;
+  }
+
+  .charts-card-container .card {
+    box-shadow: 0 2px 2px rgba(0, 0, 0, 0.2);
+    min-width: 31.5rem;
+  }
+
+  .charts-card-container .card h6 {
+    font-weight: 700 !important;
+  }
+
+  .big-card {
+    grid-column: span 2;
+  }
+  .notis-container {
+    margin-top: 20px;
+  }
+
+  .tabs {
+    display: flex;
+    margin-bottom: 10px;
+  }
+
+  .tab-button {
+    background-color: white;
+    border: none;
+    border-bottom: 2px solid transparent;
+    padding: 10px;
+    cursor: pointer;
+    transition: var(--tran-05);
+  }
+
+  .tab-button.active {
+    border-bottom: 2px solid #3498db;
+  }
+
+  .notification-item {
+    border-bottom: 1px solid #f4f4f4;
+    padding: 10px 0;
+  }
+
+  .notification-item p {
+    margin: 0;
+  }
+
+  .notification-item .date {
+    color: gray;
+    font-size: 0.8em;
+  }
+</style>
+<div class="dashboard-container">
+  <strong>Trang chủ hoạt động DigiSER</strong>
+  <div class="stats-card-container">
+    <div class="card" id="total-project">
+      <div class="card-body">
+        <h6 class="card-title">Tổng Dự Án <i class="bx bxs-file"></i></h6>
+        <p class="card-info">
+          <span class="stats-value">40</span>
+          <span class="performance-value positive">
+            <i class="bx bx-up-arrow-alt"></i>68%</span
+          >
+        </p>
+        <button class="btn">Xem chi tiết</button>
+      </div>
+    </div>
+    <div class="card" id="standard-project">
+      <div class="card-body">
+        <h6 class="card-title">Dự Án Tiêu Chuẩn <i class="bx bxs-star"></i></h6>
+        <p class="card-info">
+          <span class="stats-value">30</span>
+          <span class="performance-value positive">
+            <i class="bx bx-up-arrow-alt"></i>68%</span
+          >
+        </p>
+        <button class="btn">Xem chi tiết</button>
+      </div>
+    </div>
+    <div class="card" id="total-salary">
+      <div class="card-body">
+        <h6 class="card-title">Tiền lương <i class="bx bxs-wallet"></i></h6>
+        <p class="card-info">
+          <span class="stats-value">2.350.200 đ</span>
+          <span class="performance-value positive">
+            <i class="bx bx-up-arrow-alt"></i>68%</span
+          >
+        </p>
+        <button class="btn">Rút tiền</button>
+      </div>
+    </div>
+    <div class="card" id="rating-score">
+      <div class="card-body">
+        <h6 class="card-title">Điểm đánh giá <i class="bx bxs-group"></i></h6>
+        <p class="card-info">
+          <span class="stats-value">142</span>
+          <span class="performance-value negative">
+            <i class="bx bx-down-arrow-alt"></i>38%</span
+          >
+        </p>
+        <button class="btn">Xem chi tiết</button>
+      </div>
+    </div>
+  </div>
+  <div class="charts-card-container">
+    <div class="card big-card" id="work-analysis">
+      <div class="card-body">
+        <h6 class="card-title">Phân tích công việc</h6>
+      </div>
+    </div>
+    <div class="card big-card" id="work-progress">
+      <div class="card-body">
+        <h6 class="card-title">Tiến độ công việc</h6>
+      </div>
+    </div>
+  </div>
+  <div class="notis-container">
+    <div class="tabs">
+      <button class="tab-button active" onclick="openTab('system')">
+        Từ hệ thống
+      </button>
+      <button class="tab-button" onclick="openTab('personal')">Cho bạn</button>
+    </div>
+    <div id="system" class="tab-content">
+      <div class="notification-item">
+        <p>
+          <strong
+            >Thông báo dự án Số Hoá Bến Tre đang hoạt động trong tháng
+            5?</strong
+          ><br />
+          Kích hoạt dự án hoạt động trong tháng 5, dự án đang tuyển dụng liên
+          tục các bạn có thể thay đổi thêm...
+        </p>
+        <span class="date">20/5/2024</span>
+      </div>
+      <div class="notification-item">
+        <p>
+          <strong
+            >Thông báo dự án Số Hoá Bến Tre đang hoạt động trong tháng
+            5?</strong
+          ><br />
+          Kích hoạt dự án hoạt động trong tháng 5, dự án đang tuyển dụng liên
+          tục các bạn có thể thay đổi thêm...
+        </p>
+        <span class="date">20/5/2024</span>
+      </div>
+    </div>
+    <div id="personal" class="tab-content" style="display: none">
+      <div class="notification-item">
+        <p>
+          <strong>Personal notification 1</strong><br />
+          This is a personal notification.
+        </p>
+        <span class="date">20/5/2024</span>
+      </div>
+      <div class="notification-item">
+        <p>
+          <strong>Personal notification 2</strong><br />
+          This is another personal notification.
+        </p>
+        <span class="date">20/5/2024</span>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  function openTab(tabName) {
+    var i, tabcontent, tablinks;
+    tabcontent = document.getElementsByClassName("tab-content");
+    for (i = 0; i < tabcontent.length; i++) {
+      tabcontent[i].style.display = "none";
+    }
+    tablinks = document.getElementsByClassName("tab-button");
+    for (i = 0; i < tablinks.length; i++) {
+      tablinks[i].className = tablinks[i].className.replace(" active", "");
+    }
+    document.getElementById(tabName).style.display = "block";
+    document.querySelector(`[onclick="openTab('${tabName}')"]`).className +=
+      " active";
+  }
+
+  // Default open tab
+  document.addEventListener("DOMContentLoaded", (event) => {
+    document.getElementById("system").style.display = "block";
+  });
+</script>
+{% endblock %}

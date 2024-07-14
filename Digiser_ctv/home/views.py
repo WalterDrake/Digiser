@@ -101,6 +101,9 @@ def wiki(request):
 @login_required
 def courses(request):
     return render(request, 'pages/courses.html')
+@login_required
+def dashboard(request):
+    return render(request, 'pages/dashboard.html')
 
 @login_required
 def info(request):
