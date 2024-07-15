@@ -3,6 +3,7 @@
   .dashboard-container {
     margin-top: 20px;
   }
+
   .stats-card-container {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
@@ -46,10 +47,11 @@
     color: white;
   }
 
-  .card h6 > i {
+  .card h6>i {
     font-size: 45px;
     color: royalblue;
   }
+
   .stats-value {
     font-size: 40px;
     font-weight: bolder;
@@ -82,7 +84,7 @@
     background-color: lightsalmon;
   }
 
-  #total-salary > .card-body > .card-info > .stats-value {
+  #total-salary>.card-body>.card-info>.stats-value {
     font-size: 20px !important;
   }
 
@@ -106,6 +108,7 @@
   .big-card {
     grid-column: span 2;
   }
+
   .notis-container {
     margin-top: 20px;
   }
@@ -149,34 +152,35 @@
       <div class="card-body">
         <h6 class="card-title">Tổng Dự Án <i class="bx bxs-file"></i></h6>
         <p class="card-info">
-          <span class="stats-value">40</span>
+          <span class="stats-value">{{total_project_details}}</span>
           <span class="performance-value positive">
-            <i class="bx bx-up-arrow-alt"></i>68%</span
-          >
+            <i class="bx bx-up-arrow-alt"></i>68%</span>
         </p>
-        <button class="btn">Xem chi tiết</button>
+        <a href="{% url 'data_statistic' %}">
+          <button class="btn">Xem chi tiết</button>
+        </a>
       </div>
     </div>
     <div class="card" id="standard-project">
       <div class="card-body">
         <h6 class="card-title">Dự Án Tiêu Chuẩn <i class="bx bxs-star"></i></h6>
         <p class="card-info">
-          <span class="stats-value">30</span>
+          <span class="stats-value">{{total_project_details}} </span>
           <span class="performance-value positive">
-            <i class="bx bx-up-arrow-alt"></i>68%</span
-          >
+            <i class="bx bx-up-arrow-alt"></i>68%</span>
         </p>
-        <button class="btn">Xem chi tiết</button>
+        <a href="{% url 'data_statistic' %}">
+          <button class="btn">Xem chi tiết</button>
+        </a>
       </div>
     </div>
     <div class="card" id="total-salary">
       <div class="card-body">
         <h6 class="card-title">Tiền lương <i class="bx bxs-wallet"></i></h6>
         <p class="card-info">
-          <span class="stats-value">2.350.200 đ</span>
+          <span class="stats-value">{{total_salary}}</span>
           <span class="performance-value positive">
-            <i class="bx bx-up-arrow-alt"></i>68%</span
-          >
+            <i class="bx bx-up-arrow-alt"></i>68%</span>
         </p>
         <button class="btn">Rút tiền</button>
       </div>
@@ -187,8 +191,7 @@
         <p class="card-info">
           <span class="stats-value">142</span>
           <span class="performance-value negative">
-            <i class="bx bx-down-arrow-alt"></i>38%</span
-          >
+            <i class="bx bx-down-arrow-alt"></i>38%</span>
         </p>
         <button class="btn">Xem chi tiết</button>
       </div>
@@ -198,11 +201,13 @@
     <div class="card big-card" id="work-analysis">
       <div class="card-body">
         <h6 class="card-title">Phân tích công việc</h6>
+        <canvas id="Chart_1" style="width:30%;max-width:700px;height:10px;"></canvas>
       </div>
     </div>
     <div class="card big-card" id="work-progress">
       <div class="card-body">
         <h6 class="card-title">Tiến độ công việc</h6>
+        <canvas id="Chart_2" style="width:100%;max-width:700px;"></canvas>
       </div>
     </div>
   </div>
@@ -216,10 +221,8 @@
     <div id="system" class="tab-content">
       <div class="notification-item">
         <p>
-          <strong
-            >Thông báo dự án Số Hoá Bến Tre đang hoạt động trong tháng
-            5?</strong
-          ><br />
+          <strong>Thông báo dự án Số Hoá Bến Tre đang hoạt động trong tháng
+            5?</strong><br />
           Kích hoạt dự án hoạt động trong tháng 5, dự án đang tuyển dụng liên
           tục các bạn có thể thay đổi thêm...
         </p>
@@ -227,10 +230,8 @@
       </div>
       <div class="notification-item">
         <p>
-          <strong
-            >Thông báo dự án Số Hoá Bến Tre đang hoạt động trong tháng
-            5?</strong
-          ><br />
+          <strong>Thông báo dự án Số Hoá Bến Tre đang hoạt động trong tháng
+            5?</strong><br />
           Kích hoạt dự án hoạt động trong tháng 5, dự án đang tuyển dụng liên
           tục các bạn có thể thay đổi thêm...
         </p>
@@ -275,5 +276,70 @@
   document.addEventListener("DOMContentLoaded", (event) => {
     document.getElementById("system").style.display = "block";
   });
+</script>
+<script src="https://www.jsdelivr.com/package/npm/chart.js?path=dist"></script>
+<script>
+const data_1 = {
+  labels: [
+    'Completed',
+    'Development',
+    'Live'
+  ],
+  datasets: [{
+    label: 'Phân tích công việc',
+    data: [18, 22, 60],
+    backgroundColor: [
+      'rgb(151, 102, 132)',
+      'rgb(193, 125, 58)',
+      'rgb(108, 120, 213)'
+    ],
+    hoverOffset: 4,
+  }]
+};
+
+new Chart("Chart_1", {
+  type: 'doughnut',
+  data: data_1,
+   options: {
+                plugins: {
+                    legend: {
+                        labels: {
+                            usePointStyle: true,
+                            pointStyle: 'circle'
+                        }
+                    }
+                }
+            }
+});
+
+const data_2 = {
+  labels: [
+    'Q1',
+    'Q2',
+    'Q3',
+    'Q4',
+    'Q5'
+  ],
+  datasets: [{
+     type: 'line',
+     label: 'Line Dataset',
+     data: [300, 1800, 200, 280, 500],
+     fill: false,
+     backgroundColor: 'rgb(232, 55, 0)',
+     borderColor: 'rgb(232, 55, 0)'
+   },{
+      type: 'bar',
+      label: 'Bar Dataset',
+      data: [3800, 3600, 2800, 2200, 3500],
+      borderColor: 'rgb(107, 119, 201)',
+      backgroundColor: 'rgb(107, 119, 201)',
+      borderRadius: 10
+    }]
+};
+
+new Chart("Chart_2", {
+  type: 'scatter',
+  data: data_2,
+});
 </script>
 {% endblock %}
