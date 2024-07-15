@@ -112,9 +112,8 @@ def handle_get_request(request):
     }
     if checkManager(user):
         data = statistic_human()
-        print(data)
         return render(request, 'pages/home_manager.html', context)
-    return render(request, 'pages/home_ctv.html', context)
+    return render(request, 'pages/dashboard.html', context)
 
 
 @login_required
@@ -160,7 +159,6 @@ def info(request):
     elif user.is_verified:
         return handle_info_get(request, user)
     else:
-        # handle_get_request()
         return redirect('/home')
 
 
