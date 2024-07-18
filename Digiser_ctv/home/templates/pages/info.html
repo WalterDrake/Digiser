@@ -194,48 +194,52 @@
     </div>
     <div class="info-right">
       <div class="info-tab-pane" id="info-tab-personal">
-        <form>
+        <form method="POST">
+          {% csrf_token %}
+          <input type="hidden" name="form_type" value="personal_info">
           <div class="mb-2 info-input-container">
             <label for="info-ctv-id" class="form-label">Mã CTV</label>
-            <input type="text" class="form-control" id="info-ctv-id" />
+            <input type="text" class="form-control" id="info-ctv-id" value = "{{code_ctv}}" readonly/>
           </div>
           <div class="mb-2 info-input-container">
             <label for="info-name" class="form-label">Tên cá nhân</label>
-            <input type="text" class="form-control" id="info-name" />
+            <input type="text" class="form-control" id="info-name" name="full_name" value = "{{full_name}}" />
           </div>
           <div class="mb-2 info-input-container">
             <label for="info-dateOfBirth" class="form-label">Ngày sinh</label>
-            <input type="date" class="form-control" id="info-dateOfBirth" />
+            <input type="date" class="form-control" id="info-dateOfBirth" pattern="\d{4}-\d{2}-\d{2}" name="birthday" value = "{{birthday|date:'Y-m-d'}}" />
           </div>
           <div class="mb-2 info-input-container">
             <label for="info-tel" class="form-label">Số ĐT</label>
-            <input type="tel" class="form-control" id="info-tel" />
+            <input type="tel" class="form-control" id="info-tel" value = "{{phone_no}}" readonly/>
           </div>
           <div class="mb-2 info-input-container">
             <label for="info-address" class="form-label"
               >Địa chỉ hiện tại</label
             >
-            <input type="text" class="form-control" id="info-address" />
+            <input type="text" class="form-control" id="info-address" name="address" value="{{address}}" />
           </div>
           <div class="mb-2 info-input-container">
             <label for="info-level" class="form-label">Trình độ</label>
-            <input type="text" class="form-control" id="info-level" />
+            <input type="text" class="form-control" id="info-level" name="qualification" value="{{qualification}}" />
           </div>
           <div class="mb-2 info-input-container">
             <label for="info-id" class="form-label">Số CCCD</label>
-            <input type="text" class="form-control" id="info-id" />
+            <input type="text" class="form-control" id="info-id" name="identification" value="{{identification}}" />
           </div>
           <div class="mb-2 info-input-container">
             <label for="info-id-address" class="form-label"
               >Địa chỉ trên CCCD</label
             >
-            <input type="text" class="form-control" id="info-id-address" />
+            <input type="text" class="form-control" id="info-id-address" name="identification_address" value="{{identification_address}}" />
           </div>
           <button type="submit" class="btn btn-primary">Cập nhật</button>
         </form>
       </div>
       <div class="info-tab-pane" id="info-tab-bank">
-        <form>
+        <form method="POST">
+          {% csrf_token %}
+          <input type="hidden" name="form_type" value="bank_info">
           <div class="mb-2 info-input-container">
             <label for="info-bank-number" class="form-label"
               >Số tài khoản</label
@@ -244,21 +248,21 @@
           </div>
           <div class="mb-2 info-input-container">
             <label for="info-bank-name" class="form-label">Ngân hàng</label>
-            <input type="text" class="form-control" id="info-bank-name" />
+            <input type="text" class="form-control" id="info-bank-name" name="bank_name" value="{{bank_name}}" />
           </div>
           <div class="mb-2 info-input-container">
             <label for="info-bank-branch" class="form-label">Chi nhánh</label>
-            <input type="text" class="form-control" id="info-bank-branch" />
+            <input type="text" class="form-control" id="info-bank-branch" name="branch" value="{{branch}}" />
           </div>
           <div class="mb-2 info-input-container">
             <label for="info-bank-owner" class="form-label"
               >Tên chủ tài khoản</label
             >
-            <input type="text" class="form-control" id="info-bank-owner" />
+            <input type="text" class="form-control" id="info-bank-owner" name="owner" value="{{owner}}" />
           </div>
           <div class="mb-2 info-input-container">
             <label for="info-bank-id" class="form-label">Mã ngân hàng</label>
-            <input type="text" class="form-control" id="info-bank-id" />
+            <input type="text" class="form-control" id="info-bank-id" name="code_bank" value="{{code_bank}}" />
           </div>
           <button type="submit" class="btn btn-primary">Cập nhật</button>
         </form>
