@@ -4,11 +4,12 @@ from Digiser_ctv.services import get_all_rows, update_row, count_row
 from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
 from .forms import UploadFileForm
-from authentication.forms import CustomUserCreationForm, CustomUserChangeForm
+from authentication.forms import CustomUserCreationForm, CustomUserInfoChangeForm, CustomUserBankChangeForm
 import pandas as pd
 import os
 from authentication.models import CustomUser
 from django.contrib.auth.models import Group
+from datetime import date
 
 
 @csrf_exempt
@@ -163,13 +164,22 @@ def info(request):
 
 
 def handle_info_post(request, user):
-    form = CustomUserChangeForm(request.POST, instance=request.user)
+    form_type = request.POST.get('form_type')
+    if form_type == 'personal_info':
+        FormClass = CustomUserInfoChangeForm
+    elif form_type == 'bank_info':
+        FormClass = CustomUserBankChangeForm
+    else:
+        return render(request, 'pages/info.html', get_user_context(user))
+
+    form = FormClass(request.POST, instance=request.user)
     if form.is_valid():
+        print(form.cleaned_data)
         user = form.save(commit=False)
         user.save()
         update_user_info(user)
         return render(request, 'pages/info.html', get_user_context(user))
-    return render(request, 'pages/info.html')
+    return render(request, 'pages/info.html', get_user_context(user))
 
 
 def handle_info_get(request, user):
