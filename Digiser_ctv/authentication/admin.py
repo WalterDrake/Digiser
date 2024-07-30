@@ -11,13 +11,13 @@ class CustomUserAdmin(UserAdmin):
     list_filter = ('is_active', 'is_staff', 'is_superuser')
     fieldsets = (
         (None, {'fields': ('username', 'email', 'password', 'phone_no', 'is_verified', 'full_name',
-         'address', 'qualification', 'identification', 'identification_address', 'note', 'code_ctv', 'role', 'row'
+         'address', 'qualification', 'identification', 'identification_address', 'note', 'code', 'role', 'status', 'style', 'updated_user'
                            )}),
         ('Permissions', {'fields': ('is_staff', 'is_active',
          'is_superuser', 'groups', 'user_permissions')}),
         ('Bank', {'fields': ('account_number',
          'bank_name', 'branch', 'owner', 'code_bank')}),
-        ('Dates', {'fields': ('last_login', 'date_joined', 'birthday',)})
+        ('Dates', {'fields': ('last_login', 'date_joined', 'birthday', 'updated_time')})
     )
     add_fieldsets = (
         (None, {
@@ -25,7 +25,7 @@ class CustomUserAdmin(UserAdmin):
             'fields': ('username', 'email', 'phone_no', 'password1', 'password2', 'is_staff', 'is_active',)}
          ),
     )
-    search_fields = ('email',)
+    search_fields = ('email','phone_no',)
     ordering = ('email',)
 
 
