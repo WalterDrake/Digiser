@@ -115,10 +115,6 @@
         border: none;
         margin-top: 60px;
         margin-bottom: 12px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        column-gap: 6px;
       }
 
       #login-btn:hover {
@@ -188,11 +184,6 @@
   </head>
 
   <body>
-    <!-- Overlay and spinner -->
-    <div id="overlay" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0); z-index: 9999;">
-      <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center; color: white;">
-      </div>
-    </div>
     <div class="container-box">
       <div
         class="split"
@@ -207,7 +198,7 @@
         <div class="flex-centered">
           <div id="login-panel">
             <strong class="heading-text">Chào mừng bạn đến DGS!</strong>
-            <form method="POST" onsubmit="waitLogin()">
+            <form method="POST">
               {% csrf_token %}
               <div class="input-box mb-3">
                 <label for="phone_no">Số điện thoại</label>
@@ -263,14 +254,6 @@
         </div>
       </div>
     </div>
-    <script>
-      function waitLogin() {
-        document.getElementById('overlay').style.display = 'block';
-
-        const button = document.getElementById('login-btn');
-        button.innerHTML = 'Logging in <img src="{% static "images/main_loading.gif" %}" alt="Loading..." style="width: 20px; height: 20px;">';
-      }
-    </script>
     <script
       src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
       integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
