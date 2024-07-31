@@ -1,71 +1,10 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
-from Digiser_ctv.services import get_all_rows, update_row, count_row
-from django.views.decorators.csrf import csrf_exempt
-from django.http import JsonResponse
-from .forms import UploadFileForm
-from authentication.forms import CustomUserCreationForm, CustomUserInfoChangeForm, CustomUserBankChangeForm
-import pandas as pd
-import os
+from authentication.forms import CustomUserInfoChangeForm, CustomUserBankChangeForm
+from django.db.models import Max
 from authentication.models import CustomUser
 from django.contrib.auth.models import Group
-from datetime import date
-
-
-@csrf_exempt
-def upload_import(request):
-    if request.method != 'POST':
-        return JsonResponse({'error': 'Invalid request'}, status=400)
-
-    form = UploadFileForm(request.POST, request.FILES)
-    if not form.is_valid():
-        return JsonResponse({'error': 'Form is not valid'}, status=400)
-
-    user_df = pd.read_excel(request.FILES['file'], engine='openpyxl')
-    doc_name = os.getenv("DOC_LIST").split(",")[0]
-
-    for _, user in user_df.iterrows():
-        process_user(user, doc_name)
-
-    return JsonResponse({'message': 'File uploaded successfully'})
-
-
-def process_user(user_data, doc_name):
-    form = CustomUserCreationForm({
-        "username": user_data['username'],
-        "password1": user_data['password1'],
-        "password2": user_data['password2'],
-        "email": user_data['email'],
-        "phone_no": user_data['phone_no']
-    })
-
-    if form.is_valid():
-        user = form.save(commit=False)
-        user.username = form.cleaned_data.get('email').split("@")[0]
-        user.save()
-
-        cnt = count_row(doc_name, 0)
-        user_dict = {
-            "ID": user.code_ctv,
-            "password": form.cleaned_data.get('password2'),
-            "gmail": user.email,
-            "phone": user.phone_no,
-            "birthday": user.birthday,
-            "full name": user.full_name,
-            "address": user.address,
-            "qualification": user.qualification,
-            "identification": user.identification,
-            "identification address": user.identification_address,
-            "note": user.note,
-            "role": user.role,
-            "account number": user.account_number,
-            "bank name": user.bank_name,
-            "branch": user.branch,
-            "owner": user.owner,
-            "code bank": user.code_bank
-        }
-        update_row(doc_name, 0, cnt, user_dict)
-
+import os
 
 @login_required
 def home(request):
@@ -74,35 +13,36 @@ def home(request):
     elif request.method == 'GET':
         return handle_get_request(request)
 
+def generate_code(prefix, latest_number):
+    new_number = latest_number + 1
+    return f"{prefix}{new_number:04d}"
+
+def get_latest_ctv_number():
+    latest_ctv = CustomUser.objects.filter(role='CTV').aggregate(Max('code_ctv'))
+    latest_code = latest_ctv['code_ctv__max']
+    if latest_code:
+        latest_number = int(latest_code.replace("NV", ""))
+    else:
+        latest_number = 0
+    return latest_number
 
 def handle_post_request(request):
     if checkManager(request.user):
         email = request.POST.get('gmail')
-        doc_name = os.getenv("DOC_LIST").split(",")[0]
-        cnt = count_row(doc_name, 0)
         user = get_object_or_404(CustomUser, email=email)
         user.is_verified = True
         user.role = 'CTV'
-        print(cnt)
-        user.code_ctv = generate_code("NV0000", user.row)
+        latest_number = get_latest_ctv_number()
+        user.code_ctv = generate_code("NV", latest_number)
         user.save()
         update_user_info(user)
     return render(request, 'pages/home_manager.html')
 
 
-def generate_code(base_str, number):
-    number_str = str(number)
-    base_length = len(base_str) - len(number_str)
-    result = base_str[:base_length] + number_str
-    return result
-
-
 def handle_get_request(request):
 
     user_id = request.session.get('user_id')
-    user = get_object_or_404(CustomUser, id=user_id)
-
-    doc_name = os.getenv("DOC_LIST").split(",")[0]
+    user = get_object_or_404(CustomUser, username=user_id)
 
     total_salary = statistic_salary(doc_name, user)
     total_project_details = statistic_project(doc_name, user)
@@ -145,6 +85,7 @@ def wiki(request):
 @login_required
 def courses(request):
     return render(request, 'pages/courses.html')
+
 @login_required
 def dashboard(request):
     return render(request, 'pages/dashboard.html')
@@ -184,30 +125,6 @@ def handle_info_post(request, user):
 
 def handle_info_get(request, user):
     return render(request, 'pages/info.html', get_user_context(user))
-
-
-def update_user_info(user):
-    doc_name = os.getenv("DOC_LIST").split(",")[0]
-    user_dict = {
-        "ID": user.code_ctv,
-        "gmail": user.email,
-        "password": user.password,
-        "phone": user.phone_no,
-        "birthday": user.birthday,
-        "full name": user.full_name,
-        "address": user.address,
-        "qualification": user.qualification,
-        "identification": user.identification,
-        "identification address": user.identification_address,
-        "note": user.note,
-        "role": user.role,
-        "account number": user.account_number,
-        "bank name": user.bank_name,
-        "branch": user.branch,
-        "owner": user.owner,
-        "code bank": user.code_bank
-    }
-    update_row(doc_name, 0, user.row, user_dict)
 
 
 def get_user_context(user):
@@ -298,12 +215,12 @@ def process_statistics(raw_data, user_code_ctv, id_key):
     return statistics, total_project_details, total_salary
 
 def statistic_Nhap(doc_name, user):
-    raw_data = get_all_rows(doc_name, 2)
+    raw_data = 0
     return process_statistics(raw_data, user.code_ctv, "ID CTV nhập")
 
 
 def statistic_Check(doc_name, user):
-    raw_data = get_all_rows(doc_name, 3)
+    raw_data = 0
     return process_statistics(raw_data, user.code_ctv, "ID CTV check")
 
 
