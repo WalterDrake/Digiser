@@ -141,6 +141,9 @@ def system(request):
 def wiki(request):
     return render(request, 'pages/wiki.html')
 
+@login_required
+def input(request):
+    return render(request, 'pages/input.html')
 
 @login_required
 def courses(request):
