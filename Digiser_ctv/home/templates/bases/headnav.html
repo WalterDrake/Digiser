@@ -1,45 +1,140 @@
 {% load static %}
-    <link rel="stylesheet" href="{% static 'css/base/headnav.css' %}">
-    <nav class="head-navbar">
-        <div class="search-container">
-            <input type="text" placeholder="Tìm kiếm..." class="search-input">
-            <button type="submit" class='search-button' style='width:90px'><i class='bx bx-search'></i></button>
-        </div>
-        <div class="head-right-icons">
-          <li class="nav-link" style ='padding : 5px'>
-            <a href="" class="nav-link" style='padding-left : 10px;padding-top : 10px'>
-                <i class='bx bxs-bell-ring'></i>
-            </a>
-          </li>  
-            <div class="profile">
-              <li class="nav-item dropdown">
-                <a class="nav-link dropbtn dropdown-toggle" href="#" id="navbarDropdown" role="button" onclick="toggleDropdown(event)">
-                  {{ user.username }}
-                </a>
-                <div class="dropdown-content dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                  <a class="dropdown-item" href="/info">Thông tin</a>
-                  <a class="dropdown-item" href="#">Chỉnh sửa</a>
-                  <div class="dropdown-divider"></div>
-                  <a class="dropdown-item" href="/auth/logout">Đăng xuất</a>
-                </div>
-              </li>
-      
-            </div>
-        </div>
-    </nav>
-    <script>
-      function toggleDropdown(event) {
-          event.preventDefault();
-          const dropdown = event.target.closest('.dropdown');
-          dropdown.classList.toggle('show');
-      }
-      window.onclick = function(event) {
-          if (!event.target.matches('.dropbtn')) {
-            const dropdowns = document.querySelectorAll('.dropdown');
-            dropdowns.forEach(dropdown => {
-              dropdown.classList.remove('show');
-            });
-          }
-      }
-    </script>
-    
+<style>
+  .head-navbar {
+    display: flex;
+    column-gap: 24px;
+    padding: 10px 0px;
+    justify-content: center;
+    position: sticky;
+    top: 0;
+    background-color: white; /* Tạo background màu trắng */
+    z-index: 1000; /* Giữ thanh nav luôn trên mọi content */
+  }
+  
+  .search-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    column-gap: 12px;
+    width: 100%;
+  }
+  
+  .profile-container {
+    display: flex;
+    align-items: center;
+    justify-content: end;
+    border-radius: 6px;
+    column-gap: 8px;
+    position: relative; /* Giữ vị trí so với container */
+  }
+  
+  .search-container button {
+    padding: 10px 24px;
+    display: flex;
+    align-items: center;
+    column-gap: 6px;
+    background-color: var(--button-color);
+    color: white;
+    border: none; 
+    border-radius: 4px; 
+    box-shadow: 0 0 10px rgba(69, 69, 233, 0.3); 
+    transition: var(--tran-03);
+  }
+  
+  .search-container button:hover {
+    box-shadow: 0 0 14px rgba(69, 69, 233, 0.5);
+  }
+  
+  .search-container input {
+    padding-top: 10px;
+    padding-bottom: 10px;
+  }
+  
+  .noti {
+    font-size: 26px;
+    margin-right: 12px;
+  }
+  
+  .profile-img {
+    border-radius: 50%;
+    width: 45px;
+    height: 45px;
+    object-fit: cover;  
+  }
+  
+  .profile-btn {
+    font-weight: 400;
+    font-size: large;
+    color: var(--text-color);
+    border: none !important;
+    background-color: transparent;
+  }
+  
+  .profile-btn:focus,
+  .profile-btn:hover {
+    border: 1px solid var(--text-color);
+  }
+  
+  .dropdown-menu {
+    z-index: 100;
+    position: absolute;
+    right: 0;
+    top: 100%;
+    background-color: white;
+    border-radius: 4px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .dropdown-container ul > li > a {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    color: var(--text-color);
+    padding: 10px 20px;
+  }
+
+  .dropdown-container ul > li > a:hover {
+    background-color: rgba(69, 69, 233, 0.1);
+  }
+</style>
+
+<nav class="head-navbar">
+  <div class="search-container">
+    <input type="text" class="form-control" placeholder="Tìm kiếm..." />
+    <button type="submit" class="btn btn-primary">
+      Search <i class="bx bx-search-alt"></i>
+    </button>
+  </div>
+  <div class="profile-container">
+    <i class="bx bxs-bell noti"></i>
+    <img src="{% static "images/pallas.jpg" %}" alt="Profile"
+    class="profile-img" />
+    <div class="dropdown dropdown-container">
+      <button
+        class="btn dropdown-toggle profile-btn"
+        type="button"
+        data-bs-toggle="dropdown"
+        aria-expanded="false"
+      >
+        {{ user.username }}
+      </button>
+      <ul class="dropdown-menu">
+        <li>
+          <a class="dropdown-item" href="{% url 'info' %}"
+            >Thông tin <i class="bx bx-info-circle"></i
+          ></a>
+        </li>
+        <li>
+          <a class="dropdown-item" href="#"
+            >Chỉnh sửa <i class="bx bxs-edit"></i
+          ></a>
+        </li>
+        <li>
+          <a class="dropdown-item" href="{% url 'logout' %}"
+            >Đăng xuất <i class="bx bx-exit"></i
+          ></a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>

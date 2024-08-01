@@ -1,131 +1,296 @@
-{% extends 'bases/base.html' %}
-{% block content %}
-{% load static %}
+{% extends 'bases/base.html' %} {% block content %} {% load static %}
 
-<link rel="stylesheet" href="{% static 'css/home/info.css' %}">
-<div class'hm-body'>
-    <div class="hm-container">
-        <div class="hm-header">
-            <strong>Cài đặt tài khoản</strong>
-            <span class="date-range">Thời gian thực hiện: <input type="hm-text" value="20/04/24 - 03/05/24"
-                    readonly></span>
-        </div>
-        <table>
-            <thead>
-                <tr>
-                    <th>Tài khoản</th>
-                    <th>Số tiền chưa nhận</th>
-                    <th>Điểm đánh giá CTV</th>
-                </tr>
-            </thead>
-        </table>
+<style>
+  .info-container {
+    margin-top: 20px;
+  }
+
+  .info-heading {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .info-heading button {
+    margin-left: 3px;
+    border: 1px solid var(--text-color);
+    padding: 6px;
+    font-size: 13px;
+    border-radius: 4px;
+    background-color: transparent;
+    display: inline-flex;
+    column-gap: 4px;
+    align-items: center;
+  }
+
+  #ctv-status-text {
+    color: green;
+  }
+
+  .info-split-container {
+    display: flex;
+    width: 100%;
+  }
+
+  .info-left {
+    padding: 10px 20px 10px 20px;
+    border-right: 1px solid var(--text-color);
+    display: flex;
+    flex-direction: column;
+    row-gap: 14px;
+    align-items: center;
+    height: 100vh;
+  }
+
+  .info-right {
+    padding: 10px 20px 10px 20px;
+  }
+
+  .info-img-container {
+    position: relative;
+    display: inline-block;
+    width: 150px;
+    height: 150px;
+  }
+
+  .info-img {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+  }
+
+  .camera-icon {
+    position: absolute;
+    bottom: 5px;
+    right: 5px;
+    background-color: white;
+    border-radius: 50%;
+    padding: 5px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+    border: none;
+    cursor: pointer;
+  }
+
+  .camera-icon:hover {
+    background-color: #f0ebeb;
+  }
+
+  .camera-icon i {
+    width: 20px;
+    height: 20px;
+    font-size: medium;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .verification-status-text {
+    font-size: small;
+    color: green;
+    display: flex;
+    align-items: center;
+  }
+
+  .info-tab-container {
+    display: flex;
+    flex-direction: column;
+    row-gap: 4px;
+  }
+
+  .info-tab-btn {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: transparent;
+    border: none;
+    min-width: 165px;
+    font-size: 14px;
+    transition: var(--tran-03);
+  }
+
+  .info-tab-btn i {
+    display: none;
+    transition: var(--tran-03);
+  }
+
+  .info-tab-btn.active {
+    font-weight: 600;
+  }
+
+  .info-tab-btn.active i {
+    display: block;
+    color: royalblue;
+  }
+
+  .info-tab-pane {
+    display: none;
+  }
+
+  .info-tab-pane.active {
+    display: flex;
+  }
+
+  .info-input-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    column-gap: 12px;
+    min-width: 500px;
+  }
+
+  .info-input-container > .form-control {
+    padding: 4px 8px 4px 8px;
+    border-radius: 8px;
+    width: 300px;
+  }
+
+  .form-label {
+    text-wrap: nowrap;
+    margin: 0px;
+  }
+
+  .info-tab-pane > form > button[type="submit"] {
+    margin-top: 6px;
+  }
+</style>
+
+<div class="info-container">
+  <p class="info-heading">
+    <strong>Cài đặt tài khoản</strong>
+    <strong
+      >Thời gian thực hiện
+      <button>20/04/24 - 03/05/24 <i class="bx bx-calendar"></i></button
+    ></strong>
+  </p>
+</div>
+<div>
+  <p>
+    Bạn đang ở trạng thái CTV <strong id="ctv-status-text">TỐT</strong>. Chú ý:
+    Nếu CTV sai nhập liệu và bị đánh giá sai sót >5% thì sẽ bị đóng tài khoản
+  </p>
+  <div class="info-split-container">
+    <div class="info-left">
+      <strong>Thông tin cơ bản</strong>
+      <div class="info-img-container">
+        <img src="{% static "images/pallas.jpg" %}" alt="Profile Image"
+        class="info-img" />
+        <button class="camera-icon">
+          <i class="bx bx-camera"></i>
+        </button>
+      </div>
+      <span class="verification-status-text"
+        ><i class="bx bxs-badge-check"></i> Tài khoản đã được xác thực</span
+      >
+      <div class="info-tab-container">
+        <button class="info-tab-btn" data-target="#info-tab-personal">
+          Thông tin cá nhân <i class="bx bxs-chevron-right"></i>
+        </button>
+        <button class="info-tab-btn" data-target="#info-tab-bank">
+          Thông tin ngân hàng <i class="bx bxs-chevron-right"></i>
+        </button>
+      </div>
     </div>
-    <div class="ctv">
-        <strong>Bạn đang ở trạng thái CTV <span class="ctv-status">TỐT</span>. Chú ý: Nếu CTV sai nhập liệu và bị đánh
-            giá sai sót >5% thì sẽ bị đóng tài khoản</strong>
+    <div class="info-right">
+      <div class="info-tab-pane" id="info-tab-personal">
+        <form method="POST">
+          {% csrf_token %}
+          <input type="hidden" name="form_type" value="personal_info">
+          <div class="mb-2 info-input-container">
+            <label for="info-ctv-id" class="form-label">Mã CTV</label>
+            <input type="text" class="form-control" id="info-ctv-id" value = "{{code_ctv}}" readonly/>
+          </div>
+          <div class="mb-2 info-input-container">
+            <label for="info-name" class="form-label">Tên cá nhân</label>
+            <input type="text" class="form-control" id="info-name" name="full_name" value = "{{full_name}}" />
+          </div>
+          <div class="mb-2 info-input-container">
+            <label for="info-dateOfBirth" class="form-label">Ngày sinh</label>
+            <input type="date" class="form-control" id="info-dateOfBirth" pattern="\d{4}-\d{2}-\d{2}" name="birthday" value = "{{birthday|date:'Y-m-d'}}" />
+          </div>
+          <div class="mb-2 info-input-container">
+            <label for="info-tel" class="form-label">Số ĐT</label>
+            <input type="tel" class="form-control" id="info-tel" value = "{{phone_no}}" readonly/>
+          </div>
+          <div class="mb-2 info-input-container">
+            <label for="info-address" class="form-label"
+              >Địa chỉ hiện tại</label
+            >
+            <input type="text" class="form-control" id="info-address" name="address" value="{{address}}" />
+          </div>
+          <div class="mb-2 info-input-container">
+            <label for="info-level" class="form-label">Trình độ</label>
+            <input type="text" class="form-control" id="info-level" name="qualification" value="{{qualification}}" />
+          </div>
+          <div class="mb-2 info-input-container">
+            <label for="info-id" class="form-label">Số CCCD</label>
+            <input type="text" class="form-control" id="info-id" name="identification" value="{{identification}}" />
+          </div>
+          <div class="mb-2 info-input-container">
+            <label for="info-id-address" class="form-label"
+              >Địa chỉ trên CCCD</label
+            >
+            <input type="text" class="form-control" id="info-id-address" name="identification_address" value="{{identification_address}}" />
+          </div>
+          <button type="submit" class="btn btn-primary">Cập nhật</button>
+        </form>
+      </div>
+      <div class="info-tab-pane" id="info-tab-bank">
+        <form method="POST">
+          {% csrf_token %}
+          <input type="hidden" name="form_type" value="bank_info">
+          <div class="mb-2 info-input-container">
+            <label for="info-bank-number" class="form-label"
+              >Số tài khoản</label
+            >
+            <input type="text" class="form-control" id="info-bank-number" />
+          </div>
+          <div class="mb-2 info-input-container">
+            <label for="info-bank-name" class="form-label">Ngân hàng</label>
+            <input type="text" class="form-control" id="info-bank-name" name="bank_name" value="{{bank_name}}" />
+          </div>
+          <div class="mb-2 info-input-container">
+            <label for="info-bank-branch" class="form-label">Chi nhánh</label>
+            <input type="text" class="form-control" id="info-bank-branch" name="branch" value="{{branch}}" />
+          </div>
+          <div class="mb-2 info-input-container">
+            <label for="info-bank-owner" class="form-label"
+              >Tên chủ tài khoản</label
+            >
+            <input type="text" class="form-control" id="info-bank-owner" name="owner" value="{{owner}}" />
+          </div>
+          <div class="mb-2 info-input-container">
+            <label for="info-bank-id" class="form-label">Mã ngân hàng</label>
+            <input type="text" class="form-control" id="info-bank-id" name="code_bank" value="{{code_bank}}" />
+          </div>
+          <button type="submit" class="btn btn-primary">Cập nhật</button>
+        </form>
+      </div>
     </div>
-    <div class="middle-container">
-        <div class="middle-sidebar">
-            <strong>Thông tin cơ bản</strong>
-            <img src="https://yt3.ggpht.com/a/AATXAJzsHPys1EoSnxprcPapwsQsb1gr97KzKfnRBw=s900-c-k-c0xffffffff-no-rj-mo"
-                alt="Profile">
-            <div class="verified">Tài khoản đã xác thực</div>
-            <nav>
-                <ul>
-                    <li class="tab-link active" data-tab="tab-1">Thông tin cá nhân</li>
-                    <li class="tab-link" data-tab="tab-2">Thông tin ngân hàng</li>
-                </ul>
-            </nav>
-        </div>
-        <div class="middle-content">
-            <div id="tab-1" class="tab-content active">
-                <form method="POST">
-                    {% csrf_token %}
-                    <div class="info">
-                        <label for="ma-ctv">Mã CTV:</label>
-                        <input type="text" id="ma-ctv" name="ma-ctv" value={{ code_ctv }}>
-                    </div>
-                    <div class="info">
-                        <label for="ten-ca-nhan">Tên cá nhân:</label>
-                        <input type="text" id="ten-ca-nhan" name="full_name" value={{ full_name }}>
-                    </div>
-                    <div class="info">
-                        <label for="ngay-sinh">Ngày sinh:</label>
-                        <input type="date" id="ngay-sinh" name="birthday" value={{ birthday }}>
-                    </div>
-                    <div class="info">
-                        <label for="so-dt">Số ĐT:</label>
-                        <input type="tel" id="so-dt" name="phone_no" value={{ phone_no }}>
-                    </div>
-                    <div class="info">
-                        <label for="dia-chi-hien-tai">Địa chỉ hiện tại:</label>
-                        <input type="text" id="dia-chi-hien-tai" name="address" value={{ address }}>
-                    </div>
-                    <div class="info">
-                        <label for="trinh-do">Trình độ:</label>
-                        <input type="text" id="trinh-do" name="qualification" value={{ qualification }}>
-                    </div>
-                    <div class="info">
-                        <label for="so-cccd">Số CCCD:</label>
-                        <input type="text" id="so-cccd" name="identification" value={{ identification }}>
-                    </div>
-                    <div class="info">
-                        <label for="dia-chi-cccd">Địa chỉ trên CCCD:</label>
-                        <input type="text" id="dia-chi-cccd" name="identification_address" value={{ identification_address }}>
-                    </div>
-                    <div class="info">
-                        <label for="ghi-chu-ctv" class="notelabel">Ghi chú CTV:</label>
-                        <textarea id="ghi-chu-ctv" name="note" class="notes" value={{ note }}></textarea>
-                    </div>
-                    <div class="info">
-                        <button type="submit">Save</button>
-                    </div>
-                </form>
-            </div>
-            <div id="tab-2" class="tab-content">
-                <!-- Add bank information fields here -->
-                <form method="POST">
-                    {% csrf_token %}
-                    <div class="info">
-                        <label for="so-tai-khoan">Số tài khoản:</label>
-                        <input type="text" id="so-tai-khoan" name="account_number" value={{ account_number }}>
-                    </div>
-                    <div class="info">
-                        <label for="ngan-hang">Ngân hàng:</label>
-                        <input type="text" id="ngan-hang" name="bank_name" value={{ bank_name }}>
-                    </div>
-                    <div class="info">
-                        <label for="chi-nhanh">Chi nhánh:</label>
-                        <input type="text" id="chi-nhanh" name="branch" value={{ branch }}>
-                    </div>
-                    <div class="info">
-                        <label for="ten-chu-tai-khoan">Tên chủ tài khoản:</label>
-                        <input type="text" id="ten-chu-tai-khoan" name="owner" value={{ owner }}>
-                    </div>
-                    <div class="info">
-                        <label for="ma-ngan-hang">Mã ngân hàng:</label>
-                        <input type="text" id="ma-ngan-hang" name="code_bank" value={{ code_bank }}>
-                    </div>
-                    <div class="info">
-                        <button type="submit">Save</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
+  </div>
 </div>
 <script>
-    document.querySelectorAll('.tab-link').forEach(link => {
-        link.addEventListener('click', function () {
-            document.querySelectorAll('.tab-link').forEach(link => {
-                link.classList.remove('active');
-            });
-            document.querySelectorAll('.tab-content').forEach(content => {
-                content.classList.remove('active');
-            });
-            document.getElementById(this.dataset.tab).classList.add('active');
-            this.classList.add('active');
-        });
+  document.addEventListener("DOMContentLoaded", () => {
+    const buttons = document.querySelectorAll(".info-tab-btn");
+    const tabs = document.querySelectorAll(".info-tab-pane");
+
+    // Set the first button and tab as active
+    buttons[0].classList.add("active");
+    tabs[0].classList.add("active");
+
+    buttons.forEach((button) => {
+      button.addEventListener("click", () => {
+        buttons.forEach((btn) => btn.classList.remove("active"));
+        tabs.forEach((tab) => tab.classList.remove("active"));
+
+        button.classList.add("active");
+        const target = document.querySelector(
+          button.getAttribute("data-target")
+        );
+        target.classList.add("active");
+      });
     });
+  });
 </script>
 {% endblock %}

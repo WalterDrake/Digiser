@@ -28,7 +28,7 @@ class CustomUser(AbstractUser):
     branch = models.CharField(_('branch'), max_length=20, blank=True)
     owner = models.CharField(_('owner'), max_length=20, blank=True)
     code_bank = models.CharField(_('code bank'), max_length=10, blank=True)
-    code_ctv = models.CharField(_('code ctv'), max_length=10, blank=True)
+    code_ctv = models.CharField(_('code ctv'), max_length=10, blank=True, unique=True)
     role = models.CharField(_('role'), max_length=10, blank=True)
     row = models.IntegerField(_('row'), blank=True, null=True)
     USERNAME_FIELD = 'phone_no'

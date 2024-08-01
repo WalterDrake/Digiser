@@ -11,59 +11,65 @@ body {
   display: flex;
   background-color: #f3f8f9;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  width: 100%;
-  height: 100%;
+  width: 88%;
+  height: 82%;
   border-radius: 16px;
 }
 
-.split {
-  height: 100%;
-  position: fixed;
+.split{
   width: 50%;
-  z-index: 1;
-  top: 0;
-  overflow-x: hidden;
+  padding: 8px;
 }
 
-.left {
-  left: 0;
-  background-color: #e7edee;
+.big-logo {
+  width: 320px;
+  height: 320px;
 }
 
-.right {
-  right: 0;
-  background-color: #f3f8f9;
+.heading-text {
+  font-size: x-large;
+  margin-bottom: 40px;
 }
 
+.flex-centered {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  justify-content: center;
+  align-items: center;
+}
 
+#register-panel {
+  display: flex;
+  flex-direction: column;
+}
 
-.welcome {
-  margin-top: 10%;
+#register-panel strong {
   text-align: center;
-  font-size: 24px;
-  font-weight: bold;
-  margin-bottom: 20px;
 }
 
-.container {
-  width: 38%;
-  margin: 50px auto;
-  margin-top: 0%;
-  padding: 20px;
-  font-family: "Inter", sans-serif;
+#register-panel p {
+  font-size: small;
+  text-align: center;
 }
 
-.input-group {
-  margin-bottom: 20px;
+
+.input-box label {
+  font-size: 14px;
+  font-weight: 700;
 }
 
-.input-group label {
-  display: block;
-  font-weight: bold;
-  margin-bottom: 5px;
+.input-check {
+  display: flex;
+  column-gap: 8px;
+  margin-top: 6px;
 }
 
-.input-group input {
+.input-check label{
+  font-size: small;  
+}
+
+.input-box input {
   font-size: 14px;
   border-radius: 8px;
   width: 100%;
@@ -71,12 +77,7 @@ body {
   border: 2px solid #0071BC;
 }
 
-.btn-container {
-  display: flex;
-  justify-content: center; /* Căn giữa theo chiều ngang */
-}
-
-.btn {
+#register-btn {
   font-size: small;
   font-weight: 600;
   letter-spacing: 1px;
@@ -86,20 +87,27 @@ body {
   color: white;
   background-color: #0071BC;
   border: none;
-  margin-top: 20px;
+  margin-top: 40px;
   margin-bottom: 12px;
 }
 
-.btn:hover {
-  background-color: #0056b3;
+#register-btn:hover {
+  transition: cubic-bezier(0.075, 0.82, 0.165, 1);
+  background-color: #065a93;
 }
 
-.custom-link {
-  padding-top: 5px;
-  color: inherit;
-  text-decoration: none;
-  display: block;
-  text-align: center;
+.password-container {
+  position: relative;
+  width: 100%;
+}
+
+.eye-icon {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  user-select: none;
 }
 
 .custom-link a {

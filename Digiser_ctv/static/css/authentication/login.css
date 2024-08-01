@@ -44,8 +44,13 @@ body {
   flex-direction: column;
 }
 
-#login-panel span {
+#login-panel p {
   font-size: small;
+  text-align: center;
+}
+
+#login-panel strong {
+  text-align: center;
 }
 
 
@@ -54,13 +59,13 @@ body {
   font-weight: 700;
 }
 
-.input-radio {
+.input-check {
   display: flex;
   column-gap: 8px;
   margin-top: 6px;
 }
 
-.input-radio label{
+.input-check label{
   font-size: small;  
 }
 
@@ -95,8 +100,6 @@ body {
   position: relative;
   width: 100%;
 }
-
-.split
 
 .eye-icon {
   position: absolute;
