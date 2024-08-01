@@ -23,47 +23,47 @@
 <table>
     <thead>
         <tr>
-            <th>ID</th>
-            <th>Dự Án</th>
-            <th>Loại</th>
-            <th>Gói dữ liệu</th>
-            <th>Số phiếu</th>
-            <th>Đã nhập</th>
-            <th>Chưa nhập</th>
-            <th>Số trường lỗi</th>
-            <th>Trạng thái</th>
+            <th></th>
+            <th>Project</th>
+            <th>Category</th>
+            <th>Package</th>
+            <th>Votes</th>
+            <th>Acceptances</th>
+            <th>Rejections</th>
+            <th>Erroring Fields</th>
+            <th>Status</th>
         </tr>
     </thead>
     <tbody>
         {% for category, category_data in data.items %}
-        {% if category_data.Du_An %}
-        {% for du_an, du_an_data in category_data.Du_An.items %}
-        <tr>
-            <td></td>
-            <td>{{ du_an }}</td>
-            <td>{{ category }}</td>
-            <td></td>
-            <td>{{ du_an_data.total_votes }}</td>
-            <td>{{ du_an_data.total_acceptances }}</td>
-            <td>{{ du_an_data.total_rejections }}</td>
-            <td>{{ du_an_data.total_error }}</td>
-            <td></td>
-        </tr>
-        {% for magoiCV, magoiCV_data in du_an_data.magoiCV.items %}
-        <tr>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td>{{ magoiCV }}</td>
-            <td>{{ magoiCV_data.votes.0 }}</td>
-            <td>{{ magoiCV_data.acceptances.0 }}</td>
-            <td>{{ magoiCV_data.rejections.0 }}</td>
-            <td>{{ magoiCV_data.errors.0 }}</td>
-            <td>{{ magoiCV_data.status.0 }}</td>
-        </tr>
-        {% endfor %}
-        {% endfor %}
-        {% endif %}
+            {% if category_data.Project %}
+                {% for project, project_data in category_data.Project.items %}
+                    <tr>
+                        <td></td>
+                        <td>{{ project }}</td>
+                        <td>{{ category }}</td>
+                        <td></td>
+                        <td>{{ project_data.total_votes }}</td>
+                        <td>{{ project_data.total_acceptances }}</td>
+                        <td>{{ project_data.total_rejections }}</td>
+                        <td>{{ project_data.total_erroring_fields }}</td>
+                        <td></td>
+                    </tr>
+                    {% for package, package_details in project_data.packages.items %}
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td>{{ package }}</td>
+                            <td>{{ package_details.votes }}</td>
+                            <td>{{ package_details.acceptances }}</td>
+                            <td>{{ package_details.rejections }}</td>
+                            <td>{{ package_details.erroring_fields }}</td>
+                            <td>{{ package_details.status }}</td>
+                        </tr>
+                    {% endfor %}
+                {% endfor %}
+            {% endif %}
         {% endfor %}
     </tbody>
 </table>
