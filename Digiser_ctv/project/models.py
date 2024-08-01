@@ -40,15 +40,15 @@ class Package(models.Model):
         ('Naming, Offline, A4', 'Naming, Offline, A4')
     )
     type_package = models.CharField(
-        _('type package'), max_length=30, choices=_TYPE, blank=True)
-    note_admin = models.CharField(_('note admin'), max_length=50, blank=True)
-    total_votes = models.IntegerField(_('total votes'), blank=True)
-    total_real_votes = models.IntegerField(_('total real votes'), blank=True)
-    total_fields = models.IntegerField(_('total fields'), blank=True)
+        _('type package'), max_length=30, choices=_TYPE, blank=True, null=True)
+    note_admin = models.CharField(_('note admin'), max_length=50, blank=True, null=True)
+    total_votes = models.IntegerField(_('total votes'), blank=True, null=True)
+    total_real_votes = models.IntegerField(_('total real votes'), blank=True, null=True)
+    total_fields = models.IntegerField(_('total fields'), blank=True, null=True)
     total_merging_votes = models.IntegerField(
-        _('total merging votes'), blank=True)
+        _('total merging votes'), blank=True, null=True)
     total_erroring_fields = models.IntegerField(
-        _('total error fields'), blank=True)
+        _('total error fields'), blank=True, null=True)
     processing_check = models.IntegerField(_('processing check'), default=0)
 
     def __str__(self):
@@ -58,32 +58,29 @@ class Package(models.Model):
 class Package_detail(models.Model):
     package_name = models.ForeignKey(Package, on_delete=models.CASCADE)
     inserter = models.ForeignKey(
-        CustomUser, on_delete=models.CASCADE,related_name='inserter', blank=True)
+        CustomUser, on_delete=models.CASCADE, related_name='package_detail_inserter', blank=True, null=True)
     checker = models.ForeignKey(
-        CustomUser, on_delete=models.CASCADE,related_name='checker', blank=True)
+        CustomUser, on_delete=models.CASCADE, related_name='package_detail_checker', blank=True, null=True)
     sup_name = models.ForeignKey(
-        CustomUser, on_delete=models.CASCADE,related_name='support_name', blank=True)
+        CustomUser, on_delete=models.CASCADE, related_name='support_name', blank=True, null=True)
     insert_status = models.CharField(
-        _('insert status'), max_length=10, blank=True)
+        _('insert status'), max_length=30, blank=True, null=True)
     check_status = models.CharField(
-        _('check status'), max_length=10, blank=True)
+        _('check status'), max_length=30, blank=True, null=True)
     insert_url = models.CharField(
-        _('package url'), max_length=100, blank=True)
+        _('package url'), max_length=100, blank=True, null=True)
     check_url = models.CharField(
-        _('package url'), max_length=100, blank=True)
+        _('package url'), max_length=100, blank=True, null=True)
     start_insert = models.DateField(_('started insert'), blank=True, null=True)
     dead_insert = models.DateField(_('deaded insert'), blank=True, null=True)
     finish_insert = models.DateField(
         _('finished insert'), blank=True, null=True)
-    status_insert = models.CharField(
-        _('status insert'), max_length=50, blank=True)
     start_check = models.DateField(_('started check'), blank=True, null=True)
     dead_check = models.DateField(_('deaded check'), blank=True, null=True)
     finish_check = models.DateField(_('finished check'), blank=True, null=True)
-    status_check = models.DateField(_('status check'), blank=True, null=True)
-    note_check = models.CharField(_('note check'), max_length=50, blank=True)
-    note_sup = models.CharField(_('note sup'), max_length=50, blank=True)
-    log_sup = models.DateTimeField(_('log sup'), blank=True)
+    note_check = models.CharField(_('note check'), max_length=50, blank=True, null=True)
+    note_sup = models.CharField(_('note sup'), max_length=50, blank=True, null=True)
+    log_sup = models.DateTimeField(_('log sup'), blank=True, null=True)
 
     def __str__(self):
-        return self.package_name
+        return self.package_name.package_name
