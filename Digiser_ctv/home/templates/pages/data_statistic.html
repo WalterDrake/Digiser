@@ -1,71 +1,207 @@
 {% extends 'bases/base.html' %}
 {% block content %}
-<h1>Thống kê dữ liệu</h1>
 
 <style>
-    table {
-        width: 100%;
-        border-collapse: collapse;
-    }
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed;
+}
+.table th {
+    background-color: #cecece;
+    color: black;  
+    font-weight: 500;
+}
+.table th, .table td {
+    border: 1px solid #c7c7c7;
+    padding: 8px;
+    overflow: hidden; 
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-size: small;
+    vertical-align: middle;
 
-    th,
-    td {
-        border: 1px solid black;
-        padding: 8px;
-        text-align: left;
-    }
+}
 
-    th {
-        background-color: #f2f2f2;
-    }
+.table .toggle {
+    font-weight: bold;
+    cursor: pointer;
+    vertical-align: middle;
+    line-height: 1.25;
+}
+
+.table tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+.table tr:hover {
+    background-color: #ddd;
+}
+
+.badge {
+    padding: 5px 10px;
+    border-radius: 5px;
+    display: inline-block;
+    width: 100px;
+    text-align: center;
+}
+
+.bg-primary {
+    background-color: #007bff;
+    color: white;
+}
+
+.bg-warning {
+    background-color: #ffc107;
+    color: black;
+}
+
+.bg-danger {
+    background-color: #dc3545;
+    color: white;
+}
+
+.bg-success {
+    background-color: #28a745;
+    color: white;
+}
+
+.bg-default {
+    background-color: #6c757d;
+    color: white;
+}
+
+.table th:nth-child(1),
+.table td:nth-child(1) {
+    width: 5%;
+}
+
+.table th:nth-child(2),
+.table td:nth-child(2) {
+    width: 20%;
+}
+
+.table th:nth-child(3),
+.table td:nth-child(3) {
+    width: 10%;
+}
+
+.table th:nth-child(4),
+.table td:nth-child(4) {
+    width: 10%;
+}
+
+.table th:nth-child(5),
+.table td:nth-child(5) {
+    width: 15%;
+}
+
+.table th:nth-child(6),
+.table td:nth-child(6) {
+    width: 10%;
+}
+
+.table th:nth-child(7),
+.table td:nth-child(7) {
+    width: 10%;
+}
+
+.table th:nth-child(8),
+.table td:nth-child(8) {
+    width: 10%;
+}
+
+.table th:nth-child(9),
+.table td:nth-child(9) {
+    width: 5%;
+}
+
+.table th:nth-child(10),
+.table td:nth-child(10) {
+    width: 5%;
+}
+
+.toggle-icon {
+    margin-right: 10px;
+    font-size: 1.5em;
+   
+    vertical-align: middle; 
+
+}
 </style>
 
-<table>
-    <thead>
+<table class="table table-hover table-bordered">
+    <thead class="thead-light">
         <tr>
             <th>ID</th>
-            <th>Dự Án</th>
-            <th>Loại</th>
-            <th>Gói dữ liệu</th>
+            <th>Tên dữ liệu</th>
             <th>Số phiếu</th>
-            <th>Đã nhập</th>
-            <th>Chưa nhập</th>
-            <th>Số trường lỗi</th>
+            <th>Số trường</th>
+            <th>Thực hiện</th>
             <th>Trạng thái</th>
+            <th>Ngày nhận</th>
+            <th>Deadline</th>
+            <th>Số lỗi</th>
+            <th>Loại file</th>
         </tr>
     </thead>
     <tbody>
-        {% for category, category_data in data.items %}
-        {% if category_data.Du_An %}
-        {% for du_an, du_an_data in category_data.Du_An.items %}
-        <tr>
-            <td></td>
-            <td>{{ du_an }}</td>
-            <td>{{ category }}</td>
-            <td></td>
-            <td>{{ du_an_data.total_votes }}</td>
-            <td>{{ du_an_data.total_acceptances }}</td>
-            <td>{{ du_an_data.total_rejections }}</td>
-            <td>{{ du_an_data.total_error }}</td>
-            <td></td>
+        {% for project in projects %}
+        <tr class="parent" data-id="{{ forloop.counter }}">
+            <td>{{ forloop.counter }}</td>
+            <td colspan="9" class="toggle">
+                <i class='bx bx-chevron-right toggle-icon'></i>{{ project.name }}
+            </td>
         </tr>
-        {% for magoiCV, magoiCV_data in du_an_data.magoiCV.items %}
-        <tr>
+        {% for record in project.datarecord_set %}
+        <tr class="child" data-parent="{{ forloop.parentloop.counter }}" style="display: none;">
             <td></td>
-            <td></td>
-            <td></td>
-            <td>{{ magoiCV }}</td>
-            <td>{{ magoiCV_data.votes.0 }}</td>
-            <td>{{ magoiCV_data.acceptances.0 }}</td>
-            <td>{{ magoiCV_data.rejections.0 }}</td>
-            <td>{{ magoiCV_data.errors.0 }}</td>
-            <td>{{ magoiCV_data.status.0 }}</td>
+            <td>{{ record.ten_du_lieu }}</td>
+            <td>{{ record.tong_phieu }}</td>
+            <td>{{ record.tong_truong }}</td>
+            <td>{{ record.thuc_hien }}</td>
+            <td>
+                <span class="badge 
+                    {% if record.trang_thai == 'Đã nhập' %} bg-primary 
+                    {% elif record.trang_thai == 'Chưa check' %} bg-warning 
+                    {% elif record.trang_thai == 'Báo lỗi' %} bg-danger 
+                    {% elif record.trang_thai == 'Hoàn thành' %} bg-success 
+                    {% else %} bg-default 
+                    {% endif %}">
+                    {{ record.trang_thai }}
+                </span>
+            </td>
+            <td>{{ record.ngay_nhan }}</td>
+            <td>{{ record.deadline }}</td>
+            <td>{{ record.so_loi }}</td>
+            <td>{{ record.loai_file }}</td>
         </tr>
         {% endfor %}
-        {% endfor %}
-        {% endif %}
         {% endfor %}
     </tbody>
 </table>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    var toggles = document.querySelectorAll('.toggle');
+    toggles.forEach(function(toggle) {
+        toggle.addEventListener('click', function() {
+            var parentId = this.parentElement.getAttribute('data-id');
+            var children = document.querySelectorAll('.child[data-parent="' + parentId + '"]');
+            var icon = this.querySelector('.toggle-icon');
+            children.forEach(function(child) {
+                if (child.style.display === 'none') {
+                    child.style.display = 'table-row';
+                    icon.className = 'bx bx-chevron-down toggle-icon';
+                } else {
+                    child.style.display = 'none';
+                    icon.className = 'bx bx-chevron-right toggle-icon';
+                }
+            });
+            this.classList.toggle('expanded');
+        });
+    });
+});
+</script>
 
 {% endblock %}

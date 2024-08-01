@@ -87,3 +87,6 @@ def LOGIN(request):
 def LOGOUT(request):
     logout(request)
     return redirect('/home')
+
+
+
