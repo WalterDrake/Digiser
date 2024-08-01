@@ -24,7 +24,6 @@ def REGISTER(request):
 def create_user(form):
     user = form.save(commit=False)
     user.username = form.cleaned_data.get('email').split("@")[0]
-    user.row = count_row(os.getenv("DOC_LIST").split(",")[0], 0)
     user.save()
     return user
 
