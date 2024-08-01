@@ -55,7 +55,7 @@ table tbody td {
 
 .middle-container {
   display: flex;
-  height: 100vh;
+  height: 80vh;
   font-size: 13px;
 }
 .middle-sidebar {
@@ -137,7 +137,6 @@ table tbody td {
   border: 1px solid #ccc;
   padding: 5px;
   background-color: #d1d1d1;
-  margin-left: 153px;
 }
 .ctv {
   font-size: 13px;
@@ -156,4 +155,37 @@ table tbody td {
 
 .tab-content.active {
   display: block;
+}
+.info {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+  align-items: flex-start;
+}
+
+.info label {
+  width: 150px; /* Adjust the width according to your requirement */
+  font-weight: bold;
+}
+
+.info input, .info textarea {
+  flex: 1;
+  height: 20px;
+  max-width: 200px;
+  border-radius: 20px;
+  border: 1px solid #ccc;
+  padding: 5px;
+  background-color: #d1d1d1;
+}
+
+.notes {
+  width: 200px;
+  height: 200px;
+  border-radius: 20px;
+  border: 1px solid #ccc;
+  padding: 5px;
+  background-color: #d1d1d1;
+}
+.notelabel{
+  
 }
