@@ -109,3 +109,73 @@ body {
   cursor: pointer;
   user-select: none;
 }
+
+.custom-link a {
+  color: #0D6EFD;
+  text-decoration: underline;
+}
+
+.welcometext {
+  font-weight: unset;
+  font-size: x-large;
+  font-family: "Inter", sans-serif;
+}
+
+.big-logo {
+  width: 320px;
+  height: 320px;
+}
+
+.heading-text {
+  font-size: x-large;
+  margin-bottom: 60px;
+}
+
+.flex-centered {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  justify-content: center;
+  align-items: center;
+}
+
+.input-box label {
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.input-radio {
+  display: flex;
+  column-gap: 8px;
+  margin-top: 6px;
+}
+
+.input-radio label {
+  font-size: small;
+}
+
+.input-box input {
+  font-size: 14px;
+  border-radius: 8px;
+  width: 100%;
+  padding: 10px 30px 10px 8px;
+  border: 2px solid #0071BC;
+}
+#regis-btn {
+  font-size: small;
+  font-weight: 600;
+  letter-spacing: 1px;
+  padding: 10px 6px 10px 6px;
+  border-radius: 8px;
+  width: 100%;
+  color: white;
+  background-color: #0071BC;
+  border: none;
+  margin-top: 60px;
+  margin-bottom: 12px;
+}
+
+#regis-btn:hover {
+  transition: cubic-bezier(0.075, 0.82, 0.165, 1);
+  background-color: #065a93;
+}
