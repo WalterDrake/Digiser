@@ -10,31 +10,30 @@ class CustomUser(AbstractUser):
     phone_no = models.CharField(
         _('phone number'), max_length=15, unique=True, primary_key=True)
     is_verified = models.BooleanField(_('is verified'), default=False)
-    full_name = models.CharField(_('full name'), blank=True, max_length=20)
+    full_name = models.CharField(_('full name'), blank=True, max_length=20, null=True)
     birthday = models.DateField(_('birthday'), blank=True, null=True)
-    address = models.CharField(_('address'), blank=True, max_length=30)
+    address = models.CharField(_('address'), blank=True, max_length=30, null=True)
     qualification = models.CharField(
-        _('qualification'), blank=True, max_length=20)
+        _('qualification'), blank=True, max_length=20, null=True)
     identification = models.CharField(
-        _('identification'), blank=True, max_length=15)
+        _('identification'), blank=True, max_length=15, null=True)
     identification_address = models.CharField(
-        _('identification address'), blank=True, max_length=30)
-    note = models.CharField(_('note'), blank=True, max_length=50)
+        _('identification address'), blank=True, max_length=30, null=True)
+    note = models.CharField(_('note'), blank=True, max_length=50, null=True)
     account_number = models.CharField(
-        _('account number'), blank=True, max_length=20)
-    bank_name = models.CharField(_('bank name'), max_length=20, blank=True)
-    branch = models.CharField(_('branch'), max_length=20, blank=True)
-    owner = models.CharField(_('owner'), max_length=20, blank=True)
-    code_bank = models.CharField(_('code bank'), max_length=10, blank=True)
+        _('account number'), blank=True, max_length=20, null=True)
+    bank_name = models.CharField(_('bank name'), max_length=20, blank=True, null=True)
+    branch = models.CharField(_('branch'), max_length=20, blank=True, null=True)
+    owner = models.CharField(_('owner'), max_length=20, blank=True, null=True)
+    code_bank = models.CharField(_('code bank'), max_length=10, blank=True, null=True)
     code = models.CharField(
-        _('code'), max_length=10, blank=True, unique=True)
-    role = models.CharField(_('role'), max_length=10, blank=True)
+        _('code'), max_length=10, blank=True, unique=True, null=True)
     _STATUSES = (
         ("AC", "Working"),
         ("NA", "Quit"),
     )
     status = models.CharField(
-        _('status'), max_length=2, choices=_STATUSES, blank=True)
+        _('status'), max_length=2, choices=_STATUSES, blank=True, null=True)
     _SKILLS = (
         ('Civil, Online, A3', 'Civil, Online, A3'),
         ('Civil, Offline, A3', 'Civil, Offline, A3'),
@@ -54,15 +53,15 @@ class CustomUser(AbstractUser):
         ('Naming, Offline, A4', 'Naming, Offline, A4')
     )
     skill = models.CharField(_('skill'), max_length=30,
-                             choices=_SKILLS, blank=True)
-    _STYLE = (
+                             choices=_SKILLS, blank=True, null=True)
+    _ROLE = (
         ("AD", "Admin"),
         ("CTV", "CTV"),
         ("MGR", "Manager"),
         ("SP", "Support"),
     )
-    style = models.CharField(
-        _('style'), max_length=3, choices=_STYLE, blank=True)
+    role = models.CharField(
+        _('role'), max_length=3, choices=_ROLE, blank=True, null=True)
     updated_time = models.DateTimeField(
         _('update time'), blank=True, null=True)
     updated_user = models.ForeignKey(
