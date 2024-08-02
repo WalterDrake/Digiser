@@ -5,7 +5,7 @@ from django.db.models import Max
 from authentication.models import CustomUser
 from django.contrib.auth.models import Group
 from .models import Salary
-from project.models import Package
+import re
 import os
 from django.db.models import Sum
 
@@ -117,7 +117,6 @@ def handle_info_post(request, user):
         print(form.cleaned_data)
         user = form.save(commit=False)
         user.save()
-        # update_user_info(user)
         return render(request, 'pages/info.html', get_user_context(user))
     return render(request, 'pages/info.html', get_user_context(user))
 
@@ -166,6 +165,7 @@ def process_statistics(user, key):
     stats = {"Project": {}}
     for datum in data:
         project_name = (datum.project_name.project_name).split("_")[0]
+        project_name = re.sub(r'(?<=[a-z])(?=[A-Z])', ' ', project_name)
         package_name = datum.package_name.package_name
 
         if project_name not in stats["Project"]:
@@ -210,8 +210,8 @@ def statistic_Check(user):
 
 def show_data_statistic(request):
     data = data_statistics(request)
-    print(data)
-    return render(request, 'pages/data_statistic.html', data)
+    context = {'data': data}
+    return render(request, 'pages/data_statistic.html', context)
 
 
 def statistic_project(user):
