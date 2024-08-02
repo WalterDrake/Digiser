@@ -23,47 +23,47 @@
 <table>
     <thead>
         <tr>
-            <th></th>
-            <th>Project</th>
-            <th>Category</th>
-            <th>Package</th>
-            <th>Votes</th>
-            <th>Acceptances</th>
-            <th>Rejections</th>
-            <th>Erroring Fields</th>
-            <th>Status</th>
+            <th>ID</th>
+            <th>Du An</th>
+            <th>Loai</th>
+            <th>Goi Du lieu</th>
+            <th>So phieu</th>
+            <th>Da nhap</th>
+            <th>Chua nhap</th>
+            <th>So truong loi</th>
+            <th>Trang thai</th>
         </tr>
     </thead>
     <tbody>
         {% for category, category_data in data.items %}
-            {% if category_data.Project %}
-                {% for project, project_data in category_data.Project.items %}
-                    <tr>
-                        <td></td>
-                        <td>{{ project }}</td>
-                        <td>{{ category }}</td>
-                        <td></td>
-                        <td>{{ project_data.total_votes }}</td>
-                        <td>{{ project_data.total_acceptances }}</td>
-                        <td>{{ project_data.total_rejections }}</td>
-                        <td>{{ project_data.total_erroring_fields }}</td>
-                        <td></td>
-                    </tr>
-                    {% for package, package_details in project_data.packages.items %}
-                        <tr>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td>{{ package }}</td>
-                            <td>{{ package_details.votes }}</td>
-                            <td>{{ package_details.acceptances }}</td>
-                            <td>{{ package_details.rejections }}</td>
-                            <td>{{ package_details.erroring_fields }}</td>
-                            <td>{{ package_details.status }}</td>
-                        </tr>
-                    {% endfor %}
-                {% endfor %}
-            {% endif %}
+        {% if category_data.Project %}
+        {% for project, project_data in category_data.Project.items %}
+        <tr>
+            <td></td>
+            <td>{{ project }}</td>
+            <td>{{ category }}</td>
+            <td></td>
+            <td>{{ project_data.total_votes }}</td>
+            <td>{{ project_data.total_acceptances }}</td>
+            <td>{{ project_data.total_rejections }}</td>
+            <td>{{ project_data.total_erroring_fields }}</td>
+            <td></td>
+        </tr>
+        {% for package, package_details in project_data.packages.items %}
+        <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td>{{ package }}</td>
+            <td>{{ package_details.votes }}</td>
+            <td>{{ package_details.acceptances }}</td>
+            <td>{{ package_details.rejections }}</td>
+            <td>{{ package_details.erroring_fields }}</td>
+            <td>{{ package_details.status|join:", " }}</td>
+        </tr>
+        {% endfor %}
+        {% endfor %}
+        {% endif %}
         {% endfor %}
     </tbody>
 </table>
