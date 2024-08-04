@@ -18,12 +18,6 @@ document.addEventListener("DOMContentLoaded", (event) => {
   document.getElementById("system").style.display = "block";
 });
 
-document
-  .getElementById("detail-standard-project")
-  .addEventListener("click", function () {
-    window.location.href = "{% url 'data_statistic' %}";
-  });
-
 // Function to format tooltip content
 function tooltipItemCallback(context) {
   const total = context.dataset.data.reduce((acc, curr) => acc + curr, 0);

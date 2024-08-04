@@ -114,7 +114,6 @@ def handle_info_post(request, user):
 
     form = FormClass(request.POST, instance=request.user)
     if form.is_valid():
-        print(form.cleaned_data)
         user = form.save(commit=False)
         user.save()
         return render(request, 'pages/info.html', get_user_context(user))
@@ -126,7 +125,6 @@ def handle_info_get(request, user):
 
 
 def get_user_context(user):
-    print(user)
     return {
         "code": user.code,
         "phone_no": user.phone_no,

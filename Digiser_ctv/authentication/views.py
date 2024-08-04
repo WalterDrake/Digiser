@@ -9,11 +9,11 @@ from .forms import CustomUserCreationForm
 @csrf_protect
 def REGISTER(request):
     if request.method != "POST":
-        return render(request, 'register.html', {'form': CustomUserCreationForm()})
+        return render(request, 'auth/register.html', {'form': CustomUserCreationForm()})
 
     form = CustomUserCreationForm(request.POST)
     if not form.is_valid():
-        return render(request, 'register.html', {'form': form})
+        return render(request, 'auth/register.html', {'form': form})
 
     user = create_user(form)
     add_user_to_group(user, 'CTV')
@@ -41,7 +41,7 @@ def login_and_redirect(request, user):
 @csrf_protect
 def LOGIN(request):
     if request.method != 'POST':
-        return render(request, 'login.html')
+        return render(request, 'auth/login.html')
 
     phone_no = request.POST.get('phone_no')
     password = request.POST.get('password')
@@ -53,7 +53,7 @@ def LOGIN(request):
         return redirect('home')
     else:
         messages.error(request, 'Invalid phone number or password.')
-        return render(request, 'login.html')
+        return render(request, 'auth/login.html')
 
 
 def LOGOUT(request):
