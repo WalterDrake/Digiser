@@ -63,8 +63,14 @@ class Package_detail(models.Model):
         CustomUser, on_delete=models.CASCADE, related_name='package_detail_checker', blank=True, null=True)
     sup_name = models.ForeignKey(
         CustomUser, on_delete=models.CASCADE, related_name='support_name', blank=True, null=True)
+    _INSERT_STATUS = (
+        ('Completed', "Completed"),
+        ('Typing', "Typing"),
+        ('Error', "Error"),
+
+    )
     insert_status = models.CharField(
-        _('insert status'), max_length=30, blank=True, null=True)
+        _('insert status'),choices=_INSERT_STATUS, max_length=12, blank=True, null=True)
     check_status = models.CharField(
         _('check status'), max_length=30, blank=True, null=True)
     insert_url = models.CharField(
