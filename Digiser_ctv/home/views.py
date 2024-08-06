@@ -8,6 +8,8 @@ from .models import Salary
 import re
 import os
 from django.db.models import Sum
+from django.core.paginator import Paginator
+
 
 @login_required
 def home(request):
@@ -51,10 +53,13 @@ def handle_get_request(request):
         'total_project_details' : total_project_details,
         'total_salary' : total_salary
     }
+    data = statistic_human(request)
     if checkManager(user):
-        data = statistic_human()
-        return render(request, 'pages/home_manager.html', context)
+        data = statistic_human(request)
+        return render(request, 'pages/home_manager.html', {'users': data})
     return render(request, 'pages/dashboard.html', context)
+    # return render(request, 'pages/home_manager.html', {'users': data})
+
 
 
 @login_required
@@ -221,15 +226,14 @@ def statistic_salary(user):
     return total_salary or 0
 
 
-def statistic_human():
-    group_id = Group.objects.get(name='CTV')
-    users = CustomUser.objects.filter(groups=group_id)
-    user_dict = {}
+def statistic_human(request):
+    record = request.GET.get('record', 10)
+    try:
+        record = int(record)
+        if record < 1:
+            record = 10
+    except ValueError:
+        record = 10
+    users_query = CustomUser.objects.all()[:record]
+    return users_query
 
-    for user in users:
-        if user.email not in user_dict:
-            user_dict[user.email] = []
-        user_dict[user.email].extend([user.code, user.role, user.is_verified, user.note])
-
-    user_list = [{email: attributes} for email, attributes in user_dict.items()]
-    return user_list
