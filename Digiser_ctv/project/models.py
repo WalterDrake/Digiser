@@ -84,3 +84,8 @@ class Package_detail(models.Model):
 
     def __str__(self):
         return self.package_name.package_name
+    
+# class Document(models.Model):
+#     package_name = models.ForeignKey(Package, on_delete=models.CASCADE)
+#     document_path = models.CharField(_('document path'), max_length=50, blank=True, null=True)
+    
