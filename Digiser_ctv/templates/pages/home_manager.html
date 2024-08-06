@@ -1,9 +1,41 @@
 {% extends 'bases/base.html' %}
 {% block content %}
-<form method="post">
-    {% csrf_token %}
-    <label for="gmail">Gmail:</label>
-    <input type="email" id="gmail" name="gmail" required>
-    <button type="submit">Verify</button>
-</form>
+<style>
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+    th, td {
+        border: 1px solid #ddd;
+        padding: 8px;
+    }
+    th {
+        background-color: #f2f2f2;
+    }
+</style>
+<h1>Danh sach nhan vien</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Ho va ten</th>
+                <th>Chuc vu</th>
+                <th>Trang thai</th>
+                <th>Thao tac</th>
+                <th>Danh gia</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for user in users %}
+            <tr>
+                <td>{{ user.id }}</td>
+                <td>{{ user.full_name }}</td>
+                <td>{{ user.role }}</td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
 {% endblock %}
