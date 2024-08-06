@@ -44,6 +44,23 @@ class Salary(models.Model):
         Package, on_delete=models.CASCADE, related_name='salary_processing_check', blank=True, null=True)
     status = models.OneToOneField(
         Package_detail, on_delete=models.CASCADE, blank=True, null=True)
+    
     def __str__(self):
         return self.user.phone_no
 
+class NotificationBase(models.Model):
+    date = models.DateTimeField(_('date'), blank=True, null=True)
+    title = models.CharField(_('title'),max_length=50, blank=True, null=True)
+    message = models.TextField(_('message'),max_length=100, blank=True, null=True)
+
+    class Meta:
+        abstract = True
+
+    def __str__(self):
+        return self.title
+
+class UserNotification(NotificationBase):
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+
+class SystemNotification(NotificationBase):
+    pass
