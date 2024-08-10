@@ -92,9 +92,7 @@ def courses(request):
 @login_required
 def dashboard(request):
     return render(request, 'pages/dashboard.html')
-@login_required
-def input(request):
-    return render(request, 'pages/input.html')
+
 
 @login_required
 def info(request):
