@@ -43,9 +43,9 @@ def LOGIN(request):
     if request.method != 'POST':
         return render(request, 'auth/login.html')
 
-    phone_no = request.POST.get('phone_no')
+    code = request.POST.get('code')
     password = request.POST.get('password')
-    user = authenticate(request, username=phone_no, password=password)
+    user = authenticate(request, code=code, password=password)
 
     if user is not None:
         request.session['user_id'] = user.username
