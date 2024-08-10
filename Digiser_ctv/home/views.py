@@ -322,6 +322,11 @@ def show_data_statistic(request):
     projects = [
         {
             'name': 'DA050524_TKGoCong_KH2010_01',
+            'tong_phieu': 80,
+            'thuc_hien': 'Nguyễn Văn A',
+            'trang_thai': 'Đã thanh toán',
+            'ngay_nhan': '20/04/24',
+            'deadline': '03/05/24',
             'datarecord_set': [
                 {
                     'ten_du_lieu': 'Dữ liệu 01',
@@ -329,6 +334,17 @@ def show_data_statistic(request):
                     'tong_truong': 18,
                     'thuc_hien': 'Nguyễn Văn A',
                     'trang_thai': 'Đã nhập',
+                    'ngay_nhan': '20/04/24',
+                    'deadline': '03/05/24',
+                    'so_loi': 0,
+                    'loai_file': 'KS',
+                },
+                {
+                    'ten_du_lieu': 'Dữ liệu 02',
+                    'tong_phieu': 10,
+                    'tong_truong': 18,
+                    'thuc_hien': 'Nguyễn Văn A',
+                    'trang_thai': 'Chưa check',
                     'ngay_nhan': '20/04/24',
                     'deadline': '03/05/24',
                     'so_loi': 0,
@@ -415,6 +431,11 @@ def show_data_statistic(request):
         },
         {
             'name': 'DA050524_TKGoCong_KH2010_01',
+            'tong_phieu': 20,
+            'thuc_hien': 'Trần Thanh B',
+            'trang_thai': 'Đang thực hiện',
+            'ngay_nhan': '25/04/24',
+            'deadline': '15/05/24',
             'datarecord_set': [
                 {
                     'ten_du_lieu': 'Dữ liệu 09',
@@ -431,6 +452,11 @@ def show_data_statistic(request):
         },
         {
             'name': 'DA050524_TKGoCong_KH2010_01',
+            'tong_phieu': 30,
+            'thuc_hien': 'Nguyễn Hoàng C',
+            'trang_thai': 'Đang thực hiện',
+            'ngay_nhan': '30/04/24',
+            'deadline': '20/05/24',
             'datarecord_set': [
                 {
                     'ten_du_lieu': 'Dữ liệu 10',
@@ -462,6 +488,7 @@ def show_data_statistic(request):
         'projects': projects
     }
     return render(request, 'pages/data_statistic.html', context)
+
 def statistic_project(doc_name,user):
     total_project_details = statistic_Nhap(doc_name, user)[1] + statistic_Check(doc_name,user)[1]
     return total_project_details
@@ -484,3 +511,28 @@ def statistic_human():
 
     user_list = [{email: attributes} for email, attributes in user_dict.items()]
     return user_list
+
+from .forms import FilterForm
+from .models import Project
+
+def project_list(request):
+    form = FilterForm(request.GET or None)
+    projects = Project.objects.all()
+
+    if form.is_valid():
+        if form.cleaned_data['status']:
+            projects = projects.filter(status__in=form.cleaned_data['status'])
+        if form.cleaned_data['document_type']:
+            projects = projects.filter(document_type__in=form.cleaned_data['document_type'])
+        if form.cleaned_data['region']:
+            projects = projects.filter(region__in=form.cleaned_data['region'])
+        if form.cleaned_data['received_date']:
+            projects = projects.filter(received_date=form.cleaned_data['received_date'])
+        if form.cleaned_data['deadline']:
+            projects = projects.filter(deadline=form.cleaned_data['deadline'])
+
+    context = {
+        'form': form,
+        'projects': projects,
+    }
+    return render(request, 'datastatis.html', context)

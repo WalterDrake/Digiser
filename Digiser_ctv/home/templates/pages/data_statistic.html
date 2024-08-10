@@ -2,25 +2,101 @@
 {% block content %}
 
 <style>
+
+.modal-header {
+    background-color: #007bff;
+    color: white;
+    border-bottom: none;
+}
+
+.modal-header .close {
+    color: white;
+}
+
+.modal-title {
+    font-size: 1.5em;
+}
+
+.modal-body {
+    padding: 20px;
+}
+
+.modal-content {
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.modal-footer {
+    border-top: none;
+    padding: 10px 20px;
+    text-align: right;
+}
+
+.btn-primary {
+    background-color: #007bff;
+    border: none;
+}
+
+.btn-primary:hover {
+    background-color: #0056b3;
+}
+
+.filter-section {
+    margin-bottom: 20px;
+}
+
+.filter-section label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.filter-section .btn-group {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+
+.filter-section .btn-group .btn {
+    flex: 1;
+    margin: 0 5px;
+}
+
+.filter-section .date-picker {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.filter-section .date-picker input {
+    flex: 1;
+    margin-right: 10px;
+}
+
+.filter-section .date-picker label {
+    margin-right: 10px;
+}
+
 .table {
     width: 100%;
     border-collapse: collapse;
     table-layout: fixed;
 }
+
 .table th {
     background-color: #cecece;
-    color: black;  
+    color: black;
     font-weight: 500;
 }
+
 .table th, .table td {
     border: 1px solid #c7c7c7;
     padding: 8px;
-    overflow: hidden; 
+    overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
     font-size: small;
     vertical-align: middle;
-
 }
 
 .table .toggle {
@@ -124,13 +200,69 @@
 .toggle-icon {
     margin-right: 10px;
     font-size: 1.5em;
-   
-    vertical-align: middle; 
-
+    vertical-align: middle;
 }
 </style>
 
-<table class="table table-hover table-bordered">
+<!-- Button trigger modal -->
+<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#filterModal">
+    <i class='bx bx-filter-alt'></i> Lọc
+  </button>
+  
+  <!-- Modal -->
+  <div class="modal fade" id="filterModal" tabindex="-1" aria-labelledby="filterModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="filterModalLabel">Lọc dữ liệu</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <!-- Filter form content -->
+          <form method="get">
+            <div class="filter-section">
+              <label>Trạng thái</label>
+              <div class="btn-group" role="group" aria-label="Trạng thái">
+                <button type="button" class="btn btn-outline-primary">Hoàn thành</button>
+                <button type="button" class="btn btn-outline-warning">Chưa nhập</button>
+                <button type="button" class="btn btn-outline-danger">Báo lỗi</button>
+              </div>
+            </div>
+            <div class="filter-section">
+              <label>Loại tài liệu</label>
+              <div class="btn-group" role="group" aria-label="Loại tài liệu">
+                <button type="button" class="btn btn-outline-secondary">CMC</button>
+                <button type="button" class="btn btn-outline-secondary">HN</button>
+                <button type="button" class="btn btn-outline-secondary">KT</button>
+                <button type="button" class="btn btn-outline-secondary">KS</button>
+                <button type="button" class="btn btn-outline-secondary">KH</button>
+              </div>
+            </div>
+            <div class="filter-section">
+              <label>Khu vực</label>
+              <div class="btn-group" role="group" aria-label="Khu vực">
+                <button type="button" class="btn btn-outline-secondary">Tp Hồ Chí Minh</button>
+                <button type="button" class="btn btn-outline-secondary">Tiền Giang</button>
+                <button type="button" class="btn btn-outline-secondary">Bến Tre</button>
+              </div>
+            </div>
+            <div class="filter-section date-picker">
+              <label for="received_date">Thời gian nhận</label>
+              <input type="date" class="form-control" id="received_date" name="received_date">
+            </div>
+            <div class="filter-section date-picker">
+              <label for="deadline">Deadline</label>
+              <input type="date" class="form-control" id="deadline" name="deadline">
+            </div>
+            <button type="submit" class="btn btn-primary">Lọc</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  
+<table class="table table-hover table-bordered mt-3">
     <thead class="thead-light">
         <tr>
             <th>ID</th>
@@ -147,11 +279,29 @@
     </thead>
     <tbody>
         {% for project in projects %}
-        <tr class="parent" data-id="{{ forloop.counter }}">
+        <tr class="parent toggle" data-id="{{ forloop.counter }}">
             <td>{{ forloop.counter }}</td>
-            <td colspan="9" class="toggle">
+            <td colspan="1">
                 <i class='bx bx-chevron-right toggle-icon'></i>{{ project.name }}
             </td>
+            <td>{{ project.tong_phieu }}</td>
+            <td></td>
+            <td>{{ project.thuc_hien }}</td>
+            <td>
+                <span class="badge 
+                    {% if project.trang_thai == 'Đã nhập' %} bg-primary 
+                    {% elif project.trang_thai == 'Chưa check' %} bg-warning 
+                    {% elif project.trang_thai == 'Báo lỗi' %} bg-danger 
+                    {% elif project.trang_thai == 'Hoàn thành' %} bg-success 
+                    {% else %} bg-default 
+                    {% endif %}">
+                    {{ project.trang_thai }}
+                </span>
+            </td>
+            <td>{{ project.ngay_nhan }}</td>
+            <td>{{ project.deadline }}</td>
+            <td></td>
+            <td></td>
         </tr>
         {% for record in project.datarecord_set %}
         <tr class="child" data-parent="{{ forloop.parentloop.counter }}" style="display: none;">
@@ -186,7 +336,7 @@ document.addEventListener('DOMContentLoaded', function() {
     var toggles = document.querySelectorAll('.toggle');
     toggles.forEach(function(toggle) {
         toggle.addEventListener('click', function() {
-            var parentId = this.parentElement.getAttribute('data-id');
+            var parentId = this.getAttribute('data-id');
             var children = document.querySelectorAll('.child[data-parent="' + parentId + '"]');
             var icon = this.querySelector('.toggle-icon');
             children.forEach(function(child) {
