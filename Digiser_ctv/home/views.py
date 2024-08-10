@@ -1,14 +1,13 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
 from authentication.forms import CustomUserInfoChangeForm, CustomUserBankChangeForm
-from django.db.models import Max
+from django.db.models import Max, Sum
 from authentication.models import CustomUser
 from django.contrib.auth.models import Group
 from .models import Salary
 import re
 import os
-from django.db.models import Sum
-from django.core.paginator import Paginator
+from project.models.model1 import Package, Package_detail
 
 
 @login_required
@@ -23,7 +22,7 @@ def generate_code(prefix, latest_number):
     return f"{prefix}{new_number:04d}"
 
 def get_latest_ctv_number():
-    latest_ctv = CustomUser.objects.filter(role='CTV').aggregate(Max('code'))
+    latest_ctv = CustomUser.objects.filter(role='EMPLOYEEE').aggregate(Max('code'))
     latest_code = latest_ctv['code__max']
     if latest_code:
         latest_number = int(latest_code.replace("NV", ""))
@@ -36,7 +35,7 @@ def handle_post_request(request):
         email = request.POST.get('gmail')
         user = get_object_or_404(CustomUser, email=email)
         user.is_verified = True
-        user.role = 'CTV'
+        user.role = 'EMPLOYEE'
         latest_number = get_latest_ctv_number()
         user.code = generate_code("NV", latest_number)
         user.save()
@@ -58,7 +57,6 @@ def handle_get_request(request):
         data = statistic_human(request)
         return render(request, 'pages/home_manager.html', {'users': data})
     return render(request, 'pages/dashboard.html', context)
-    # return render(request, 'pages/home_manager.html', {'users': data})
 
 
 
@@ -151,7 +149,7 @@ def get_user_context(user):
 
 
 def checkManager(user):
-    return user.groups.filter(name='Manager').exists()
+    return user.groups.filter(name='ADMIN').exists()
 
 
 def data_statistics(request):
@@ -169,48 +167,49 @@ def process_statistics(user, key):
     data = Salary.objects.filter(user=user,type=key)
     stats = {"Project": {}}
     for datum in data:
-        project_name = (datum.project_name.project_name).split("_")[0]
-        project_name = re.sub(r'(?<=[a-z])(?=[A-Z])', ' ', project_name)
+        project_name_trim = (datum.project_name.project_name).split("_")[0]
+        project_name_trim = re.sub(r'(?<=[a-z])(?=[A-Z])', ' ', project_name_trim)
         package_name = datum.package_name.package_name
 
-        if project_name not in stats["Project"]:
-            stats["Project"][project_name] = {
+        if project_name_trim not in stats["Project"]:
+            stats["Project"][project_name_trim] = {
                 'packages': {},
                 'total_votes': 0,
-                'total_acceptances': 0,
-                'total_rejections': 0,
+                'total_entered_votes': 0,
+                'total_not_entered_votes': 0,
                 'total_erroring_fields': 0,
             }
 
-        if package_name not in stats["Project"][project_name]['packages']:
-            stats["Project"][project_name]['packages'][package_name] = {
+        if package_name not in stats["Project"][project_name_trim]['packages']:
+            stats["Project"][project_name_trim]['packages'][package_name] = {
                 'votes': 0,
-                'acceptances': 0,
-                'rejections': 0,
+                'entered_votes': 0,
+                'not_entered_votes': 0,
                 'erroring_fields': 0,
                 'status': set()
             }
+        package_info = Package.objects.get(project__project_name=datum.project_name.project_name, package_name=package_name)
+        package_details_info = Package_detail.objects.get(package_name=package_name)
+        stats["Project"][project_name_trim]['packages'][package_name]['votes'] += package_info.total_votes or 0
+        stats["Project"][project_name_trim]['packages'][package_name]['entered_votes'] += package_info.entered_votes or 0
+        stats["Project"][project_name_trim]['packages'][package_name]['not_entered_votes'] += package_info.not_entered_votes or 0
+        stats["Project"][project_name_trim]['packages'][package_name]['erroring_fields'] += package_info.total_erroring_fields or 0
+        stats["Project"][project_name_trim]['packages'][package_name]['status'].add(package_details_info.insert_status if datum.type == "Insert" else package_details_info.check_status )
 
-        stats["Project"][project_name]['packages'][package_name]['votes'] += datum.total_votes or 0
-        stats["Project"][project_name]['packages'][package_name]['acceptances'] += datum.total_fields or 0
-        stats["Project"][project_name]['packages'][package_name]['rejections'] += datum.total_merging_votes or 0
-        stats["Project"][project_name]['packages'][package_name]['erroring_fields'] += datum.total_erroring_fields or 0
-        stats["Project"][project_name]['packages'][package_name]['status'].add(datum.status.insert_status if datum.type == "I" else datum.status.check_status )
-
-        stats["Project"][project_name]['total_votes'] += datum.total_votes or 0
-        stats["Project"][project_name]['total_acceptances'] += datum.total_fields or 0
-        stats["Project"][project_name]['total_rejections'] += datum.total_merging_votes or 0
-        stats["Project"][project_name]['total_erroring_fields'] += datum.total_erroring_fields or 0
+        stats["Project"][project_name_trim]['total_votes'] += package_info.total_votes or 0
+        stats["Project"][project_name_trim]['total_entered_votes'] += package_info.entered_votes or 0
+        stats["Project"][project_name_trim]['total_not_entered_votes'] += package_info.not_entered_votes or 0
+        stats["Project"][project_name_trim]['total_erroring_fields'] += package_info.total_erroring_fields or 0
         
     return stats
 
 
 def statistic_Insert(user):
-    return process_statistics(user, "I")
+    return process_statistics(user, "Insert")
 
 
 def statistic_Check(user):
-    return process_statistics(user, "C")
+    return process_statistics(user, "Check")
 
 
 def show_data_statistic(request):
@@ -225,6 +224,7 @@ def statistic_project(user):
 
 def statistic_salary(user):
     total_salary = Salary.objects.filter(user=user).aggregate(Sum('final_salary'))['final_salary__sum']
+    total_salary = f"{total_salary:,}"
     return total_salary or 0
 
 
