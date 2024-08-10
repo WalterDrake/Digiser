@@ -46,16 +46,15 @@
             <form method="POST">
               {% csrf_token %}
               <div class="input-box mb-3">
-                <label for="phone_no">Số điện thoại</label>
+                <label for="code">Mã cộng tác viên</label>
                 <input
-                  type="tel"
-                  id="phone_no"
-                  name="phone_no"
+                  type="text"
+                  id="code"
+                  name="code"
                   maxlength="10"
-                  pattern="[0-9]*"
+                  pattern="[A-Za-z0-9]*"
                   required
-                  onkeypress="validateNumberInput(event)"
-                  placeholder="Nhập số điện thoại"
+                  placeholder="Nhập mã cộng tác viên"
                 />
               </div>
 
