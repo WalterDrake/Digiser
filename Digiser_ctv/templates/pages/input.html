@@ -1,0 +1,503 @@
+{% extends 'bases/base.html' %}
+{% block content %}
+<style>
+    .input-group {
+        position: relative;
+        margin: 20px 0;
+    }
+
+    .input-group label {
+        position: absolute;
+        top: 50%;
+        left: 5px;
+        transform: translateY(-50%);
+        font-size: 16px;
+        color: #fff;
+        padding: 0 5px;
+        pointer-events: none;
+        transition: .5s;
+    }
+
+    .input-group input {
+        width: 100%;
+        height: 40px;
+        font-size: 16px;
+        color: #fff;
+        padding: 0 10px;
+        background: transparent;
+        border: 1.2px solid #fff;
+        outline: none;
+        border-radius: 5px;
+    }
+
+    .input-group input:focus~label,
+    .input-group input:valid~label {
+        top: 0;
+        font-size: 12px;
+        background: #7d2ae8;
+    }
+
+    .input-container {
+        display: flex;
+        flex-direction: row;
+        /* Thay đổi layout mặc định sang dạng ngang */
+        width: 100%;
+        height: 88vh;
+        background-color: #f8f9fa;
+    }
+
+    .left-side {
+        width: 60%;
+    }
+
+    .right-side {
+        max-width: 40%;
+        min-width: 40%;
+        background-color: #ffffff;
+        padding-top: 0px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        display: flex;
+        flex-direction: column;
+    }
+
+
+    .form-container {
+        overflow: auto;
+        flex: 1;
+        margin-bottom: 20px;
+        padding-top: inherit;
+        max-height: 65vh;
+    }
+
+    .form {
+        display: grid;
+        width: 100%;
+        grid-gap: 10px;
+        padding-bottom: 15px;
+    }
+
+    .form-group {
+        display: flex;
+        flex-direction: column;
+        position: relative;
+    }
+
+    .form-group textarea {
+        height: 80px;
+    }
+
+    .form-group label {
+        font-weight: bold;
+        margin-bottom: 5px;
+        font-size: 12px;
+        position: absolute;
+        top: 50%;
+        left: 10px;
+        transform: translateY(-50%);
+        transition: .5s;
+        color: #a5a5a5;
+    }
+
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+        width: 100%;
+        padding: 6px;
+        border-radius: 5px;
+        border: 1px solid #ccc;
+        box-sizing: border-box;
+        font-size: 14px;
+        outline: none;
+        background: transparent;
+        transition: .5s;
+        resize: none;
+    }
+
+    .form-group.textarea-active label {
+        top: 0;
+        font-size: 10px;
+        background: #fff;
+        padding: 0 5px;
+    }
+
+    .form-group input:focus~label,
+    .form-group input:valid~label,
+    .form-group select:focus~label,
+    .form-group select:valid~label,
+    .form-group textarea:focus~label,
+    .form-group textarea:valid~label {
+        top: 0;
+        font-size: 10px;
+        background: #fff;
+        padding: 0 5px;
+        color: black;
+    }
+
+    .specialLabel {
+        font-weight: bold;
+        margin-bottom: 5px;
+        font-size: 12px;
+        position: absolute;
+        top: 0%;
+        left: 10px;
+        transform: translateY(-50%);
+        color: #555;
+        transition: .5s;
+    }
+
+    .two-columns {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .three-columns {
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+    .four-columns {
+        grid-template-columns: repeat(4, 1fr);
+    }
+
+    .full-width {
+        grid-column: span 4;
+    }
+
+    .buttons {
+        display: flex;
+        justify-content: flex-end;
+        gap: 10px;
+        margin-top: 20px;
+    }
+
+    .buttons button {
+        width: 28%;
+        padding: 10px 0;
+        border: none;
+        border-radius: 5px;
+        color: white;
+        font-weight: bold;
+        cursor: pointer;
+    }
+
+    .buttons .review {
+        background-color: #4CAF50;
+    }
+
+    .buttons .save {
+        background-color: #007BFF;
+    }
+
+    .buttons button:hover {
+        opacity: 0.9;
+    }
+
+    .input-form-border {
+        border-radius: 5px;
+        border: 1px solid #ccc;
+        box-sizing: border-box;
+        padding: 10px;
+    }
+
+    .tab-selection-item {
+        width: 60%;
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .item-tab {
+        border-radius: 5px;
+        color: black;
+        border: 1px solid #ccc;
+        padding: 5px;
+        margin: 0;
+        text-align: center;
+        cursor: pointer;
+        background-color: #f0f0f0;
+    }
+
+    .item-tab.active {
+        background-color: #c5c5c5;
+        color: #8383ff;
+        box-shadow: 0px 3px 0px #a5a5a5 inset;
+    }
+
+    .tab-content {
+        display: none;
+    }
+
+    .tab-content.active {
+        display: block;
+    }
+
+    .doc-info-tab {
+        display: grid;
+        min-width: 40%;
+        grid-gap: 10px;
+        padding-bottom: 15px;
+    }
+
+    .scrollable-image-container {
+        max-height: 88%;
+        overflow: auto;
+    }
+
+    .progress-bar-container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 3px;
+        background-color: #ffffff;
+        border-bottom: 1px solid #ccc;
+    }
+
+    .progress-bar-container span {
+        font-size: 14px;
+        font-weight: bold;
+        color: #000;
+    }
+
+    .progress-container {
+        display: flex;
+        align-items: center;
+        font-size: 14px;
+        font-weight: bold;
+        color: #000;
+        padding: 2px;
+    }
+
+    .progress-text {
+        margin-right: auto;
+    }
+
+    .image-buttons {
+        display: flex;
+        justify-content: space-between;
+        padding: 10px;
+        padding-left: 0px;
+        background-color: #f8f9fa;
+    }
+
+    .progress-value {
+        background-color: #eee;
+        border-radius: 5px;
+        border: 1px solid #ccc;
+        background: linear-gradient(white, #f2f2f2);
+        box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
+        padding: inherit;
+    }
+
+    .image-buttons button {
+        background-color: #f0f0f0;
+        color: black;
+        padding: 5px 20px;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 16px;
+        font-weight: bold;
+        border: 0.1px solid #ccc;
+        box-shadow: 0px -2px 0px #a5a5a5 inset;
+    }
+
+    .image-buttons button:hover {
+        opacity: 0.9;
+    }
+
+    .toolbar {
+        display: flex;
+        justify-content: center;
+        padding: 5px;
+        background-color: #f0f0f0;
+        border-bottom: 1px solid #ccc;
+    }
+
+    .toolbar button {
+        background-color: #f0f0f0;
+        color: black;
+        padding: 5px 10px;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 16px;
+        font-weight: bold;
+        border: 0.1px solid #ccc;
+        box-shadow: 0px -2px 0px #a5a5a5 inset;
+        margin: 0 5px;
+    }
+
+    .toolbar button:hover {
+        opacity: 0.9;
+    }
+
+
+
+    .under-side {
+        max-width: 100%;
+        min-width: 50%;
+        background-color: #ffffff;
+        padding-top: 0px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        display: flex;
+        flex-direction: column;
+    }
+
+    .under-side .form-container {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        align-items: flex-start;
+        padding: 15px;
+        overflow: auto;
+        max-height: 65vh;
+    }
+
+    .under-side .form-group {
+        flex: 1 1 48%;
+        margin: 10px 1%;
+    }
+
+    .under-side .full-width {
+        flex: 1 1 100%;
+    }
+
+    .under-side .buttons {
+        flex: 1 1 100%;
+        display: flex;
+        justify-content: flex-end;
+        gap: 10px;
+        margin-top: 20px;
+    }
+
+    .under-side .buttons button {
+        width: 100px;
+        padding: 10px 20px;
+    }
+</style>
+
+<div class="input-container">
+    <div class="left-side">
+        <div class="progress-bar-container">
+            <span> <a href="../statistic/" style="color:black; text-decoration:none">
+                    < Danh sách</a></span>
+            <div class="progress-container">
+                <span class="progress-text">Khối lượng file đã thực hiện:</span>
+                <div class="progress-value">35%</div>
+            </div>
+        </div>
+
+        <div class="toolbar">
+            <button onclick="rotateImage('left')">⟲ Rotate Left</button>
+            <button onclick="rotateImage('right')">⟳ Rotate Right</button>
+            <button onclick="zoomImage('in')">Zoom In +</button>
+            <button onclick="zoomImage('out')">Zoom Out -</button>
+            <button onclick="toggleLayout()">Toggle Layout</button>
+        </div>
+
+        <div class="scrollable-image-container">
+            <img id="documentImage" src="https://sample-videos.com/img/Sample-png-image-3mb.png" alt="Document Image">
+        </div>
+        <div class="image-buttons">
+            <button onclick="goBack()">
+                < Quay lại</button>
+                    <button onclick="goNext()">Tiếp theo ></button>
+        </div>
+    </div>
+
+    <div id="vertical-form" class="right-side">
+        {% include 'pages/input_verticalform.html' %}
+    </div>
+
+</div>
+
+<div id="horizontal-form" class="under-side" style="display: none;">
+    {% include 'pages/input_horizontalform.html' %}
+</div>
+
+<script>
+    // JavaScript hiện tại của bạn
+    const tab1 = document.getElementById('tab1');
+    const tab2 = document.getElementById('tab2');
+    const tab1Content = document.getElementById('tab1-content');
+    const tab2Content = document.getElementById('tab2-content');
+
+    tab1.addEventListener('click', () => {
+        tab1.classList.add('active');
+        tab2.classList.remove('active');
+        tab1Content.classList.add('active');
+        tab2Content.classList.remove('active');
+    });
+
+    tab2.addEventListener('click', () => {
+        tab2.classList.add('active');
+        tab1.classList.remove('active');
+        tab2Content.classList.add('active');
+        tab1Content.classList.remove('active');
+    });
+
+    let rotation = 0;
+    let zoomLevel = 1;
+
+    function rotateImage(direction) {
+        const img = document.getElementById('documentImage');
+        if (direction === 'left') {
+            rotation -= 90;
+        } else if (direction === 'right') {
+            rotation += 90;
+        }
+        img.style.transform = `rotate(${rotation}deg) scale(${zoomLevel})`;
+    }
+
+    function zoomImage(direction) {
+        const img = document.getElementById('documentImage');
+        if (direction === 'in') {
+            zoomLevel += 0.1;
+        } else if (direction === 'out') {
+            zoomLevel -= 0.1;
+            if (zoomLevel < 0.1) zoomLevel = 0.1;
+        }
+        img.style.transform = `rotate(${rotation}deg) scale(${zoomLevel})`;
+    }
+
+    let isVerticalLayout = true; 
+
+function toggleLayout() {
+    const container = document.querySelector('.input-container');
+    const verticalForm = document.getElementById('vertical-form');
+    const horizontalForm = document.getElementById('horizontal-form');
+    const leftSide = document.querySelector('.left-side');
+    const activeTab = document.querySelector('.item-tab.active');
+
+    if (isVerticalLayout) {
+        container.style.flexDirection = 'column';
+        verticalForm.style.display = 'none';
+        horizontalForm.style.display = 'flex';
+
+        leftSide.style.maxWidth = '100%';
+        leftSide.style.minWidth = '100%';
+        leftSide.style.maxHeight = '70vh';
+
+        if (activeTab) {
+            const correspondingTab = horizontalForm.querySelector(`#${activeTab.id}`);
+            if (correspondingTab) {
+                correspondingTab.classList.add('active');
+            }
+        }
+    } else {
+    
+        container.style.flexDirection = 'row';
+        verticalForm.style.display = 'flex';
+        horizontalForm.style.display = 'none';
+
+        leftSide.style.maxWidth = '60%';
+        leftSide.style.minWidth = '60%';
+        leftSide.style.maxHeight = '88vh';
+
+        if (activeTab) {
+            const correspondingTab = verticalForm.querySelector(`#${activeTab.id}`);
+            if (correspondingTab) {
+                correspondingTab.classList.add('active');
+            }
+        }
+    }
+    isVerticalLayout = !isVerticalLayout;
+}
+
+</script>
+{% endblock %}

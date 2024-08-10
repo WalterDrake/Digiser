@@ -1,0 +1,71 @@
+{% extends 'bases/base.html' %}
+{% block content %}
+<h1>Thống kê dữ liệu</h1>
+
+<style>
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    th,
+    td {
+        border: 1px solid black;
+        padding: 8px;
+        text-align: left;
+    }
+
+    th {
+        background-color: #f2f2f2;
+    }
+</style>
+
+<table>
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Du An</th>
+            <th>Loai</th>
+            <th>Goi Du lieu</th>
+            <th>So phieu</th>
+            <th>Da nhap</th>
+            <th>Chua nhap</th>
+            <th>So truong loi</th>
+            <th>Trang thai</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for category, category_data in data.items %}
+        {% if category_data.Project %}
+        {% for project, project_data in category_data.Project.items %}
+        <tr>
+            <td></td>
+            <td>{{ project }}</td>
+            <td>{{ category }}</td>
+            <td></td>
+            <td>{{ project_data.total_votes }}</td>
+            <td>{{ project_data.total_acceptances }}</td>
+            <td>{{ project_data.total_rejections }}</td>
+            <td>{{ project_data.total_erroring_fields }}</td>
+            <td></td>
+        </tr>
+        {% for package, package_details in project_data.packages.items %}
+        <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td>{{ package }}</td>
+            <td>{{ package_details.votes }}</td>
+            <td>{{ package_details.acceptances }}</td>
+            <td>{{ package_details.rejections }}</td>
+            <td>{{ package_details.erroring_fields }}</td>
+            <td>{{ package_details.status|join:", " }}</td>
+        </tr>
+        {% endfor %}
+        {% endfor %}
+        {% endif %}
+        {% endfor %}
+    </tbody>
+</table>
+
+{% endblock %}

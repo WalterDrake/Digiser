@@ -1,0 +1,465 @@
+    <div class="tab-selection-item two-columns">
+        <div id="tab1" class="item-tab active"><i class='bx bx-edit-alt' ></i>Nhập Liệu</div>
+        <div id="tab2" class="item-tab"><i class='bx bx-info-circle' ></i>Thông tin tài liệu</div>
+    </div>
+
+    <div id="tab1-content" class="tab-content active">
+        <form method="POST">
+            {% csrf_token %}
+            <div class="input-form-border">
+                <div class="form-container">
+                    <!-- First Section -->
+                    <div class="form three-columns">
+                        <div class="form-group">
+                            <input type="text" id="so" name="so" required>
+                            <label for="so">Số</label>
+                        </div>
+                        <div class="form-group">
+                            <input type="text" id="quyenSo" name="quyenSo" required>
+                            <label for="quyenSo">Quyển Sổ</label>
+                        </div>
+                        <div class="form-group">
+                            <input type="text" id="trangSo" name="trangSo" required>
+                            <label for="trangSo">Trang Số</label>
+                        </div>
+                    </div>
+                    <div class="form two-columns">
+                        <div class="form-group">
+                            <input type="text" id="ngayDangKy" name="ngayDangKy" required>
+                            <label for="ngayDangKy">Ngày Đăng Ký</label>
+                        </div>
+                        <div class="form-group">
+                            <select id="loaiDangKy" name="loaiDangKy" required>
+                                <option value="1">Loại Đăng Ký 1</option>
+                                <option value="2">Loại Đăng Ký 2</option>
+                            </select>
+                            <label for="loaiDangKy">Loại Đăng Ký</label>
+                        </div>
+                    </div>
+                    <div class="form full-width">
+                        <div class="form-group">
+                            <input type="text" id="noiDangKy" name="noiDangKy" required>
+                            <label for="noiDangKy">Nơi Đăng Ký</label>
+                        </div>
+                    </div>
+                    <div class="form three-columns">
+                        <div class="form-group">
+                            <input type="text" id="nguoiKy" name="nguoiKy" required>
+                            <label for="nguoiKy">Người Ký</label>
+                        </div>
+                        <div class="form-group">
+                            <input type="text" id="chucVuNguoiKy" name="chucVuNguoiKy" required>
+                            <label for="chucVuNguoiKy">Chức Vụ Người Ký</label>
+                        </div>
+                        <div class="form-group">
+                            <input type="text" id="nguoiThucHien" name="nguoiThucHien" required>
+                            <label for="nguoiThucHien">Người Thực Hiện</label>
+                        </div>
+                    </div>
+                    <div class="form full-width">
+                        <div class="form-group textarea-active">
+                            <textarea id="ghiChu" name="ghiChu" required></textarea>
+                            <label for="ghiChu">Ghi Chú</label>
+                        </div>
+                    </div>
+                    <!-- Second Section -->
+                    <div class="form two-columns">
+                        <div class="form-group">
+                            <input type="text" id="nksHoTen" name="nksHoTen" required>
+                            <label for="nksHoTen">NKS: Họ và tên</label>
+                        </div>
+                        <div class="form-group">
+                            <select id="nksGioiTinh" name="nksGioiTinh" required>
+                                <option value="1">Nam</option>
+                                <option value="2">Nữ</option>
+                            </select>
+                            <label for="nksGioiTinh">NKS: Giới Tính</label>
+                        </div>
+                    </div>
+                    <div class="form two-columns">
+                        <div class="form-group">
+                            <input type="text" id="nksNgaySinh" name="nksNgaySinh" required>
+                            <label for="nksNgaySinh">NKS: Ngày Sinh</label>
+                        </div>
+                        <div class="form-group">
+                            <input type="text" id="nksNgaySinhBangChu" name="nksNgaySinhBangChu" required>
+                            <label for="nksNgaySinhBangChu">NKS: Ngày Sinh Bằng Chữ</label>
+                        </div>
+                    </div>
+                    <div class="form two-columns">
+                        <div class="form-group">
+                            <input type="text" id="nksNoiSinh" name="nksNoiSinh" required>
+                            <label for="nksNoiSinh">NKS: Nơi Sinh</label>
+                        </div>
+                        <div class="form-group">
+                            <select id="nksQueQuan" name="nksQueQuan" required>
+                                <option value="1">Tiền Giang</option>
+                                <option value="2">Tp.HCM</option>
+                            </select>
+                            <label for="nksQueQuan">NKS: Quê Quán</label>
+                        </div>
+                    </div>
+                    <div class="form two-columns">
+                        <div class="form-group">
+                            <select id="nksDanToc" name="nksDanToc" required>
+                                <option value="1">Kinh</option>
+                                <option value="2">Khác</option>
+                            </select>
+                            <label for="nksDanToc">NKS: Dân Tộc</label>
+                        </div>
+                        <div class="form-group">
+                            <select id="nksQuocTich" name="nksQuocTich" required>
+                                <option value="1">Việt Nam</option>
+                                <option value="2">Khác</option>
+                            </select>
+                            <label for="nksQuocTich">NKS: Quốc Tịch</label>
+                        </div>
+                    </div>
+                    <div class="form full-width">
+                        <div class="form-group">
+                            <input type="text" id="nksLoaiKhaiSinh" name="nksLoaiKhaiSinh" required>
+                            <label for="nksLoaiKhaiSinh">NKS: Loại Khai Sinh</label>
+                        </div>
+                    </div>
+                    <!-- Third Section: Mother's Information -->
+                    <div class="form two-columns">
+                        <div class="form-group">
+                            <input type="text" id="meHoTen" name="meHoTen" required>
+                            <label for="meHoTen">Mẹ: Họ và tên</label>
+                        </div>
+                        <div class="form-group">
+                            <input type="text" id="meNgaySinh" name="meNgaySinh" required>
+                            <label for="meNgaySinh">Mẹ: Ngày sinh</label>
+                        </div>
+                    </div>
+                    <div class="form two-columns">
+                        <div class="form-group">
+                            <select id="meDanToc" name="meDanToc" required>
+                                <option value="1">Kinh</option>
+                                <option value="2">Khác</option>
+                            </select>
+                            <label for="meDanToc">Mẹ: Dân Tộc</label>
+                        </div>
+                        <div class="form-group">
+                            <select id="meQuocTich" name="meQuocTich" required>
+                                <option value="1">Việt Nam</option>
+                                <option value="2">Khác</option>
+                            </select>
+                            <label for="meQuocTich">Mẹ: Quốc tịch</label>
+                        </div>
+                    </div>
+                    <div class="form two-columns">                             
+                        <div class="form-group">
+                            <select id="meLoaiCuTru" name="meLoaiCuTru" required>
+                                <option value="1">Thường trú</option>
+                                <option value="2">Khác</option>
+                            </select>
+                            <label for="meLoaiCuTru">Mẹ: Loại cư trú</label>
+                        </div>
+                        <div class="form-group">
+                            <input type="text" id="meNoiCuTru" name="meNoiCuTru" required>
+                            <label for="meNoiCuTru">Mẹ: Nơi cư trú</label>
+                        </div>
+                    </div>
+                    <div class="form two-columns">                       
+                        <div class="form-group">
+                            <select id="meLoaiGiayToTuyThan" name="meLoaiGiayToTuyThan" required>
+                                <option value="1">Căn cước công dân</option>
+                                <option value="2">Chứng minh nhân dân</option>
+                            </select>
+                            <label for="meLoaiGiayToTuyThan">Mẹ: Loại giấy tờ tùy thân</label>
+                        </div>
+                        <div class="form-group">
+                            <input type="text" id="meSoGiayToTuyThan" name="meSoGiayToTuyThan" required>
+                            <label for="meSoGiayToTuyThan">Mẹ: Số giấy tờ tùy thân</label>
+                        </div>
+                    </div>
+                    <!-- Fourth Section: Father's Information -->
+                    <div class="form two-columns">
+                        <div class="form-group">
+                            <input type="text" id="chaHoTen" name="chaHoTen" required>
+                            <label for="chaHoTen">Cha: Họ và tên</label>
+                        </div>
+                        <div class="form-group">
+                            <input type="text" id="chaNgaySinh" name="chaNgaySinh" required>
+                            <label for="chaNgaySinh">Cha: Ngày sinh</label>
+                        </div>
+                    </div>
+                    <div class="form two-columns">
+                        <div class="form-group">
+                            <select id="chaDanToc" name="chaDanToc" required>
+                                <option value="1">Kinh</option>
+                                <option value="2">Khác</option>
+                            </select>
+                            <label for="chaDanToc">Cha: Dân tộc</label>
+                        </div>
+                        <div class="form-group">
+                            <select id="chaQuocTich" name="chaQuocTich" required>
+                                <option value="1">Việt Nam</option>
+                                <option value="2">Khác</option>
+                            </select>
+                            <label for="chaQuocTich">Cha: Quốc tịch</label>
+                        </div>
+                    </div>
+                    <div class="form two-columns">
+                        <div class="form-group">
+                            <select id="chaLoaiCuTru" name="chaLoaiCuTru" required>
+                                <option value="1">Thường trú</option>
+                                <option value="2">Khác</option>
+                            </select>
+                            <label for="chaLoaiCuTru">Cha: Loại cư trú</label>
+                        </div>
+                        <div class="form-group">
+                            <input type="text" id="chaNoiCuTru" name="chaNoiCuTru" required>
+                            <label for="chaNoiCuTru">Cha: Nơi cư trú</label>
+                        </div>
+                    </div>
+                    <div class="form two-columns">
+                        <div class="form-group">
+                            <select id="chaLoaiGiayToTuyThan" name="chaLoaiGiayToTuyThan" required>
+                                <option value="1">Căn cước công dân</option>
+                                <option value="2">Chứng minh nhân dân</option>
+                            </select>
+                            <label for="chaLoaiGiayToTuyThan">Cha: Loại giấy tờ tùy thân</label>
+                        </div>
+                        <div class="form-group">
+                            <input type="text" id="chaSoGiayToTuyThan" name="chaSoGiayToTuyThan" required>
+                            <label for="chaSoGiayToTuyThan">Cha: Số giấy tờ tùy thân</label>
+                        </div>
+                    </div>
+                    <!-- Fifth Section: Others -->
+                    <div class="form two-columns">
+                        <div class="form-group">
+                            <input type="text" id="nycHoTen" name="nycHoTen" required>
+                            <label for="nycHoTen">NYC: Họ và tên</label>
+                        </div>
+                        <div class="form-group">
+                            <input type="text" id="nycQuanHe" name="nycQuanHe" required>
+                            <label for="nycQuanHe">NYC: Quan hệ</label>
+                        </div>
+                    </div>
+                    <div class="form two-columns">
+                        <div class="form-group">
+                            <select id="nycLoaiGiayToTuyThan" name="nycLoaiGiayToTuyThan" required>
+                                <option value="1">Căn cước công dân</option>
+                                <option value="2">Chứng minh nhân dân</option>
+                            </select>
+                            <label for="nycLoaiGiayToTuyThan">NYC: Loại giấy tờ tùy thân</label>
+                        </div>
+                        <div class="form-group">
+                            <input type="text" id="nycGiayToKhac" name="nycGiayToKhac" required>
+                            <label for="nycGiayToKhac">NYC: Giấy tờ khác</label>
+                        </div>
+                    </div>
+                    <div class="form two-columns">
+                        <div class="form-group">
+                            <select id="nycSoGiayToTuyThan" name="nycSoGiayToTuyThan" required>
+                                <option value="1">Số giấy tờ 1</option>
+                                <option value="2">Số giấy tờ 2</option>
+                            </select>
+                            <label for="nycSoGiayToTuyThan">NYC: Số giấy tờ tùy thân</label>
+                        </div>
+                        <div class="form-group">
+                            <input type="text" id="nycNgayCapGiayToTuyThan" name="nycNgayCapGiayToTuyThan" required>
+                            <label for="nycNgayCapGiayToTuyThan">NYC: Ngày cấp giấy tờ tùy thân</label>
+                        </div>
+                    </div>
+                    <div class="form full-width">
+                        <div class="form-group">
+                            <input type="text" id="nycNoiCapGiayToTuyThan" name="nycNoiCapGiayToTuyThan" required>
+                            <label for="nycNoiCapGiayToTuyThan">NYC: Nơi cấp giấy tờ tùy thân</label>
+                        </div>
+                    </div>
+                </div>                        
+            </div>
+            <div class="buttons">
+                <button type="button" class="review">Review</button>
+                <button type="submit" class="save">Lưu</button>
+            </div>
+        </form>
+    </div>
+
+    <div id="tab2-content" class="tab-content">
+        <div class="doc-info-tab">
+            Test
+        </div>
+    </div>
+
+<style>
+
+    
+    .form-container {
+        overflow: auto;
+        flex: 1;
+        margin-bottom: 20px;
+        padding-top: inherit;
+        max-height:65vh;
+    }
+    
+    .form {
+        display: grid;
+        width: 100%;
+        grid-gap: 10px;
+        padding-bottom: 15px;
+    }
+    
+    .form-group {
+        display: flex;
+        flex-direction: column;
+        position: relative;
+    }
+    
+    .form-group textarea {
+        height: 80px;
+    }
+    
+    .form-group label {
+        font-weight: bold;
+        margin-bottom: 5px;
+        font-size: 12px;
+        position: absolute;
+        top: 50%;
+        left: 10px;
+        transform: translateY(-50%);
+        transition: .5s;
+        color:#a5a5a5;
+    }
+    
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+        width: 100%;
+        padding: 6px;
+        border-radius: 5px;
+        border: 1px solid #ccc;
+        box-sizing: border-box;
+        font-size: 14px;
+        outline: none;
+        background: transparent;
+        transition: .5s;
+        resize: none;
+    }
+    
+    .form-group.textarea-active label {
+        top: 0;
+        font-size: 10px;
+        background: #fff;
+        padding: 0 5px;
+    }
+    
+    .form-group input:focus~label,
+    .form-group input:valid~label,
+    .form-group select:focus~label,
+    .form-group select:valid~label,
+    .form-group textarea:focus~label,
+    .form-group textarea:valid~label {
+        top: 0;
+        font-size: 10px;
+        background: #fff;
+        padding: 0 5px;
+        color:black;
+    }
+    
+    .specialLabel {
+        font-weight: bold;
+        margin-bottom: 5px;
+        font-size: 12px;
+        position: absolute;
+        top: 0%;
+        left: 10px;
+        transform: translateY(-50%);
+        color: #555;
+        transition: .5s;
+    }
+    
+    .two-columns {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .three-columns {
+        grid-template-columns: repeat(3, 1fr);
+    }
+    
+    .four-columns {
+        grid-template-columns: repeat(4, 1fr);
+    }
+    
+    .full-width {
+        grid-column: span 4;
+    }
+    
+    .buttons {
+        display: flex;
+        justify-content: flex-end;
+        gap: 10px;
+        margin-top: 20px;
+    }
+    
+    .buttons button {
+        width: 28%;
+        padding: 10px 0;
+        border: none;
+        border-radius: 5px;
+        color: white;
+        font-weight: bold;
+        cursor: pointer;
+    }
+    
+    .buttons .review {
+        background-color: #4CAF50;
+    }
+    
+    .buttons .save {
+        background-color: #007BFF;
+    }
+    
+    .buttons button:hover {
+        opacity: 0.9;
+    }
+    
+    .input-form-border {
+        border-radius: 5px;
+        border: 1px solid #ccc;
+        box-sizing: border-box;
+        padding: 10px;
+    }
+    
+    .tab-selection-item {
+        width: 60%;
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .item-tab {
+        border-radius: 5px;
+        color:black;
+        border: 1px solid #ccc;
+        padding: 5px;
+        margin: 0;
+        text-align: center;
+        cursor: pointer;
+        background-color:#f0f0f0;
+    }
+    
+    .item-tab.active {
+        background-color: #c5c5c5;
+        color: #8383ff;
+        box-shadow: 0px 3px 0px #a5a5a5 inset;
+    }
+    
+    .tab-content {
+        display: none;
+    }
+    
+    .tab-content.active {
+        display: block;
+    }
+    
+    .doc-info-tab{
+        display: grid;
+        min-width: 40%;
+        grid-gap: 10px;
+        padding-bottom: 15px;
+    }
+    </style>
+    

@@ -1,0 +1,142 @@
+{% extends 'bases/base.html' %} {% block content %} {% load static %}
+
+<link rel="stylesheet" href="{% static "css/home/info.css" %}">
+
+<div class="info-container">
+  <p class="info-heading">
+    <strong>Cài đặt tài khoản</strong>
+    <strong
+      >Thời gian thực hiện
+      <button>20/04/24 - 03/05/24 <i class="bx bx-calendar"></i></button
+    ></strong>
+  </p>
+</div>
+<div>
+  <p>
+    Bạn đang ở trạng thái CTV <strong id="ctv-status-text">TỐT</strong>. Chú ý:
+    Nếu CTV sai nhập liệu và bị đánh giá sai sót >5% thì sẽ bị đóng tài khoản
+  </p>
+  <div class="info-split-container">
+    <div class="info-left">
+      <strong>Thông tin cơ bản</strong>
+      <div class="info-img-container">
+        <img src="{% static "images/pallas.jpg" %}" alt="Profile Image"
+        class="info-img" />
+        <button class="camera-icon">
+          <i class="bx bx-camera"></i>
+        </button>
+      </div>
+      <span class="verification-status-text"
+        ><i class="bx bxs-badge-check"></i> Tài khoản đã được xác thực</span
+      >
+      <div class="info-tab-container">
+        <button class="info-tab-btn" data-target="#info-tab-personal">
+          Thông tin cá nhân <i class="bx bxs-chevron-right"></i>
+        </button>
+        <button class="info-tab-btn" data-target="#info-tab-bank">
+          Thông tin ngân hàng <i class="bx bxs-chevron-right"></i>
+        </button>
+      </div>
+    </div>
+    <div class="info-right">
+      <div class="info-tab-pane" id="info-tab-personal">
+        <form method="POST">
+          {% csrf_token %}
+          <input type="hidden" name="form_type" value="personal_info">
+          <div class="mb-2 info-input-container">
+            <label for="info-ctv-id" class="form-label">Mã CTV</label>
+            <input type="text" class="form-control" id="info-ctv-id" value = "{{code_ctv}}" readonly/>
+          </div>
+          <div class="mb-2 info-input-container">
+            <label for="info-name" class="form-label">Tên cá nhân</label>
+            <input type="text" class="form-control" id="info-name" name="full_name" value = "{{full_name}}" />
+          </div>
+          <div class="mb-2 info-input-container">
+            <label for="info-dateOfBirth" class="form-label">Ngày sinh</label>
+            <input type="date" class="form-control" id="info-dateOfBirth" pattern="\d{4}-\d{2}-\d{2}" name="birthday" value = "{{birthday|date:'Y-m-d'}}" />
+          </div>
+          <div class="mb-2 info-input-container">
+            <label for="info-tel" class="form-label">Số ĐT</label>
+            <input type="tel" class="form-control" id="info-tel" value = "{{phone_no}}" readonly/>
+          </div>
+          <div class="mb-2 info-input-container">
+            <label for="info-address" class="form-label"
+              >Địa chỉ hiện tại</label
+            >
+            <input type="text" class="form-control" id="info-address" name="address" value="{{address}}" />
+          </div>
+          <div class="mb-2 info-input-container">
+            <label for="info-level" class="form-label">Trình độ</label>
+            <input type="text" class="form-control" id="info-level" name="qualification" value="{{qualification}}" />
+          </div>
+          <div class="mb-2 info-input-container">
+            <label for="info-id" class="form-label">Số CCCD</label>
+            <input type="text" class="form-control" id="info-id" name="identification" value="{{identification}}" />
+          </div>
+          <div class="mb-2 info-input-container">
+            <label for="info-id-address" class="form-label"
+              >Địa chỉ trên CCCD</label
+            >
+            <input type="text" class="form-control" id="info-id-address" name="identification_address" value="{{identification_address}}" />
+          </div>
+          <button type="submit" class="btn btn-primary">Cập nhật</button>
+        </form>
+      </div>
+      <div class="info-tab-pane" id="info-tab-bank">
+        <form method="POST">
+          {% csrf_token %}
+          <input type="hidden" name="form_type" value="bank_info">
+          <div class="mb-2 info-input-container">
+            <label for="info-bank-number" class="form-label"
+              >Số tài khoản</label
+            >
+            <input type="text" class="form-control" id="info-bank-number" />
+          </div>
+          <div class="mb-2 info-input-container">
+            <label for="info-bank-name" class="form-label">Ngân hàng</label>
+            <input type="text" class="form-control" id="info-bank-name" name="bank_name" value="{{bank_name}}" />
+          </div>
+          <div class="mb-2 info-input-container">
+            <label for="info-bank-branch" class="form-label">Chi nhánh</label>
+            <input type="text" class="form-control" id="info-bank-branch" name="branch" value="{{branch}}" />
+          </div>
+          <div class="mb-2 info-input-container">
+            <label for="info-bank-owner" class="form-label"
+              >Tên chủ tài khoản</label
+            >
+            <input type="text" class="form-control" id="info-bank-owner" name="owner" value="{{owner}}" />
+          </div>
+          <div class="mb-2 info-input-container">
+            <label for="info-bank-id" class="form-label">Mã ngân hàng</label>
+            <input type="text" class="form-control" id="info-bank-id" name="code_bank" value="{{code_bank}}" />
+          </div>
+          <button type="submit" class="btn btn-primary">Cập nhật</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const buttons = document.querySelectorAll(".info-tab-btn");
+    const tabs = document.querySelectorAll(".info-tab-pane");
+
+    // Set the first button and tab as active
+    buttons[0].classList.add("active");
+    tabs[0].classList.add("active");
+
+    buttons.forEach((button) => {
+      button.addEventListener("click", () => {
+        buttons.forEach((btn) => btn.classList.remove("active"));
+        tabs.forEach((tab) => tab.classList.remove("active"));
+
+        button.classList.add("active");
+        const target = document.querySelector(
+          button.getAttribute("data-target")
+        );
+        target.classList.add("active");
+      });
+    });
+  });
+</script>
+{% endblock %}

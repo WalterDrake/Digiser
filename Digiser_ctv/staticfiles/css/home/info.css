@@ -1,0 +1,153 @@
+.info-container {
+  margin-top: 20px;
+}
+
+.info-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.info-heading button {
+  margin-left: 3px;
+  border: 1px solid var(--text-color);
+  padding: 6px;
+  font-size: 13px;
+  border-radius: 4px;
+  background-color: transparent;
+  display: inline-flex;
+  column-gap: 4px;
+  align-items: center;
+}
+
+#ctv-status-text {
+  color: green;
+}
+
+.info-split-container {
+  display: flex;
+  width: 100%;
+}
+
+.info-left {
+  padding: 10px 20px 10px 20px;
+  border-right: 1px solid var(--text-color);
+  display: flex;
+  flex-direction: column;
+  row-gap: 14px;
+  align-items: center;
+  height: 100vh;
+}
+
+.info-right {
+  padding: 10px 20px 10px 20px;
+}
+
+.info-img-container {
+  position: relative;
+  display: inline-block;
+  width: 150px;
+  height: 150px;
+}
+
+.info-img {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+}
+
+.camera-icon {
+  position: absolute;
+  bottom: 5px;
+  right: 5px;
+  background-color: white;
+  border-radius: 50%;
+  padding: 5px;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+  border: none;
+  cursor: pointer;
+}
+
+.camera-icon:hover {
+  background-color: #f0ebeb;
+}
+
+.camera-icon i {
+  width: 20px;
+  height: 20px;
+  font-size: medium;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.verification-status-text {
+  font-size: small;
+  color: green;
+  display: flex;
+  align-items: center;
+}
+
+.info-tab-container {
+  display: flex;
+  flex-direction: column;
+  row-gap: 4px;
+}
+
+.info-tab-btn {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: transparent;
+  border: none;
+  min-width: 165px;
+  font-size: 14px;
+  transition: var(--tran-03);
+}
+
+.info-tab-btn i {
+  display: none;
+  transition: var(--tran-03);
+}
+
+.info-tab-btn.active {
+  font-weight: 600;
+}
+
+.info-tab-btn.active i {
+  display: block;
+  color: royalblue;
+}
+
+.info-tab-pane {
+  display: none;
+}
+
+.info-tab-pane.active {
+  display: flex;
+}
+
+.info-input-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  column-gap: 12px;
+  min-width: 500px;
+}
+
+.info-input-container > .form-control {
+  padding: 4px 8px 4px 8px;
+  border-radius: 8px;
+  width: 300px;
+}
+
+.form-label {
+  text-wrap: nowrap;
+  margin: 0px;
+}
+
+.info-tab-pane > form > button[type="submit"] {
+  margin-top: 6px;
+}

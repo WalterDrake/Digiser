@@ -1,0 +1,79 @@
+{% load static %}
+<link rel="stylesheet" href="{% static "css/bases/sidenav.css" %}">
+<nav class="sidebar close">
+  <header>
+      <div class="image-text">
+          <span class="image">
+            <a  href="../home">
+              <img src="{% static "images/logo.png" %}" alt="Logo">
+            </a>
+          </span>
+          <div class="text logo-text">
+              <span class="name">Digiser</span>
+              <span class="profession">Dịch Vụ Số Hóa</span>
+          </div>
+      </div>
+      <i class='bx bx-chevron-right toggle'></i>
+  </header>
+  <div class="menu-bar">
+      <div class="menu">
+          <ul class="menu-links">
+              <li class="nav-link">
+                  <a href="../home">
+                      <i class='bx bx-home-alt icon'></i>
+                      <span class="text nav-text">Home</span>
+                  </a>
+              </li>
+              <li class="nav-link">
+                  <a href="../insert">
+                      <i class='bx bx-import icon'></i>
+                      <span class="text nav-text">Nhập</span>
+                  </a>
+              </li>
+              <li class="nav-link">
+                  <a href="../check">
+                      <i class='bx bx-export icon'></i>
+                      <span class="text nav-text">Check</span>
+                  </a>
+              </li>
+      </div>
+      <div class="bottom-content">
+          <li class="">
+              <a href="../support">
+                  <i class='bx bx-support icon' ></i>
+                  <span class="text nav-text">Hỗ Trợ</span>
+              </a>
+          </li>
+          <li class="">
+            <a href="../courses">
+                <i class='bx bxs-graduation icon' ></i>
+                <span class="text nav-text">Học Viện</span>
+            </a>
+          </li>
+          <li class="">
+            <a href="../system">
+                <i class='bx bx-cog icon' ></i>
+                <span class="text nav-text">Hệ Thống</span>
+            </a>
+          </li>
+          <li class="">
+            <a href="../wiki">
+                <i class='bx bx-globe icon' ></i>
+                <span class="text nav-text">Wiki DGS</span>
+            </a>
+          </li>
+          
+      </div>
+  </div>
+</nav>
+
+<script>
+    const body = document.querySelector('body'),
+      sidebar = body.querySelector('nav'),
+      toggle = body.querySelector(".toggle"),
+      modeSwitch = body.querySelector(".toggle-switch"),
+      modeText = body.querySelector(".mode-text");
+      toggle.addEventListener("click" , () =>{
+      sidebar.classList.toggle("close");
+    })
+</script>

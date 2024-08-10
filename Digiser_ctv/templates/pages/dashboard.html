@@ -1,0 +1,127 @@
+{% extends 'bases/base.html' %} {% block content %} {% load static %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
+<link rel="stylesheet" href="{% static "css/home/dashboard.css" %}">
+<div class="dashboard-container">
+  <strong>Trang chủ hoạt động DigiSER</strong>
+  <div class="stats-card-container">
+    <div class="card" id="total-project">
+      <div class="card-body">
+        <h6 class="card-title">Tổng Dự Án <i class="bx bxs-file"></i></h6>
+        <p class="card-info">
+          <span class="stats-value">{{total_project_details}}</span>
+          <span class="performance-value positive">
+            <i class="bx bx-up-arrow-alt"></i>68%</span
+          >
+        </p>
+        <button class="btn" id="detail-total-project">Xem chi tiết</button>
+      </div>
+    </div>
+    <div class="card" id="standard-project">
+      <div class="card-body">
+        <h6 class="card-title">Dự Án Tiêu Chuẩn <i class="bx bxs-star"></i></h6>
+        <p class="card-info">
+          <span class="stats-value">{{total_project_details}}</span>
+          <span class="performance-value positive">
+            <i class="bx bx-up-arrow-alt"></i>68%</span
+          >
+        </p>
+        <button class="btn" id="detail-standard-project">Xem chi tiết</button>
+      </div>
+    </div>
+    <div class="card" id="total-salary">
+      <div class="card-body">
+        <h6 class="card-title">Tiền lương <i class="bx bxs-wallet"></i></h6>
+        <p class="card-info">
+          <span class="stats-value">{{total_salary}}</span>
+          <span class="performance-value positive">
+            <i class="bx bx-up-arrow-alt"></i>68%</span
+          >
+        </p>
+        <button class="btn">Rút tiền</button>
+      </div>
+    </div>
+    <div class="card" id="rating-score">
+      <div class="card-body">
+        <h6 class="card-title">Điểm đánh giá <i class="bx bxs-group"></i></h6>
+        <p class="card-info">
+          <span class="stats-value">142</span>
+          <span class="performance-value negative">
+            <i class="bx bx-down-arrow-alt"></i>38%</span
+          >
+        </p>
+        <button class="btn">Xem chi tiết</button>
+      </div>
+    </div>
+  </div>
+  <div class="charts-card-container">
+    <div class="card big-card" id="work-analysis">
+      <div class="card-body">
+        <h6 class="card-title">Phân tích công việc</h6>
+        <canvas id="analysis_chart"></canvas>
+      </div>
+    </div>
+    <div class="card big-card" id="work-progress">
+      <div class="card-body">
+        <h6 class="card-title">Tiến độ công việc</h6>
+        <canvas id="progression_chart"></canvas>
+      </div>
+    </div>
+  </div>
+  <div class="notis-container">
+    <div class="tabs">
+      <button class="tab-button active" onclick="openTab('system')">
+        Từ hệ thống
+      </button>
+      <button class="tab-button" onclick="openTab('personal')">Cho bạn</button>
+    </div>
+    <div id="system" class="tab-content">
+      <div class="notification-item">
+        <p>
+          <strong
+            >Thông báo dự án Số Hoá Bến Tre đang hoạt động trong tháng
+            5?</strong
+          ><br />
+          Kích hoạt dự án hoạt động trong tháng 5, dự án đang tuyển dụng liên
+          tục các bạn có thể thay đổi thêm...
+        </p>
+        <span class="date">20/5/2024</span>
+      </div>
+      <div class="notification-item">
+        <p>
+          <strong
+            >Thông báo dự án Số Hoá Bến Tre đang hoạt động trong tháng
+            5?</strong
+          ><br />
+          Kích hoạt dự án hoạt động trong tháng 5, dự án đang tuyển dụng liên
+          tục các bạn có thể thay đổi thêm...
+        </p>
+        <span class="date">20/5/2024</span>
+      </div>
+    </div>
+    <div id="personal" class="tab-content" style="display: none">
+      <div class="notification-item">
+        <p>
+          <strong>Personal notification 1</strong><br />
+          This is a personal notification.
+        </p>
+        <span class="date">20/5/2024</span>
+      </div>
+      <div class="notification-item">
+        <p>
+          <strong>Personal notification 2</strong><br />
+          This is another personal notification.
+        </p>
+        <span class="date">20/5/2024</span>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  document
+  .getElementById("detail-standard-project")
+  .addEventListener("click", function () {
+    window.location.href = "{% url 'data_statistic' %}";
+  });
+</script>
+<script src="{% static "scripts/home/dashboard.js" %}"></script>
+{% endblock %}

@@ -1,9 +1,0 @@
-{% extends 'bases/base.html' %}
-{% block content %}
-<form method="post">
-    {% csrf_token %}
-    <label for="gmail">Gmail:</label>
-    <input type="email" id="gmail" name="gmail" required>
-    <button type="submit">Verify</button>
-</form>
-{% endblock %}
