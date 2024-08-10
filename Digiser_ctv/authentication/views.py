@@ -52,7 +52,7 @@ def LOGIN(request):
         login(request, user)
         return redirect('home')
     else:
-        messages.error(request, 'Invalid phone number or password.')
+        messages.error(request, 'Sai mã ctv hoặc mật khẩu.')
         return render(request, 'auth/login.html')
 
 

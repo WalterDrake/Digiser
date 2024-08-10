@@ -35,24 +35,24 @@ class CustomUser(AbstractUser):
     status = models.CharField(
         _('status'), max_length=2, choices=_STATUSES, blank=True, null=True)
     _SKILLS = (
-        ('Civil Status, Online, A3', 'Civil Status, Online, A3'),
-        ('Civil Status, Offline, A3', 'Civil Status, Offline, A3'),
-        ('Civil Status, Online, A4', 'Civil Status, Online, A4'),
-        ('Civil Status, Offline, A4', 'Civil Status, Offline, A4'),
-        ('Administrative Document, Online, A3', 'Administrative Document, Online, A3'),
-        ('Administrative Document, Offline, A3', 'Administrative Document, Offline, A3'),
-        ('Administrative Document, Online, A4', 'Administrative Document, Online, A4'),
-        ('Administrative Document, Offline, A4', 'Administrative Document, Offline, A4'),
-        ('Merge, Online, A3', 'Merge, Online, A3'),
-        ('Merge, Offline, A3', 'Merge, Offline, A3'),
-        ('Merge, Online, A4', 'Merge, Online, A4'),
-        ('Merge, Offline, A4', 'Merge, Offline, A4'),
-        ('Name, Online, A3', 'Name, Online, A3'),
-        ('Name, Offline, A3', 'Name, Offline, A3'),
-        ('Name, Online, A4', 'Name, Online, A4'),
-        ('Name, Offline, A4', 'Name, Offline, A4')
+        ('Civil, Online, A3', 'Civil, Online, A3'),
+        ('Civil, Offline, A3', 'Civil, Offline, A3'),
+        ('Civil, Online, A4', 'Civil, Online, A4'),
+        ('Civil, Offline, A4', 'Civil, Offline, A4'),
+        ('VBHC, Online, A3', 'VBHC, Online, A3'),
+        ('VBHC, Offline, A3', 'VBHC, Offline, A3'),
+        ('VBHC, Online, A4', 'VBHC, Online, A4'),
+        ('VBHC, Offline, A4', 'VBHC, Offline, A4'),
+        ('Merging, Online, A3', 'Merging, Online, A3'),
+        ('Merging, Offline, A3', 'Merging, Offline, A3'),
+        ('Merging, Online, A4', 'Merging, Online, A4'),
+        ('Merging, Offline, A4', 'Merging, Offline, A4'),
+        ('Naming, Online, A3', 'Naming, Online, A3'),
+        ('Naming, Offline, A3', 'Naming, Offline, A3'),
+        ('Naming, Online, A4', 'Naming, Online, A4'),
+        ('Naming, Offline, A4', 'Naming, Offline, A4')
     )
-    skill = models.CharField(_('skill'), max_length=50,
+    skill = models.CharField(_('skill'), max_length=30,
                              choices=_SKILLS, blank=True, null=True)
     _ROLE = (
         ("Admin", "Admin"),
@@ -61,11 +61,11 @@ class CustomUser(AbstractUser):
         ("Support", "Support"),
     )
     role = models.CharField(
-        _('role'), max_length=8, choices=_ROLE, blank=True, null=True)
+        _('role'), max_length=7, choices=_ROLE, blank=True, null=True)
     updated_time = models.DateTimeField(
         _('update time'), blank=True, null=True)
     updated_user = models.ForeignKey(
-        'self', on_delete=models.SET_NULL, blank=True, null=True, related_name='%(class)s_updated_user')
+        'self', on_delete=models.SET_NULL, blank=True, null=True, related_name='updated_by')
 
     USERNAME_FIELD = 'code'
     REQUIRED_FIELDS = ['username', 'email']

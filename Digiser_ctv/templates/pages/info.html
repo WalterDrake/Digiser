@@ -45,7 +45,7 @@
           <input type="hidden" name="form_type" value="personal_info">
           <div class="mb-2 info-input-container">
             <label for="info-ctv-id" class="form-label">Mã CTV</label>
-            <input type="text" class="form-control" id="info-ctv-id" value = "{{code_ctv}}" readonly/>
+            <input type="text" class="form-control" id="info-ctv-id" value = "{{code}}" readonly/>
           </div>
           <div class="mb-2 info-input-container">
             <label for="info-name" class="form-label">Tên cá nhân</label>
@@ -87,10 +87,8 @@
           {% csrf_token %}
           <input type="hidden" name="form_type" value="bank_info">
           <div class="mb-2 info-input-container">
-            <label for="info-bank-number" class="form-label"
-              >Số tài khoản</label
-            >
-            <input type="text" class="form-control" id="info-bank-number" />
+            <label for="info-bank-number" class="form-label">Số tài khoản</label>
+            <input type="text" class="form-control" id="info-account-number" name="account_number" value="{{account_number}}" />
           </div>
           <div class="mb-2 info-input-container">
             <label for="info-bank-name" class="form-label">Ngân hàng</label>

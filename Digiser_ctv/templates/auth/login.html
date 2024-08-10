@@ -43,6 +43,16 @@
         <div class="flex-centered">
           <div id="login-panel">
             <strong class="heading-text">Chào mừng bạn đến DGS!</strong>
+
+            <!-- Display error messages -->
+            {% if messages %}
+            <div class="alert alert-danger error-status fade-out" role="alert">
+                {% for message in messages %}
+                    <p>{{ message }}</p>
+                {% endfor %}
+            </div>
+            {% endif %}
+
             <form method="POST">
               {% csrf_token %}
               <div class="input-box mb-3">
@@ -103,5 +113,18 @@
       integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
       crossorigin="anonymous"
     ></script>
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+          const alertBox = document.querySelector('.alert.fade-out');
+          if (alertBox) {
+              setTimeout(() => {
+                  alertBox.classList.add('fade');
+                  setTimeout(() => {
+                      alertBox.style.display = 'none';
+                  }, 500); 
+              }, 3000);
+          }
+      });
+  </script>
   </body>
 </html>

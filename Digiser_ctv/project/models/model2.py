@@ -241,5 +241,4 @@ class Birth_Certificate_Document(models.Model):
         max_length=63, choices=Options._COUNTRIES_LIST, default='', verbose_name="Quốc Gia Đăng Ký Nước Ngoài", blank=True)
 
     def __str__(self):
-        # return self.document.document_name
         return self.document.document_path

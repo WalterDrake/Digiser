@@ -45,17 +45,17 @@ def handle_post_request(request):
 def handle_get_request(request):
     user_id = request.session.get('user_id')
     user = get_object_or_404(CustomUser, username=user_id)
+    if checkManager(user):
+        data = statistic_human(request)
+        return render(request, 'pages/home_manager.html', {'users': data})
+    
     total_salary = statistic_salary(user)
     total_project_details = statistic_project(user)
-
     context = {
         'total_project_details' : total_project_details,
         'total_salary' : total_salary
     }
     data = statistic_human(request)
-    if checkManager(user):
-        data = statistic_human(request)
-        return render(request, 'pages/home_manager.html', {'users': data})
     return render(request, 'pages/dashboard.html', context)
 
 
