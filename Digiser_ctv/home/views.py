@@ -390,7 +390,6 @@ def show_data_statistic(request):
             ]
         },
     ]
-
     context = {
         'projects': projects
     }
