@@ -1,6 +1,7 @@
     <div class="tab-selection-item two-columns">
         <div id="tab1" class="item-tab active"><i class='bx bx-edit-alt' ></i>Nhập Liệu</div>
         <div id="tab2" class="item-tab"><i class='bx bx-info-circle' ></i>Thông tin tài liệu</div>
+        <button class="item-tab" id="Tlayoutbutton" onclick="toggleLayout()">Toggle Layout</button>
     </div>
 
     <div id="tab1-content" class="tab-content active">
@@ -275,6 +276,7 @@
             <div class="buttons">
                 <button type="button" class="review">Review</button>
                 <button type="submit" class="save">Lưu</button>
+                <button onclick="toggleLayout()">Toggle Layout</button>
             </div>
         </form>
     </div>
@@ -425,9 +427,9 @@
     }
     
     .tab-selection-item {
-        width: 60%;
+        width: 100%;
         display: grid;
-        grid-template-columns: repeat(2, 1fr);
+        grid-template-columns: repeat(3, 1fr);
     }
     
     .item-tab {
