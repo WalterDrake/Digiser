@@ -10,6 +10,7 @@ import unicodedata
 from django.utils.dateformat import format
 
 
+
 @login_required
 def home(request):
     if request.method == 'POST':
