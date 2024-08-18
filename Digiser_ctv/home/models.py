@@ -21,20 +21,20 @@ class Salary(models.Model):
         ("F", "F"),
     )
     _TYPE = (
-        ("Insert", "Insert"),
-        ("Check", "Check")
+        ('Nhập', 'Nhập'),
+        ('Check', 'Check')
     )
     type = models.CharField(
-        _('type'), choices=_TYPE, max_length=7, blank=True, null=True)
+        _('type'), choices=_TYPE, max_length=10, blank=True, null=True)
     evaluation = models.CharField(
         _('evaluation'), choices=_EVALUATION, max_length=1, blank=True, null=True)
     basic_salary = models.IntegerField(_('basic salary'), blank=True, null=True)
     bonus_fine = models.IntegerField(_('bonus/fine'), blank=True, null=True)
     final_salary = models.IntegerField(_('final salary'), blank=True, null=True)
-    note = models.CharField(_('note'), blank=True, max_length=50, null=True)
+    note = models.CharField(_('note'), blank=True, max_length=100, null=True)
         
     def __str__(self):
-        return self.user.phone_no
+        return self.package_name.package_name
 
 class NotificationBase(models.Model):
     date = models.DateTimeField(_('date'), blank=True, null=True)
