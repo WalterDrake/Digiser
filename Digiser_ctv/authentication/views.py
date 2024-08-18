@@ -11,7 +11,7 @@ def add_user_to_group(user, group_name):
 
 
 def login_and_redirect(request, user):
-    request.session['user_id'] = user.id
+    request.session['user_code'] = user.code
     login(request, user)
 
 
@@ -25,7 +25,7 @@ def LOGIN(request):
     user = authenticate(request, code=code, password=password)
 
     if user is not None:
-        request.session['user_id'] = user.username
+        request.session['user_code'] = user.code
         login(request, user)
         return redirect('home')
     else:
