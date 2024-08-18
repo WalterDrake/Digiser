@@ -41,13 +41,13 @@ class Package(models.Model):
 )
     type_package = models.CharField(
         _('type package'), max_length=50, choices=_TYPE, blank=True, null=True)
-    total_votes = models.IntegerField(_('total votes'), blank=True, null=True)
-    entered_votes = models.IntegerField(_('entered votes'), blank=True, null=True)
-    not_entered_votes = models.IntegerField(_('not entered votes'), blank=True, null=True)
-    total_real_votes = models.IntegerField(_('total real votes'), blank=True, null=True)
+    total_tickets = models.IntegerField(_('total tickets'), blank=True, null=True)
+    entered_tickets = models.IntegerField(_('entered tickets'), blank=True, null=True)
+    not_entered_tickets = models.IntegerField(_('not entered tickets'), blank=True, null=True)
+    total_real_tickets = models.IntegerField(_('total real tickets'), blank=True, null=True)
     total_fields = models.IntegerField(_('total fields'), blank=True, null=True)
-    total_merging_votes = models.IntegerField(
-        _('total merging votes'), blank=True, null=True)
+    total_merging_tickets = models.IntegerField(
+        _('total merging tickets'), blank=True, null=True)
     total_erroring_fields = models.IntegerField(
         _('total erroring fields'), blank=True, null=True)
     processing_check = models.IntegerField(_('processing check'), default=0)
