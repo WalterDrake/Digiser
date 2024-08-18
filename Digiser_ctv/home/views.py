@@ -5,14 +5,8 @@ from django.db.models import Max, Sum
 from authentication.models import CustomUser
 from .models import Salary
 import re
-from project.models.model1 import Package, Package_detail, Project
-import pandas as pd
-from django.core.exceptions import ObjectDoesNotExist
-from datetime import datetime
+from project.models.model1 import Package, Package_detail
 import unicodedata
-import math
-from datetime import datetime, date
-
 @login_required
 def home(request):
     if request.method == 'POST':
@@ -48,7 +42,6 @@ def handle_post_request(request):
 def handle_get_request(request):
     user_code = request.session.get('user_code')
     user = get_object_or_404(CustomUser, code=user_code)
-    print(user)
     if checkManager(user):
         data = statistic_human(request)
         return render(request, 'pages/home_manager.html', {'users': data})
@@ -178,31 +171,31 @@ def process_statistics(user, key):
         if project_name_trim not in stats["Project"]:
             stats["Project"][project_name_trim] = {
                 'packages': {},
-                'total_votes': 0,
-                'total_entered_votes': 0,
-                'total_not_entered_votes': 0,
+                'total_tickets': 0,
+                'total_entered_tickets': 0,
+                'total_not_entered_tickets': 0,
                 'total_erroring_fields': 0,
             }
 
         if package_name not in stats["Project"][project_name_trim]['packages']:
             stats["Project"][project_name_trim]['packages'][package_name] = {
-                'votes': 0,
-                'entered_votes': 0,
-                'not_entered_votes': 0,
+                'tickets': 0,
+                'entered_tickets': 0,
+                'not_entered_tickets': 0,
                 'erroring_fields': 0,
                 'status': set()
             }
         package_info = Package.objects.get(project__project_name=datum.project_name.project_name, package_name=package_name)
         package_details_info = Package_detail.objects.get(package_name=package_name)
-        stats["Project"][project_name_trim]['packages'][package_name]['votes'] += package_info.total_votes or 0
-        stats["Project"][project_name_trim]['packages'][package_name]['entered_votes'] += package_info.entered_votes or 0
-        stats["Project"][project_name_trim]['packages'][package_name]['not_entered_votes'] += package_info.not_entered_votes or 0
+        stats["Project"][project_name_trim]['packages'][package_name]['tickets'] += package_info.total_tickets or 0
+        stats["Project"][project_name_trim]['packages'][package_name]['entered_tickets'] += package_info.entered_tickets or 0
+        stats["Project"][project_name_trim]['packages'][package_name]['not_entered_tickets'] += package_info.not_entered_tickets or 0
         stats["Project"][project_name_trim]['packages'][package_name]['erroring_fields'] += package_info.total_erroring_fields or 0
         stats["Project"][project_name_trim]['packages'][package_name]['status'].add(package_details_info.insert_status if datum.type == "Nhập" else package_details_info.check_status )
 
-        stats["Project"][project_name_trim]['total_votes'] += package_info.total_votes or 0
-        stats["Project"][project_name_trim]['total_entered_votes'] += package_info.entered_votes or 0
-        stats["Project"][project_name_trim]['total_not_entered_votes'] += package_info.not_entered_votes or 0
+        stats["Project"][project_name_trim]['total_tickets'] += package_info.total_tickets or 0
+        stats["Project"][project_name_trim]['total_entered_tickets'] += package_info.entered_tickets or 0
+        stats["Project"][project_name_trim]['total_not_entered_tickets'] += package_info.not_entered_tickets or 0
         stats["Project"][project_name_trim]['total_erroring_fields'] += package_info.total_erroring_fields or 0
         
     return stats
