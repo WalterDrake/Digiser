@@ -9,8 +9,6 @@ from project.models.model1 import Package_detail, Document
 import unicodedata
 from django.utils.dateformat import format
 
-
-
 @login_required
 def home(request):
     if request.method == 'POST':
@@ -167,6 +165,7 @@ def show_data_statistic(request):
         if doc.package_name not in documents_dict:
             documents_dict[doc.package_name] = []
         documents_dict[doc.package_name].append(doc)
+
 
     packages = []
     for datum in salary_data:
