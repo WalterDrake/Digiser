@@ -5,8 +5,13 @@ from django.db.models import Max, Sum
 from authentication.models import CustomUser
 from .models import Salary
 import re
-from project.models.model1 import Package, Package_detail
-
+from project.models.model1 import Package, Package_detail, Project
+import pandas as pd
+from django.core.exceptions import ObjectDoesNotExist
+from datetime import datetime
+import unicodedata
+import math
+from datetime import datetime, date
 
 @login_required
 def home(request):
@@ -41,8 +46,9 @@ def handle_post_request(request):
 
 
 def handle_get_request(request):
-    user_id = request.session.get('user_id')
-    user = get_object_or_404(CustomUser, username=user_id)
+    user_code = request.session.get('user_code')
+    user = get_object_or_404(CustomUser, code=user_code)
+    print(user)
     if checkManager(user):
         data = statistic_human(request)
         return render(request, 'pages/home_manager.html', {'users': data})
@@ -96,8 +102,8 @@ def input(request):
 
 @login_required
 def info(request):
-    user_id = request.session.get('user_id')
-    user = get_object_or_404(CustomUser, username=user_id)
+    user_code = request.session.get('user_code')
+    user = get_object_or_404(CustomUser, code=user_code)
     if request.method == 'POST':
         return handle_info_post(request, user)
     elif user.is_verified:
@@ -151,13 +157,13 @@ def checkManager(user):
 
 
 def data_statistics(request):
-    user_id = request.session.get('user_id')
-    user = get_object_or_404(CustomUser, username=user_id)
+    user_code = request.session.get('user_code')
+    user = get_object_or_404(CustomUser, code=user_code)
     statistics = {
-        "Nhap": {},
+        "Nhập": {},
         "Check": {},
     }
-    statistics["Nhap"] = statistic_Insert(user)
+    statistics["Nhập"] = statistic_Insert(user)
     statistics["Check"] = statistic_Check(user)
     return statistics
 
@@ -192,7 +198,7 @@ def process_statistics(user, key):
         stats["Project"][project_name_trim]['packages'][package_name]['entered_votes'] += package_info.entered_votes or 0
         stats["Project"][project_name_trim]['packages'][package_name]['not_entered_votes'] += package_info.not_entered_votes or 0
         stats["Project"][project_name_trim]['packages'][package_name]['erroring_fields'] += package_info.total_erroring_fields or 0
-        stats["Project"][project_name_trim]['packages'][package_name]['status'].add(package_details_info.insert_status if datum.type == "Insert" else package_details_info.check_status )
+        stats["Project"][project_name_trim]['packages'][package_name]['status'].add(package_details_info.insert_status if datum.type == "Nhập" else package_details_info.check_status )
 
         stats["Project"][project_name_trim]['total_votes'] += package_info.total_votes or 0
         stats["Project"][project_name_trim]['total_entered_votes'] += package_info.entered_votes or 0
@@ -203,7 +209,7 @@ def process_statistics(user, key):
 
 
 def statistic_Insert(user):
-    return process_statistics(user, "Insert")
+    return process_statistics(user, "Nhập")
 
 
 def statistic_Check(user):
@@ -404,3 +410,19 @@ def statistic_human(request):
     users_query = CustomUser.objects.all()[:record]
     return users_query
 
+
+def normalize_phone(phone_no):
+    phone = re.sub(r'\D', '', phone)
+
+    if len(phone_no) < 9:
+        raise ValueError("Phone number must be more than 9 digits")
+
+    return int(phone)
+
+def normalize_username(full_name):
+    normalized_name = unicodedata.normalize('NFKD', full_name).encode('ASCII', 'ignore').decode('ASCII')
+    normalized_name = normalized_name.lower()
+    normalized_name = re.sub(r'\s+', '', normalized_name)
+    normalized_name = re.sub(r'[^a-z0-9]', '', normalized_name)
+
+    return normalized_name
