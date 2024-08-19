@@ -1,10 +1,10 @@
 <div class="horizontal-tab-selection-item horizontal-two-columns">
-    <div id="tab1" class="horizontal-item-tab active"><i class='bx bx-edit-alt'></i>Nhập Liệu</div>
-    <div id="tab2" class="horizontal-item-tab"><i class='bx bx-info-circle'></i>Thông tin tài liệu</div>
+    <div id="tab3" class="horizontal-item-tab active"><i class='bx bx-edit-alt'></i>Nhập Liệu</div>
+    <div id="tab4" class="horizontal-item-tab"><i class='bx bx-info-circle'></i>Thông tin tài liệu</div>
     <button class="horizontal-item-tab" id="Tlayoutbutton" onclick="toggleLayout()">Toggle Layout</button>
 </div>
 
-<div id="tab1-content" class="horizontal-tab-content active">
+<div id="tab3-content" class="horizontal-tab-content active">
     <form method="POST">
         {% csrf_token %}
         <div class="horizontal-input-form-border">
@@ -282,7 +282,7 @@
     </form>
 </div>
 
-<div id="tab2-content" class="horizontal-tab-content">
+<div id="tab4-content" class="horizontal-tab-content">
     <div class="horizontal-doc-info-tab">
         Test
     </div>
