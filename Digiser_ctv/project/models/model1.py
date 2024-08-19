@@ -66,8 +66,10 @@ class Package_detail(models.Model):
     package_name = models.ForeignKey(Package, on_delete=models.CASCADE)
     inserter = models.ForeignKey(
         CustomUser, on_delete=models.CASCADE, related_name='%(class)s_inserter', blank=True, null=True)
-    checker = models.ForeignKey(
-        CustomUser, on_delete=models.CASCADE, related_name='%(class)s_checker', blank=True, null=True)
+    checker_1 = models.ForeignKey(
+        CustomUser, on_delete=models.CASCADE, related_name='%(class)s_checker_1', blank=True, null=True)
+    checker_2 = models.ForeignKey(
+        CustomUser, on_delete=models.CASCADE, related_name='%(class)s_checker_2', blank=True, null=True)
     sup_name = models.ForeignKey(
         CustomUser, on_delete=models.CASCADE, related_name='%(class)s_support_name', blank=True, null=True)
     _INSERT_STATUS = (
@@ -115,15 +117,17 @@ class Document(models.Model):
         ('Đã nhập', 'Đã nhập'),
         ('Hoàn thành', 'Hoàn thành'),
         ('Lỗi', 'Lỗi'),
-        ('Chưa kiểm tra', 'Chưa kiểm tra'),
+        ('Chưa check', 'Chưa check'),
         ('Chưa nhập', 'Chưa nhập'),
         ('Nhập sai', 'Nhập sai')
     )
-    status = models.CharField(
-        _('status'),choices=_STATUS, max_length=30, blank=True, null=True)
+    status_insert = models.CharField(
+        _('status insert'),choices=_STATUS, max_length=30, blank=True, null=True)
+    status_check_1 = models.CharField(
+        _('status check_1'),choices=_STATUS, max_length=30, blank=True, null=True)
+    status_check_2 = models.CharField(
+        _('status check_2'),choices=_STATUS, max_length=30, blank=True, null=True)
     fields = models.IntegerField(_('fields'), blank=True, null=True)
-    executor = models.ForeignKey(
-        CustomUser, on_delete=models.CASCADE, related_name='%(class)s_executor', blank=True, null=True)
     errors = models.IntegerField(
         _('errors'), blank=True, null=True)
     
