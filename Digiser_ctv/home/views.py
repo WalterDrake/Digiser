@@ -5,8 +5,11 @@ from django.db.models import Max, Sum
 from authentication.models import CustomUser
 from .models import Salary
 import re
-from project.models.model1 import Package, Package_detail
+from project.models.model1 import Package_detail, Document
 import unicodedata
+from django.utils.dateformat import format
+
+
 @login_required
 def home(request):
     if request.method == 'POST':
@@ -149,237 +152,68 @@ def checkManager(user):
     return user.groups.filter(name='ADMIN').exists()
 
 
-def data_statistics(request):
+def show_data_statistic(request):
     user_code = request.session.get('user_code')
     user = get_object_or_404(CustomUser, code=user_code)
-    statistics = {
-        "Nhập": {},
-        "Check": {},
-    }
-    statistics["Nhập"] = statistic_Insert(user)
-    statistics["Check"] = statistic_Check(user)
-    return statistics
+    
+    salary_data = Salary.objects.filter(user=user).select_related('package_name')
+    package_names = [s.package_name for s in salary_data]
+    
+    package_details = Package_detail.objects.filter(package_name__in=package_names)
+    documents = Document.objects.filter(package_name__in=package_names)
 
-def process_statistics(user, key):
-    data = Salary.objects.filter(user=user,type=key)
-    stats = {"Project": {}}
-    for datum in data:
-        project_name_trim = (datum.project_name.project_name).split("_")[0]
-        project_name_trim = re.sub(r'(?<=[a-z])(?=[A-Z])', ' ', project_name_trim)
-        package_name = datum.package_name.package_name
+    package_detail_dict = {detail.package_name: detail for detail in package_details}
+    documents_dict = {}
+    for doc in documents:
+        if doc.package_name not in documents_dict:
+            documents_dict[doc.package_name] = []
+        documents_dict[doc.package_name].append(doc)
 
-        if project_name_trim not in stats["Project"]:
-            stats["Project"][project_name_trim] = {
-                'packages': {},
-                'total_tickets': 0,
-                'total_entered_tickets': 0,
-                'total_not_entered_tickets': 0,
-                'total_erroring_fields': 0,
-            }
-
-        if package_name not in stats["Project"][project_name_trim]['packages']:
-            stats["Project"][project_name_trim]['packages'][package_name] = {
-                'tickets': 0,
-                'entered_tickets': 0,
-                'not_entered_tickets': 0,
-                'erroring_fields': 0,
-                'status': set()
-            }
-        package_info = Package.objects.get(project__project_name=datum.project_name.project_name, package_name=package_name)
-        package_details_info = Package_detail.objects.get(package_name=package_name)
-        stats["Project"][project_name_trim]['packages'][package_name]['tickets'] += package_info.total_tickets or 0
-        stats["Project"][project_name_trim]['packages'][package_name]['entered_tickets'] += package_info.entered_tickets or 0
-        stats["Project"][project_name_trim]['packages'][package_name]['not_entered_tickets'] += package_info.not_entered_tickets or 0
-        stats["Project"][project_name_trim]['packages'][package_name]['erroring_fields'] += package_info.total_erroring_fields or 0
-        stats["Project"][project_name_trim]['packages'][package_name]['status'].add(package_details_info.insert_status if datum.type == "Nhập" else package_details_info.check_status )
-
-        stats["Project"][project_name_trim]['total_tickets'] += package_info.total_tickets or 0
-        stats["Project"][project_name_trim]['total_entered_tickets'] += package_info.entered_tickets or 0
-        stats["Project"][project_name_trim]['total_not_entered_tickets'] += package_info.not_entered_tickets or 0
-        stats["Project"][project_name_trim]['total_erroring_fields'] += package_info.total_erroring_fields or 0
+    packages = []
+    for datum in salary_data:
+        package_name = datum.package_name
+        package_detail = package_detail_dict.get(package_name)
         
-    return stats
+        package_info = {
+            'package': package_name.package_name,
+            'total_tickets': package_name.total_tickets,
+            'executor': user.full_name,
+            'status': package_name.payment,
+            'start_day': format(package_detail.start_insert, 'd/m/y') if package_detail and package_detail.start_insert else None,
+            'finish_day': format(package_detail.finish_insert, 'd/m/y') if package_detail and package_detail.finish_insert else None,
+            'datarecord_set': []
+        }
 
+        related_documents = documents_dict.get(package_name, [])
+        for document in related_documents:
+            document_info = {
+                'document_path': document.document_path,
+                'fields': document.fields,
+                'executor' : None,
+                'status' : None,
+                'errors': document.errors,
+                'type': document.type,
+            }
 
-def statistic_Insert(user):
-    return process_statistics(user, "Nhập")
+            if package_detail.inserter and user.full_name == package_detail.inserter.full_name:
+                document_info['executor'] = package_detail.inserter.full_name
+                document_info['status'] = document.status_insert
+            elif package_detail.checker_1 and user.full_name == package_detail.checker_1.full_name:
+                document_info['executor'] = package_detail.checker_1.full_name
+                document_info['status'] = document.status_check_1
+            elif package_detail.checker_2 and user.full_name == package_detail.checker_2.full_name:
+                document_info['executor'] = package_detail.checker_2.full_name
+                document_info['status'] = document.status_check_2
 
+            package_info['datarecord_set'].append(document_info)
+        
+        packages.append(package_info)
 
-def statistic_Check(user):
-    return process_statistics(user, "Check")
-
-
-def show_data_statistic(request):
-    data = data_statistics(request)
-    print(data)
-    projects = [
-        {
-            'name': 'DA050524_TKGoCong_KH2010_01',
-            'tong_phieu': 80,
-            'thuc_hien': 'Nguyễn Văn A',
-            'trang_thai': 'Đã thanh toán',
-            'ngay_nhan': '20/04/24',
-            'deadline': '03/05/24',
-            'datarecord_set': [
-                {
-                    'ten_du_lieu': 'Dữ liệu 01',
-                    'tong_phieu': 10,
-                    'tong_truong': 18,
-                    'thuc_hien': 'Nguyễn Văn A',
-                    'trang_thai': 'Đã nhập',
-                    'ngay_nhan': '20/04/24',
-                    'deadline': '03/05/24',
-                    'so_loi': 0,
-                    'loai_file': 'KS',
-                },
-                {
-                    'ten_du_lieu': 'Dữ liệu 02',
-                    'tong_phieu': 10,
-                    'tong_truong': 18,
-                    'thuc_hien': 'Nguyễn Văn A',
-                    'trang_thai': 'Chưa check',
-                    'ngay_nhan': '20/04/24',
-                    'deadline': '03/05/24',
-                    'so_loi': 0,
-                    'loai_file': 'KS',
-                },
-                {
-                    'ten_du_lieu': 'Dữ liệu 02',
-                    'tong_phieu': 10,
-                    'tong_truong': 18,
-                    'thuc_hien': 'Nguyễn Văn A',
-                    'trang_thai': 'Chưa check',
-                    'ngay_nhan': '20/04/24',
-                    'deadline': '03/05/24',
-                    'so_loi': 0,
-                    'loai_file': 'KS',
-                },
-                {
-                    'ten_du_lieu': 'Dữ liệu 03',
-                    'tong_phieu': 10,
-                    'tong_truong': 18,
-                    'thuc_hien': 'Nguyễn Văn A',
-                    'trang_thai': 'Báo lỗi',
-                    'ngay_nhan': '20/04/24',
-                    'deadline': '03/05/24',
-                    'so_loi': 2,
-                    'loai_file': 'KH',
-                },
-                {
-                    'ten_du_lieu': 'Dữ liệu 04',
-                    'tong_phieu': 10,
-                    'tong_truong': 18,
-                    'thuc_hien': 'Nguyễn Văn A',
-                    'trang_thai': 'Nhập sai',
-                    'ngay_nhan': '20/04/24',
-                    'deadline': '03/05/24',
-                    'so_loi': 1,
-                    'loai_file': 'KH',
-                },
-                {
-                    'ten_du_lieu': 'Dữ liệu 05',
-                    'tong_phieu': 10,
-                    'tong_truong': 18,
-                    'thuc_hien': 'Nguyễn Văn A',
-                    'trang_thai': 'Chưa nhập',
-                    'ngay_nhan': '20/04/24',
-                    'deadline': '03/05/24',
-                    'so_loi': 0,
-                    'loai_file': 'HN',
-                },
-                {
-                    'ten_du_lieu': 'Dữ liệu 06',
-                    'tong_phieu': 10,
-                    'tong_truong': 18,
-                    'thuc_hien': 'Nguyễn Văn A',
-                    'trang_thai': 'Hoàn thành',
-                    'ngay_nhan': '20/04/24',
-                    'deadline': '03/05/24',
-                    'so_loi': 0,
-                    'loai_file': 'KS',
-                },
-                {
-                    'ten_du_lieu': 'Dữ liệu 07',
-                    'tong_phieu': 10,
-                    'tong_truong': 18,
-                    'thuc_hien': 'Nguyễn Văn A',
-                    'trang_thai': 'Hoàn thành',
-                    'ngay_nhan': '20/04/24',
-                    'deadline': '03/05/24',
-                    'so_loi': 0,
-                    'loai_file': 'KS',
-                },
-                {
-                    'ten_du_lieu': 'Dữ liệu 08',
-                    'tong_phieu': 10,
-                    'tong_truong': 18,
-                    'thuc_hien': 'Nguyễn Văn A',
-                    'trang_thai': 'Đã nhập',
-                    'ngay_nhan': '20/04/24',
-                    'deadline': '03/05/24',
-                    'so_loi': 0,
-                    'loai_file': 'KT',
-                },
-            ]
-        },
-        {
-            'name': 'DA050524_TKGoCong_KH2010_01',
-            'tong_phieu': 20,
-            'thuc_hien': 'Trần Thanh B',
-            'trang_thai': 'Đang thực hiện',
-            'ngay_nhan': '25/04/24',
-            'deadline': '15/05/24',
-            'datarecord_set': [
-                {
-                    'ten_du_lieu': 'Dữ liệu 09',
-                    'tong_phieu': 20,
-                    'tong_truong': 18,
-                    'thuc_hien': 'Trần Thanh B',
-                    'trang_thai': 'Đang thực hiện',
-                    'ngay_nhan': '25/04/24',
-                    'deadline': '15/05/24',
-                    'so_loi': 0,
-                    'loai_file': 'KS',
-                },
-            ]
-        },
-        {
-            'name': 'DA050524_TKGoCong_KH2010_01',
-            'tong_phieu': 30,
-            'thuc_hien': 'Nguyễn Hoàng C',
-            'trang_thai': 'Đang thực hiện',
-            'ngay_nhan': '30/04/24',
-            'deadline': '20/05/24',
-            'datarecord_set': [
-                {
-                    'ten_du_lieu': 'Dữ liệu 10',
-                    'tong_phieu': 15,
-                    'tong_truong': 18,
-                    'thuc_hien': 'Nguyễn Hoàng C',
-                    'trang_thai': 'Chưa check',
-                    'ngay_nhan': '30/04/24',
-                    'deadline': '20/05/24',
-                    'so_loi': 0,
-                    'loai_file': 'CMC',
-                },
-                {
-                    'ten_du_lieu': 'Dữ liệu 11',
-                    'tong_phieu': 15,
-                    'tong_truong': 18,
-                    'thuc_hien': 'Nguyễn Hoàng C',
-                    'trang_thai': 'Hoàn thành',
-                    'ngay_nhan': '30/04/24',
-                    'deadline': '20/05/24',
-                    'so_loi': 0,
-                    'loai_file': 'HN',
-                },
-            ]
-        },
-    ]
     context = {
-        'projects': projects
+        'packages': packages
     }
     return render(request, 'pages/statistic.html', context)
+
 
 
 def statistic_project(user):
