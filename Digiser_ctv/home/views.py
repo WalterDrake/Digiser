@@ -1,14 +1,13 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
 from authentication.forms import CustomUserInfoChangeForm, CustomUserBankChangeForm
-from django.db.models import Max
+from django.db.models import Max, Sum
 from authentication.models import CustomUser
-from django.contrib.auth.models import Group
 from .models import Salary
 import re
-import os
-from django.db.models import Sum
-from django.core.paginator import Paginator
+from project.models.model1 import Package_detail, Document
+import unicodedata
+from django.utils.dateformat import format
 
 
 @login_required
@@ -23,7 +22,7 @@ def generate_code(prefix, latest_number):
     return f"{prefix}{new_number:04d}"
 
 def get_latest_ctv_number():
-    latest_ctv = CustomUser.objects.filter(role='CTV').aggregate(Max('code'))
+    latest_ctv = CustomUser.objects.filter(role='EMPLOYEEE').aggregate(Max('code'))
     latest_code = latest_ctv['code__max']
     if latest_code:
         latest_number = int(latest_code.replace("NV", ""))
@@ -36,7 +35,7 @@ def handle_post_request(request):
         email = request.POST.get('gmail')
         user = get_object_or_404(CustomUser, email=email)
         user.is_verified = True
-        user.role = 'CTV'
+        user.role = 'EMPLOYEE'
         latest_number = get_latest_ctv_number()
         user.code = generate_code("NV", latest_number)
         user.save()
@@ -44,21 +43,20 @@ def handle_post_request(request):
 
 
 def handle_get_request(request):
-    user_id = request.session.get('user_id')
-    user = get_object_or_404(CustomUser, username=user_id)
+    user_code = request.session.get('user_code')
+    user = get_object_or_404(CustomUser, code=user_code)
+    if checkManager(user):
+        data = statistic_human(request)
+        return render(request, 'pages/home_manager.html', {'users': data})
+    
     total_salary = statistic_salary(user)
     total_project_details = statistic_project(user)
-
     context = {
         'total_project_details' : total_project_details,
         'total_salary' : total_salary
     }
     data = statistic_human(request)
-    if checkManager(user):
-        data = statistic_human(request)
-        return render(request, 'pages/home_manager.html', {'users': data})
     return render(request, 'pages/dashboard.html', context)
-    # return render(request, 'pages/home_manager.html', {'users': data})
 
 
 
@@ -100,8 +98,8 @@ def input(request):
 
 @login_required
 def info(request):
-    user_id = request.session.get('user_id')
-    user = get_object_or_404(CustomUser, username=user_id)
+    user_code = request.session.get('user_code')
+    user = get_object_or_404(CustomUser, code=user_code)
     if request.method == 'POST':
         return handle_info_post(request, user)
     elif user.is_verified:
@@ -151,72 +149,71 @@ def get_user_context(user):
 
 
 def checkManager(user):
-    return user.groups.filter(name='Manager').exists()
-
-
-def data_statistics(request):
-    user_id = request.session.get('user_id')
-    user = get_object_or_404(CustomUser, username=user_id)
-    statistics = {
-        "Nhap": {},
-        "Check": {},
-    }
-    statistics["Nhap"] = statistic_Insert(user)
-    statistics["Check"] = statistic_Check(user)
-    return statistics
-
-def process_statistics(user, key):
-    data = Salary.objects.filter(user=user,type=key)
-    stats = {"Project": {}}
-    for datum in data:
-        project_name = (datum.project_name.project_name).split("_")[0]
-        project_name = re.sub(r'(?<=[a-z])(?=[A-Z])', ' ', project_name)
-        package_name = datum.package_name.package_name
-
-        if project_name not in stats["Project"]:
-            stats["Project"][project_name] = {
-                'packages': {},
-                'total_votes': 0,
-                'total_acceptances': 0,
-                'total_rejections': 0,
-                'total_erroring_fields': 0,
-            }
-
-        if package_name not in stats["Project"][project_name]['packages']:
-            stats["Project"][project_name]['packages'][package_name] = {
-                'votes': 0,
-                'acceptances': 0,
-                'rejections': 0,
-                'erroring_fields': 0,
-                'status': set()
-            }
-
-        stats["Project"][project_name]['packages'][package_name]['votes'] += datum.total_votes or 0
-        stats["Project"][project_name]['packages'][package_name]['acceptances'] += datum.total_fields or 0
-        stats["Project"][project_name]['packages'][package_name]['rejections'] += datum.total_merging_votes or 0
-        stats["Project"][project_name]['packages'][package_name]['erroring_fields'] += datum.total_erroring_fields or 0
-        stats["Project"][project_name]['packages'][package_name]['status'].add(datum.status.insert_status if datum.type == "I" else datum.status.check_status )
-
-        stats["Project"][project_name]['total_votes'] += datum.total_votes or 0
-        stats["Project"][project_name]['total_acceptances'] += datum.total_fields or 0
-        stats["Project"][project_name]['total_rejections'] += datum.total_merging_votes or 0
-        stats["Project"][project_name]['total_erroring_fields'] += datum.total_erroring_fields or 0
-        
-    return stats
-
-
-def statistic_Insert(user):
-    return process_statistics(user, "I")
-
-
-def statistic_Check(user):
-    return process_statistics(user, "C")
+    return user.groups.filter(name='ADMIN').exists()
 
 
 def show_data_statistic(request):
-    data = data_statistics(request)
-    context = {'data': data}
-    return render(request, 'pages/data_statistic.html', context)
+    user_code = request.session.get('user_code')
+    user = get_object_or_404(CustomUser, code=user_code)
+    
+    salary_data = Salary.objects.filter(user=user).select_related('package_name')
+    package_names = [s.package_name for s in salary_data]
+    
+    package_details = Package_detail.objects.filter(package_name__in=package_names)
+    documents = Document.objects.filter(package_name__in=package_names)
+
+    package_detail_dict = {detail.package_name: detail for detail in package_details}
+    documents_dict = {}
+    for doc in documents:
+        if doc.package_name not in documents_dict:
+            documents_dict[doc.package_name] = []
+        documents_dict[doc.package_name].append(doc)
+
+    packages = []
+    for datum in salary_data:
+        package_name = datum.package_name
+        package_detail = package_detail_dict.get(package_name)
+        
+        package_info = {
+            'package': package_name.package_name,
+            'total_tickets': package_name.total_tickets,
+            'executor': user.full_name,
+            'status': package_name.payment,
+            'start_day': format(package_detail.start_insert, 'd/m/y') if package_detail and package_detail.start_insert else None,
+            'finish_day': format(package_detail.finish_insert, 'd/m/y') if package_detail and package_detail.finish_insert else None,
+            'datarecord_set': []
+        }
+
+        related_documents = documents_dict.get(package_name, [])
+        for document in related_documents:
+            document_info = {
+                'document_path': document.document_path,
+                'fields': document.fields,
+                'executor' : None,
+                'status' : None,
+                'errors': document.errors,
+                'type': document.type,
+            }
+
+            if package_detail.inserter and user.full_name == package_detail.inserter.full_name:
+                document_info['executor'] = package_detail.inserter.full_name
+                document_info['status'] = document.status_insert
+            elif package_detail.checker_1 and user.full_name == package_detail.checker_1.full_name:
+                document_info['executor'] = package_detail.checker_1.full_name
+                document_info['status'] = document.status_check_1
+            elif package_detail.checker_2 and user.full_name == package_detail.checker_2.full_name:
+                document_info['executor'] = package_detail.checker_2.full_name
+                document_info['status'] = document.status_check_2
+
+            package_info['datarecord_set'].append(document_info)
+        
+        packages.append(package_info)
+
+    context = {
+        'packages': packages
+    }
+    return render(request, 'pages/statistic.html', context)
+
 
 
 def statistic_project(user):
@@ -225,6 +222,7 @@ def statistic_project(user):
 
 def statistic_salary(user):
     total_salary = Salary.objects.filter(user=user).aggregate(Sum('final_salary'))['final_salary__sum']
+    total_salary = f"{total_salary:,}"
     return total_salary or 0
 
 
@@ -239,3 +237,19 @@ def statistic_human(request):
     users_query = CustomUser.objects.all()[:record]
     return users_query
 
+
+def normalize_phone(phone_no):
+    phone = re.sub(r'\D', '', phone)
+
+    if len(phone_no) < 9:
+        raise ValueError("Phone number must be more than 9 digits")
+
+    return int(phone)
+
+def normalize_username(full_name):
+    normalized_name = unicodedata.normalize('NFKD', full_name).encode('ASCII', 'ignore').decode('ASCII')
+    normalized_name = normalized_name.lower()
+    normalized_name = re.sub(r'\s+', '', normalized_name)
+    normalized_name = re.sub(r'[^a-z0-9]', '', normalized_name)
+
+    return normalized_name
