@@ -75,7 +75,13 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('document_path', models.CharField(blank=True, max_length=50, null=True, verbose_name='document path')),
+<<<<<<< HEAD
                 ('status', models.CharField(blank=True, choices=[('Entered', 'Entered'), ('Completed', 'Completed'), ('Error', 'Error'), ('Not Checked', 'Not Checked'), ('Not Entered', 'Not Entered'), ('Incorrect Entry', 'Incorrect Entry')], max_length=30, null=True, verbose_name='status')),
+=======
+                ('status_insert', models.CharField(blank=True, choices=[('Đã nhập', 'Đã nhập'), ('Hoàn thành', 'Hoàn thành'), ('Lỗi', 'Lỗi'), ('Chưa check', 'Chưa check'), ('Chưa nhập', 'Chưa nhập'), ('Nhập sai', 'Nhập sai')], max_length=30, null=True, verbose_name='status insert')),
+                ('status_check_1', models.CharField(blank=True, choices=[('Đã nhập', 'Đã nhập'), ('Hoàn thành', 'Hoàn thành'), ('Lỗi', 'Lỗi'), ('Chưa check', 'Chưa check'), ('Chưa nhập', 'Chưa nhập'), ('Nhập sai', 'Nhập sai')], max_length=30, null=True, verbose_name='status check_1')),
+                ('status_check_2', models.CharField(blank=True, choices=[('Đã nhập', 'Đã nhập'), ('Hoàn thành', 'Hoàn thành'), ('Lỗi', 'Lỗi'), ('Chưa check', 'Chưa check'), ('Chưa nhập', 'Chưa nhập'), ('Nhập sai', 'Nhập sai')], max_length=30, null=True, verbose_name='status check_2')),
+>>>>>>> e49ac50 (new migrations)
                 ('fields', models.IntegerField(blank=True, null=True, verbose_name='fields')),
                 ('errors', models.IntegerField(blank=True, null=True, verbose_name='errors')),
                 ('type', models.CharField(blank=True, choices=[('KH', 'KH'), ('KS', 'KS'), ('KT', 'KT'), ('HN', 'HN'), ('CMC', 'CMC')], max_length=4, null=True, verbose_name='type')),
