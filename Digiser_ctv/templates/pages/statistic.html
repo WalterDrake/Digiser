@@ -278,53 +278,53 @@
         </tr>
     </thead>
     <tbody>
-        {% for project in projects %}
+        {% for package in packages %}
         <tr class="parent toggle" data-id="{{ forloop.counter }}">
             <td>{{ forloop.counter }}</td>
             <td colspan="1">
-                <i class='bx bx-chevron-right toggle-icon'></i>{{ project.name }}
+                <i class='bx bx-chevron-right toggle-icon'></i>{{ package.package }}
             </td>
-            <td>{{ project.tong_phieu }}</td>
+            <td>{{ package.total_tickets }}</td>
             <td></td>
-            <td>{{ project.thuc_hien }}</td>
+            <td>{{ package.executor }}</td>
             <td>
                 <span class="badge 
-                    {% if project.trang_thai == 'Đã nhập' %} bg-primary 
-                    {% elif project.trang_thai == 'Chưa check' %} bg-warning 
-                    {% elif project.trang_thai == 'Báo lỗi' %} bg-danger 
-                    {% elif project.trang_thai == 'Hoàn thành' %} bg-success 
+                    {% if package.status == 'Đã nhập' %} bg-primary 
+                    {% elif package.status == 'Chưa check' %} bg-warning 
+                    {% elif package.status == 'Báo lỗi' %} bg-danger 
+                    {% elif package.status == 'Hoàn thành' %} bg-success 
                     {% else %} bg-default 
                     {% endif %}">
-                    {{ project.trang_thai }}
+                    {{ package.status }}
                 </span>
             </td>
-            <td>{{ project.ngay_nhan }}</td>
-            <td>{{ project.deadline }}</td>
+            <td>{{ package.start_day }}</td>
+            <td>{{ package.finish_day }}</td>
             <td></td>
             <td></td>
         </tr>
-        {% for record in project.datarecord_set %}
+        {% for record in package.datarecord_set %}
         <tr class="child" data-parent="{{ forloop.parentloop.counter }}" style="display: none;">
             <td></td>
-            <td>{{ record.ten_du_lieu }}</td>
-            <td>{{ record.tong_phieu }}</td>
-            <td>{{ record.tong_truong }}</td>
-            <td>{{ record.thuc_hien }}</td>
+            <td>{{ record.document_path }}</td>
+            <td></td>
+            <td>{{ record.fields }}</td>
+            <td>{{ record.executor }}</td>
             <td>
                 <span class="badge 
-                    {% if record.trang_thai == 'Đã nhập' %} bg-primary 
-                    {% elif record.trang_thai == 'Chưa check' %} bg-warning 
-                    {% elif record.trang_thai == 'Báo lỗi' %} bg-danger 
-                    {% elif record.trang_thai == 'Hoàn thành' %} bg-success 
+                    {% if record.status == 'Đã nhập' %} bg-primary 
+                    {% elif record.status == 'Chưa check' %} bg-warning 
+                    {% elif record.status == 'Báo lỗi' %} bg-danger 
+                    {% elif record.status == 'Hoàn thành' %} bg-success 
                     {% else %} bg-default 
                     {% endif %}">
-                    {{ record.trang_thai }}
+                    {{ record.status }}
                 </span>
             </td>
-            <td>{{ record.ngay_nhan }}</td>
-            <td>{{ record.deadline }}</td>
-            <td>{{ record.so_loi }}</td>
-            <td>{{ record.loai_file }}</td>
+            <td></td>
+            <td></td>
+            <td>{{ record.errors }}</td>
+            <td>{{ record.type }}</td>
         </tr>
         {% endfor %}
         {% endfor %}
