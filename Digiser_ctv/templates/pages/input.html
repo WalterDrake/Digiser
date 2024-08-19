@@ -2,48 +2,14 @@
 {% block content %}
 {% load static %}
 <style>
-    .input-group {
-        position: relative;
-        margin: 20px 0;
-    }
 
-    .input-group label {
-        position: absolute;
-        top: 50%;
-        left: 5px;
-        transform: translateY(-50%);
-        font-size: 16px;
-        color: #fff;
-        padding: 0 5px;
-        pointer-events: none;
-        transition: .5s;
-    }
-
-    .input-group input {
-        width: 100%;
-        height: 40px;
-        font-size: 16px;
-        color: #fff;
-        padding: 0 10px;
-        background: transparent;
-        border: 1.2px solid #fff;
-        outline: none;
-        border-radius: 5px;
-    }
-
-    .input-group input:focus~label,
-    .input-group input:valid~label {
-        top: 0;
-        font-size: 12px;
-        background: #7d2ae8;
-    }
 
     .input-container {
         display: flex;
         flex-direction: row;
         width: 100%;
         background-color: #f8f9fa;
-        height: fit-content;
+        height: 88vh;
     }
 
 
@@ -96,7 +62,6 @@
         background-color: #eee;
         border-radius: 5px;
         border: 1px solid #ccc;
-        background: linear-gradient(white, #f2f2f2);
         box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
         padding: inherit;
     }
@@ -152,14 +117,14 @@
         flex-direction: column;
     }
 
-    .under-side .form-container {
+    .form-container {
         display: flex;
         flex-direction: row;
         flex-wrap: wrap;
+        height: fit-content;
         align-items: flex-start;
-        padding: 15px;
         overflow: auto;
-        max-height: 70vh;
+        max-height: 50vh;
     }
 
     .under-side .form-group {
@@ -184,13 +149,13 @@
         padding: 10px 20px;
     }
 
-.under-side.horizontal-layout {
+#horizontal-form.under-side {
     width: 100%;
-    padding-top: 20px;
-    height: 10vh;
+    margin-top: 5rem;
 }
     .left-side {
     width: 60%;
+    height: 80vh;
 }
 
 .scrollable-image-container {
@@ -307,7 +272,7 @@
             leftSide.style.maxHeight = '100%'; 
             leftSide.style.minHeight = '100%';
 
-            container.style.height = '100vh'; 
+            container.style.height = 'fit-content'; 
 
             if (activeTab) {
                 const correspondingTab = horizontalForm.querySelector(`#${activeTab.id}`);
@@ -322,10 +287,10 @@
 
             leftSide.style.maxWidth = '60%';
             leftSide.style.minWidth = '60%';
-            leftSide.style.maxHeight = '100vh';
-            leftSide.style.minHeight = '100vh';
+            leftSide.style.maxHeight = '100%';
+            leftSide.style.minHeight = '100%';
 
-            container.style.height = 'fit-content'; 
+            container.style.height = '100%'; 
 
 
             if (activeTab) {
