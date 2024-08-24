@@ -383,12 +383,11 @@
 
 </div>
 
-    <script>
-        // Get elements
-        const tab1 = document.getElementById('tab1');
-        const tab2 = document.getElementById('tab2');
-        const tab1Content = document.getElementById('tab1-content');
-        const tab2Content = document.getElementById('tab2-content');
+<script>
+    const tab1 = document.getElementById('tab1');
+    const tab2 = document.getElementById('tab2');
+    const tab1Content = document.getElementById('tab1-content');
+    const tab2Content = document.getElementById('tab2-content');
 
     tab1.addEventListener('click', () => {
         tab1.classList.add('active');
@@ -408,6 +407,21 @@
         tab1.classList.remove('active');
         tab2Content.classList.add('active');
         tab1Content.classList.remove('active');
+    });
+
+    tab3.addEventListener('click', () => {
+        tab3.classList.add('active');
+        tab4.classList.remove('active');
+        tab3Content.classList.add('active');
+        tab4Content.classList.remove('active');
+    });
+
+
+    tab4.addEventListener('click', () => {
+        tab4.classList.add('active');
+        tab3.classList.remove('active');
+        tab4Content.classList.add('active');
+        tab3Content.classList.remove('active');
     });
 
     let isVerticalLayout = true;
