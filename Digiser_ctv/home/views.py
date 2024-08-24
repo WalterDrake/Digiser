@@ -226,174 +226,41 @@ def show_data_statistic(request):
     return render(request, 'pages/data_statistic.html', context)
 
 def show_data_statistic(request):
-    projects = [
-        {
-            'name': 'DA050524_TKGoCong_KH2010_01',
-            'tong_phieu': 80,
-            'thuc_hien': 'Nguyễn Văn A',
-            'trang_thai': 'Đã thanh toán',
-            'ngay_nhan': '20/04/24',
-            'deadline': '03/05/24',
-            'datarecord_set': [
-                {
-                    'ten_du_lieu': 'Dữ liệu 01',
-                    'tong_phieu': 10,
-                    'tong_truong': 18,
-                    'thuc_hien': 'Nguyễn Văn A',
-                    'trang_thai': 'Đã nhập',
-                    'ngay_nhan': '20/04/24',
-                    'deadline': '03/05/24',
-                    'so_loi': 0,
-                    'loai_file': 'KS',
-                },
-                {
-                    'ten_du_lieu': 'Dữ liệu 02',
-                    'tong_phieu': 10,
-                    'tong_truong': 18,
-                    'thuc_hien': 'Nguyễn Văn A',
-                    'trang_thai': 'Chưa check',
-                    'ngay_nhan': '20/04/24',
-                    'deadline': '03/05/24',
-                    'so_loi': 0,
-                    'loai_file': 'KS',
-                },
-                {
-                    'ten_du_lieu': 'Dữ liệu 02',
-                    'tong_phieu': 10,
-                    'tong_truong': 18,
-                    'thuc_hien': 'Nguyễn Văn A',
-                    'trang_thai': 'Chưa check',
-                    'ngay_nhan': '20/04/24',
-                    'deadline': '03/05/24',
-                    'so_loi': 0,
-                    'loai_file': 'KS',
-                },
-                {
-                    'ten_du_lieu': 'Dữ liệu 03',
-                    'tong_phieu': 10,
-                    'tong_truong': 18,
-                    'thuc_hien': 'Nguyễn Văn A',
-                    'trang_thai': 'Báo lỗi',
-                    'ngay_nhan': '20/04/24',
-                    'deadline': '03/05/24',
-                    'so_loi': 2,
-                    'loai_file': 'KH',
-                },
-                {
-                    'ten_du_lieu': 'Dữ liệu 04',
-                    'tong_phieu': 10,
-                    'tong_truong': 18,
-                    'thuc_hien': 'Nguyễn Văn A',
-                    'trang_thai': 'Nhập sai',
-                    'ngay_nhan': '20/04/24',
-                    'deadline': '03/05/24',
-                    'so_loi': 1,
-                    'loai_file': 'KH',
-                },
-                {
-                    'ten_du_lieu': 'Dữ liệu 05',
-                    'tong_phieu': 10,
-                    'tong_truong': 18,
-                    'thuc_hien': 'Nguyễn Văn A',
-                    'trang_thai': 'Chưa nhập',
-                    'ngay_nhan': '20/04/24',
-                    'deadline': '03/05/24',
-                    'so_loi': 0,
-                    'loai_file': 'HN',
-                },
-                {
-                    'ten_du_lieu': 'Dữ liệu 06',
-                    'tong_phieu': 10,
-                    'tong_truong': 18,
-                    'thuc_hien': 'Nguyễn Văn A',
-                    'trang_thai': 'Hoàn thành',
-                    'ngay_nhan': '20/04/24',
-                    'deadline': '03/05/24',
-                    'so_loi': 0,
-                    'loai_file': 'KS',
-                },
-                {
-                    'ten_du_lieu': 'Dữ liệu 07',
-                    'tong_phieu': 10,
-                    'tong_truong': 18,
-                    'thuc_hien': 'Nguyễn Văn A',
-                    'trang_thai': 'Hoàn thành',
-                    'ngay_nhan': '20/04/24',
-                    'deadline': '03/05/24',
-                    'so_loi': 0,
-                    'loai_file': 'KS',
-                },
-                {
-                    'ten_du_lieu': 'Dữ liệu 08',
-                    'tong_phieu': 10,
-                    'tong_truong': 18,
-                    'thuc_hien': 'Nguyễn Văn A',
-                    'trang_thai': 'Đã nhập',
-                    'ngay_nhan': '20/04/24',
-                    'deadline': '03/05/24',
-                    'so_loi': 0,
-                    'loai_file': 'KT',
-                },
-            ]
-        },
-        {
-            'name': 'DA050524_TKGoCong_KH2010_01',
-            'tong_phieu': 20,
-            'thuc_hien': 'Trần Thanh B',
-            'trang_thai': 'Đang thực hiện',
-            'ngay_nhan': '25/04/24',
-            'deadline': '15/05/24',
-            'datarecord_set': [
-                {
-                    'ten_du_lieu': 'Dữ liệu 09',
-                    'tong_phieu': 20,
-                    'tong_truong': 18,
-                    'thuc_hien': 'Trần Thanh B',
-                    'trang_thai': 'Đang thực hiện',
-                    'ngay_nhan': '25/04/24',
-                    'deadline': '15/05/24',
-                    'so_loi': 0,
-                    'loai_file': 'KS',
-                },
-            ]
-        },
-        {
-            'name': 'DA050524_TKGoCong_KH2010_01',
-            'tong_phieu': 30,
-            'thuc_hien': 'Nguyễn Hoàng C',
-            'trang_thai': 'Đang thực hiện',
-            'ngay_nhan': '30/04/24',
-            'deadline': '20/05/24',
-            'datarecord_set': [
-                {
-                    'ten_du_lieu': 'Dữ liệu 10',
-                    'tong_phieu': 15,
-                    'tong_truong': 18,
-                    'thuc_hien': 'Nguyễn Hoàng C',
-                    'trang_thai': 'Chưa check',
-                    'ngay_nhan': '30/04/24',
-                    'deadline': '20/05/24',
-                    'so_loi': 0,
-                    'loai_file': 'CMC',
-                },
-                {
-                    'ten_du_lieu': 'Dữ liệu 11',
-                    'tong_phieu': 15,
-                    'tong_truong': 18,
-                    'thuc_hien': 'Nguyễn Hoàng C',
-                    'trang_thai': 'Hoàn thành',
-                    'ngay_nhan': '30/04/24',
-                    'deadline': '20/05/24',
-                    'so_loi': 0,
-                    'loai_file': 'HN',
-                },
-            ]
-        },
-    ]
+    projects = []
+
+    # Generating 20 projects with 10 records each for testing
+    for i in range(1, 21):
+        project = {
+            'name': f'DA050524_TKGoCong_KH2010_{i:02d}',
+            'tong_phieu': i * 10,
+            'thuc_hien': f'Nguyễn Văn {chr(64 + i)}',
+            'trang_thai': 'Đang thực hiện' if i % 2 == 0 else 'Đã thanh toán',
+            'ngay_nhan': f'{20 + i % 10}/04/24',
+            'deadline': f'{30 + i % 10}/05/24',
+            'datarecord_set': []
+        }
+
+        # Adding 10 records to each project
+        for j in range(1, 11):
+            record = {
+                'ten_du_lieu': f'Dữ liệu {j:02d}',
+                'tong_phieu': 10 * j,
+                'tong_truong': 18,
+                'thuc_hien': f'Nguyễn Văn {chr(64 + i)}',
+                'trang_thai': 'Đã nhập' if j % 2 == 0 else 'Chưa check',
+                'ngay_nhan': f'{20 + i % 10}/04/24',
+                'deadline': f'{30 + i % 10}/05/24',
+                'so_loi': j % 3,
+                'loai_file': 'KS' if j % 3 == 0 else 'HN',
+            }
+            project['datarecord_set'].append(record)
+
+        projects.append(project)
+
     context = {
         'projects': projects
     }
-    return render(request, 'pages/data_statistic.html', context)
+    return render(request, 'pages/data_statistic.html', context);
 
 def statistic_project(doc_name,user):
     total_project_details = statistic_Nhap(doc_name, user)[1] + statistic_Check(doc_name,user)[1]

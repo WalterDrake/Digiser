@@ -330,26 +330,50 @@
         {% endfor %}
     </tbody>
 </table>
+<div class="pagination-container">
+    <form method="get" id="pagination-form">
+        <label for="records-per-page">Hiển thị</label>
+        <select id="records-per-page" name="records_per_page" onchange="this.form.submit();">
+            <option value="5" {% if page_obj.paginator.per_page == 5 %}selected{% endif %}>5</option>
+            <option value="10" {% if page_obj.paginator.per_page == 10 %}selected{% endif %}>10</option>
+            <option value="20" {% if page_obj.paginator.per_page == 20 %}selected{% endif %}>20</option>
+        </select>
+        <span>bản ghi</span>
+    </form>
+</div>
+
+
 <script>
-    document.addEventListener('DOMContentLoaded', function () {
-        var toggles = document.querySelectorAll('.toggle');
-        toggles.forEach(function (toggle) {
-            toggle.addEventListener('click', function () {
-                var parentId = this.getAttribute('data-id');
-                var children = document.querySelectorAll('.child[data-parent="' + parentId + '"]');
-                var icon = this.querySelector('.toggle-icon');
-                children.forEach(function (child) {
-                    if (child.style.display === 'none') {
-                        child.style.display = 'table-row';
-                        icon.className = 'bx bx-chevron-down toggle-icon';
-                    } else {
-                        child.style.display = 'none';
-                        icon.className = 'bx bx-chevron-right toggle-icon';
-                    }
-                });
-                this.classList.toggle('expanded');
+document.addEventListener('DOMContentLoaded', function () {
+    // Select all elements with the class 'toggle'
+    var toggles = document.querySelectorAll('.toggle');
+    
+    // Iterate over each toggle element
+    toggles.forEach(function (toggle) {
+        toggle.addEventListener('click', function () {
+            // Get the parent ID from the clicked element
+            var parentId = this.getAttribute('data-id');
+            console.log('Parent ID:', parentId); // Debugging log
+            
+            // Select all children rows with the matching data-parent attribute
+            var children = document.querySelectorAll('.child[data-parent="' + parentId + '"]');
+            var icon = this.querySelector('.toggle-icon');
+            console.log('Children elements:', children); // Debugging log
+            
+            // Toggle visibility for each child row
+            children.forEach(function (child) {
+                if (child.style.display === 'none' || child.style.display === '') {
+                    child.style.display = 'table-row';
+                    icon.className = 'bx bx-chevron-down toggle-icon';
+                } else {
+                    child.style.display = 'none';
+                    icon.className = 'bx bx-chevron-right toggle-icon';
+                }
             });
+            this.classList.toggle('expanded');
         });
     });
+});
+
 </script>
 {% endblock %}
