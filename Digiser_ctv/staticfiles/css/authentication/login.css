@@ -112,3 +112,18 @@ body {
   cursor: pointer;
   user-select: none;
 }
+
+.error-status {
+  padding: 10px;
+}
+
+.error-status p {
+  font-size: small;
+  text-align: center;
+  margin: 0px;
+}
+
+.fade {
+  opacity: 0;
+  transition: opacity 0.5s ease-out;
+}

@@ -14,8 +14,7 @@ urlpatterns = [
     path('dashboard/', views.dashboard, name="dashboard"),
     path('info/', views.info, name='info'),
     path('statistic/', views.show_data_statistic, name="data_statistic"),
-    path('employees/', views.statistic_human, name = "human_statistic"),
-    path('input/', views.input, name="input"),
+    path('employees/', views.statistic_human, name = "human_statistic")
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

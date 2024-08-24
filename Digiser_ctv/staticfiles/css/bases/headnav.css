@@ -29,9 +29,9 @@
   column-gap: 6px;
   background-color: var(--button-color);
   color: white;
-  border: none; 
-  border-radius: 4px; 
-  box-shadow: 0 0 10px rgba(69, 69, 233, 0.3); 
+  border: none;
+  border-radius: 4px;
+  box-shadow: 0 0 10px rgba(69, 69, 233, 0.3);
   transition: var(--tran-03);
 }
 
@@ -49,12 +49,11 @@
   margin-right: 12px;
 }
 
-
 .profile-img {
   border-radius: 50%;
   width: 45px;
   height: 45px;
-  object-fit: cover;  
+  object-fit: cover;
 }
 
 .profile-btn {
@@ -79,5 +78,3 @@
   justify-content: space-between;
   color: var(--text-color);
 }
-
-

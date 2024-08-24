@@ -1,7 +1,7 @@
 from django.db import models
 from django.db.models.functions import Now
 from authentication.models import CustomUser
-from project.models import Package, Project, Package_detail
+from project.models.model1 import Package, Project
 from django.utils.translation import gettext_lazy as _
 
 class Project(models.Model):
@@ -30,32 +30,20 @@ class Salary(models.Model):
         ("F", "F"),
     )
     _TYPE = (
-        ("I", "Insert"),
-        ("C", "Check")
+        ('Nhập', 'Nhập'),
+        ('Check', 'Check')
     )
     type = models.CharField(
-        _('type'), choices=_TYPE, max_length=1, blank=True, null=True)
+        _('type'), choices=_TYPE, max_length=10, blank=True, null=True)
     evaluation = models.CharField(
         _('evaluation'), choices=_EVALUATION, max_length=1, blank=True, null=True)
     basic_salary = models.IntegerField(_('basic salary'), blank=True, null=True)
     bonus_fine = models.IntegerField(_('bonus/fine'), blank=True, null=True)
     final_salary = models.IntegerField(_('final salary'), blank=True, null=True)
-    note = models.CharField(_('note'), blank=True, max_length=50, null=True)
-    total_votes = models.OneToOneField(
-        Package, on_delete=models.CASCADE, related_name='salary_total_votes', blank=True, null=True)
-    total_fields = models.OneToOneField(
-        Package, on_delete=models.CASCADE, related_name='salary_total_fields', blank=True, null=True)
-    total_merging_votes = models.OneToOneField(
-        Package, on_delete=models.CASCADE, related_name='salary_total_merging_votes', blank=True, null=True)
-    total_erroring_fields = models.OneToOneField(
-        Package, on_delete=models.CASCADE, related_name='salary_total_erroring_fields', blank=True, null=True)
-    processing_check = models.OneToOneField(
-        Package, on_delete=models.CASCADE, related_name='salary_processing_check', blank=True, null=True)
-    status = models.OneToOneField(
-        Package_detail, on_delete=models.CASCADE, blank=True, null=True)
-    
+    note = models.CharField(_('note'), blank=True, max_length=100, null=True)
+        
     def __str__(self):
-        return self.user.phone_no
+        return self.package_name.package_name
 
 class NotificationBase(models.Model):
     date = models.DateTimeField(_('date'), blank=True, null=True)

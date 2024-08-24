@@ -1,14 +1,13 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
 from authentication.forms import CustomUserInfoChangeForm, CustomUserBankChangeForm
-from django.db.models import Max
+from django.db.models import Max, Sum
 from authentication.models import CustomUser
-from django.contrib.auth.models import Group
 from .models import Salary
 import re
-import os
-from django.db.models import Sum
-from django.core.paginator import Paginator
+from project.models.model1 import Package_detail, Document
+import unicodedata
+from django.utils.dateformat import format
 
 
 @login_required
@@ -23,7 +22,7 @@ def generate_code(prefix, latest_number):
     return f"{prefix}{new_number:04d}"
 
 def get_latest_ctv_number():
-    latest_ctv = CustomUser.objects.filter(role='CTV').aggregate(Max('code'))
+    latest_ctv = CustomUser.objects.filter(role='EMPLOYEEE').aggregate(Max('code'))
     latest_code = latest_ctv['code__max']
     if latest_code:
         latest_number = int(latest_code.replace("NV", ""))
@@ -36,7 +35,7 @@ def handle_post_request(request):
         email = request.POST.get('gmail')
         user = get_object_or_404(CustomUser, email=email)
         user.is_verified = True
-        user.role = 'CTV'
+        user.role = 'EMPLOYEE'
         latest_number = get_latest_ctv_number()
         user.code = generate_code("NV", latest_number)
         user.save()
@@ -44,21 +43,20 @@ def handle_post_request(request):
 
 
 def handle_get_request(request):
-    user_id = request.session.get('user_id')
-    user = get_object_or_404(CustomUser, username=user_id)
+    user_code = request.session.get('user_code')
+    user = get_object_or_404(CustomUser, code=user_code)
+    if checkManager(user):
+        data = statistic_human(request)
+        return render(request, 'pages/home_manager.html', {'users': data})
+    
     total_salary = statistic_salary(user)
     total_project_details = statistic_project(user)
-
     context = {
         'total_project_details' : total_project_details,
         'total_salary' : total_salary
     }
     data = statistic_human(request)
-    if checkManager(user):
-        data = statistic_human(request)
-        return render(request, 'pages/home_manager.html', {'users': data})
     return render(request, 'pages/dashboard.html', context)
-    # return render(request, 'pages/home_manager.html', {'users': data})
 
 
 
@@ -97,14 +95,12 @@ def courses(request):
 @login_required
 def dashboard(request):
     return render(request, 'pages/dashboard.html')
-@login_required
-def input(request):
-    return render(request, 'pages/input.html')
+
 
 @login_required
 def info(request):
-    user_id = request.session.get('user_id')
-    user = get_object_or_404(CustomUser, username=user_id)
+    user_code = request.session.get('user_code')
+    user = get_object_or_404(CustomUser, code=user_code)
     if request.method == 'POST':
         return handle_info_post(request, user)
     elif user.is_verified:
@@ -154,7 +150,7 @@ def get_user_context(user):
 
 
 def checkManager(user):
-    return user.groups.filter(name='Manager').exists()
+    return user.groups.filter(name='ADMIN').exists()
 
 
 def data_statistics(request):
