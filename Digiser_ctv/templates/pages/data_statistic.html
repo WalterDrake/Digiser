@@ -219,31 +219,31 @@
             </div>
             <div class="modal-body">
                 <!-- Filter form content -->
-                <form method="get">
+                <form id="filter-form">
                     <div class="filter-section">
                         <label>Trạng thái</label>
                         <div class="btn-group" role="group" aria-label="Trạng thái">
-                            <button type="button" class="btn btn-outline-primary">Hoàn thành</button>
-                            <button type="button" class="btn btn-outline-warning">Chưa nhập</button>
-                            <button type="button" class="btn btn-outline-danger">Báo lỗi</button>
+                            <button type="button" class="btn btn-outline-primary" data-value="Hoàn thành">Hoàn thành</button>
+                            <button type="button" class="btn btn-outline-warning" data-value="Chưa nhập">Chưa nhập</button>
+                            <button type="button" class="btn btn-outline-danger" data-value="Báo lỗi">Báo lỗi</button>
                         </div>
                     </div>
                     <div class="filter-section">
                         <label>Loại tài liệu</label>
                         <div class="btn-group" role="group" aria-label="Loại tài liệu">
-                            <button type="button" class="btn btn-outline-secondary">CMC</button>
-                            <button type="button" class="btn btn-outline-secondary">HN</button>
-                            <button type="button" class="btn btn-outline-secondary">KT</button>
-                            <button type="button" class="btn btn-outline-secondary">KS</button>
-                            <button type="button" class="btn btn-outline-secondary">KH</button>
+                            <button type="button" class="btn btn-outline-secondary" data-value="CMC">CMC</button>
+                            <button type="button" class="btn btn-outline-secondary" data-value="HN">HN</button>
+                            <button type="button" class="btn btn-outline-secondary" data-value="KT">KT</button>
+                            <button type="button" class="btn btn-outline-secondary" data-value="KS">KS</button>
+                            <button type="button" class="btn btn-outline-secondary" data-value="KH">KH</button>
                         </div>
                     </div>
                     <div class="filter-section">
                         <label>Khu vực</label>
                         <div class="btn-group" role="group" aria-label="Khu vực">
-                            <button type="button" class="btn btn-outline-secondary">Tp Hồ Chí Minh</button>
-                            <button type="button" class="btn btn-outline-secondary">Tiền Giang</button>
-                            <button type="button" class="btn btn-outline-secondary">Bến Tre</button>
+                            <button type="button" class="btn btn-outline-secondary" data-value="Tp Hồ Chí Minh">Tp Hồ Chí Minh</button>
+                            <button type="button" class="btn btn-outline-secondary" data-value="Tiền Giang">Tiền Giang</button>
+                            <button type="button" class="btn btn-outline-secondary" data-value="Bến Tre">Bến Tre</button>
                         </div>
                     </div>
                     <div class="filter-section date-picker">
@@ -254,7 +254,7 @@
                         <label for="deadline">Deadline</label>
                         <input type="date" class="form-control" id="deadline" name="deadline">
                     </div>
-                    <button type="submit" class="btn btn-primary">Lọc</button>
+                    <button type="button" class="btn btn-primary" id="apply-filter">Lọc</button>
                 </form>
             </div>
         </div>
@@ -262,32 +262,34 @@
 </div>
 
 
+
+
 <table class="table table-hover table-bordered mt-3">
     <thead class="thead-light">
         <tr>
             <th>ID</th>
-            <th>Tên dữ liệu</th>
-            <th>Số phiếu</th>
-            <th>Số trường</th>
-            <th>Thực hiện</th>
-            <th>Trạng thái</th>
-            <th>Ngày nhận</th>
-            <th>Deadline</th>
-            <th>Số lỗi</th>
-            <th>Loại file</th>
+            <th class="tong_phieu">Tên dữ liệu</th>
+            <th class="so_phieu">Số phiếu</th>
+            <th class="so_truong">Số trường</th>
+            <th class="thuc_hien">Thực hiện</th>
+            <th class="trang_thai">Trạng thái</th>
+            <th class="ngay_nhan">Ngày nhận</th>
+            <th class="deadline">Deadline</th>
+            <th class="so_loi">Số lỗi</th>
+            <th class="loai_file">Loại file</th>
         </tr>
     </thead>
     <tbody>
-        {% for project in projects %}
+        {% for project in page_obj %}
         <tr class="parent toggle" data-id="{{ forloop.counter }}">
             <td>{{ forloop.counter }}</td>
             <td colspan="1">
                 <i class='bx bx-chevron-right toggle-icon'></i>{{ project.name }}
             </td>
-            <td>{{ project.tong_phieu }}</td>
-            <td></td>
-            <td>{{ project.thuc_hien }}</td>
-            <td>
+            <td class="tong_phieu">{{ project.tong_phieu }}</td>
+            <td class="tong_truong"></td>
+            <td class="thuc_hien">{{ project.thuc_hien }}</td>
+            <td class="trang_thai">
                 <span class="badge 
                     {% if project.trang_thai == 'Đã nhập' %} bg-primary 
                     {% elif project.trang_thai == 'Chưa check' %} bg-warning 
@@ -298,19 +300,19 @@
                     {{ project.trang_thai }}
                 </span>
             </td>
-            <td>{{ project.ngay_nhan }}</td>
-            <td>{{ project.deadline }}</td>
-            <td></td>
-            <td></td>
+            <td class="ngay_nhan">{{ project.ngay_nhan }}</td>
+            <td class="deadline">{{ project.deadline }}</td>
+            <td class="so_loi"></td>
+            <td class="loai_file"></td>
         </tr>
         {% for record in project.datarecord_set %}
         <tr class="child" data-parent="{{ forloop.parentloop.counter }}" style="display: none;">
             <td></td>
-            <td>{{ record.ten_du_lieu }}</td>
-            <td>{{ record.tong_phieu }}</td>
-            <td>{{ record.tong_truong }}</td>
-            <td>{{ record.thuc_hien }}</td>
-            <td>
+            <td class="ten_du_lieu">{{ record.ten_du_lieu }}</td>
+            <td class="tong_phieu">{{ record.tong_phieu }}</td>
+            <td class="tong_truong">{{ record.tong_truong }}</td>
+            <td class="thuc_hien">{{ record.thuc_hien }}</td>
+            <td class="trang_thai">
                 <span class="badge 
                     {% if record.trang_thai == 'Đã nhập' %} bg-primary 
                     {% elif record.trang_thai == 'Chưa check' %} bg-warning 
@@ -321,22 +323,23 @@
                     {{ record.trang_thai }}
                 </span>
             </td>
-            <td>{{ record.ngay_nhan }}</td>
-            <td>{{ record.deadline }}</td>
-            <td>{{ record.so_loi }}</td>
-            <td>{{ record.loai_file }}</td>
+            <td class="ngay_nhan">{{ record.ngay_nhan }}</td>
+            <td class="deadline">{{ record.deadline }}</td>
+            <td class="so_loi">{{ record.so_loi }}</td>
+            <td class="loai_file">{{ record.loai_file }}</td>
         </tr>
         {% endfor %}
         {% endfor %}
     </tbody>
 </table>
+
 <div class="pagination-container">
     <form method="get" id="pagination-form">
         <label for="records-per-page">Hiển thị</label>
         <select id="records-per-page" name="records_per_page" onchange="this.form.submit();">
-            <option value="5" {% if page_obj.paginator.per_page == 5 %}selected{% endif %}>5</option>
-            <option value="10" {% if page_obj.paginator.per_page == 10 %}selected{% endif %}>10</option>
-            <option value="20" {% if page_obj.paginator.per_page == 20 %}selected{% endif %}>20</option>
+            <option value="5" {% if records_per_page == '5' %}selected{% endif %}>5</option>
+            <option value="10" {% if records_per_page == '10' %}selected{% endif %}>10</option>
+            <option value="20" {% if records_per_page == '20' %}selected{% endif %}>20</option>
         </select>
         <span>bản ghi</span>
     </form>
@@ -374,6 +377,60 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
 });
+
+document.addEventListener('DOMContentLoaded', function () {
+    // Lắng nghe sự kiện click trên nút "Lọc"
+    document.getElementById('apply-filter').addEventListener('click', function() {
+        // Lấy giá trị từ các nút trong modal
+        var selectedStatus = [];
+        document.querySelectorAll('.filter-section .btn-group button').forEach(function(btn) {
+            if (btn.classList.contains('active')) {
+                selectedStatus.push(btn.getAttribute('data-value'));
+            }
+        });
+
+        // Lấy giá trị từ các input ngày tháng
+        var receivedDate = document.getElementById('received_date').value;
+        var deadlineDate = document.getElementById('deadline').value;
+
+        // Duyệt qua các hàng trong bảng và ẩn/hiện dựa trên giá trị đã chọn
+        document.querySelectorAll('tbody tr.parent').forEach(function(row) {
+            var status = row.querySelector('.trang_thai').textContent.trim();
+            var dateReceived = row.querySelector('.ngay_nhan').textContent.trim();
+            var dateDeadline = row.querySelector('.deadline').textContent.trim();
+
+            var showRow = true;
+
+            if (selectedStatus.length > 0 && !selectedStatus.includes(status)) {
+                showRow = false;
+            }
+
+            if (receivedDate && dateReceived !== receivedDate) {
+                showRow = false;
+            }
+
+            if (deadlineDate && dateDeadline !== deadlineDate) {
+                showRow = false;
+            }
+
+            row.style.display = showRow ? '' : 'none';
+        });
+
+        // Đóng modal sau khi áp dụng bộ lọc
+        var filterModal = document.getElementById('filterModal');
+        var modalInstance = bootstrap.Modal.getInstance(filterModal);
+        modalInstance.hide();
+    });
+
+    // Cho phép nhấn nút và đổi trạng thái active
+    document.querySelectorAll('.filter-section .btn-group button').forEach(function(btn) {
+        btn.addEventListener('click', function() {
+            btn.classList.toggle('active');
+        });
+    });
+});
+
+
 
 </script>
 {% endblock %}

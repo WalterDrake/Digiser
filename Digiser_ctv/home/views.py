@@ -221,10 +221,11 @@ def show_data_statistic(request):
     }
     return render(request, 'pages/data_statistic.html', context)
 
-def show_data_statistic(request):
-    projects = []
+from django.core.paginator import Paginator
 
-    # Generating 20 projects with 10 records each for testing
+def show_data_statistic(request):
+    # Dữ liệu giả lập
+    projects = []
     for i in range(1, 21):
         project = {
             'name': f'DA050524_TKGoCong_KH2010_{i:02d}',
@@ -236,7 +237,6 @@ def show_data_statistic(request):
             'datarecord_set': []
         }
 
-        # Adding 10 records to each project
         for j in range(1, 11):
             record = {
                 'ten_du_lieu': f'Dữ liệu {j:02d}',
@@ -253,10 +253,21 @@ def show_data_statistic(request):
 
         projects.append(project)
 
+    records_per_page = request.GET.get('records_per_page', '5')  # Default to 5 if not set, keep it as a string
+    records_per_page = int(records_per_page)  # Convert to integer for use in slicing
+
+    limited_projects = projects[:records_per_page]
+
+    paginator = Paginator(limited_projects, records_per_page)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+
     context = {
-        'projects': projects
+        'page_obj': page_obj,
+        'records_per_page': str(records_per_page),  # Convert back to string to match the option values
     }
-    return render(request, 'pages/data_statistic.html', context);
+    return render(request, 'pages/data_statistic.html', context)
+
 
 def statistic_project(doc_name,user):
     total_project_details = statistic_Nhap(doc_name, user)[1] + statistic_Check(doc_name,user)[1]
