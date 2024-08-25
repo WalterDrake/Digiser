@@ -220,8 +220,9 @@ def statistic_project(user):
 
 def statistic_salary(user):
     total_salary = Salary.objects.filter(user=user).aggregate(Sum('final_salary'))['final_salary__sum']
-    total_salary = f"{total_salary:,}"
-    return total_salary or 0
+    if total_salary is None:
+        return 0
+    return f"{total_salary:,}"
 
 
 def statistic_human(request):
