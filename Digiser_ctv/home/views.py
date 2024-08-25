@@ -1,4 +1,7 @@
 from django.shortcuts import render, get_object_or_404, redirect
+from django.http import Http404
+from django.core.exceptions import ValidationError
+from django.utils.html import escape
 from django.contrib.auth.decorators import login_required
 from authentication.forms import CustomUserInfoChangeForm, CustomUserBankChangeForm
 from django.db.models import Max, Sum
@@ -93,8 +96,43 @@ def courses(request):
 def dashboard(request):
     return render(request, 'pages/dashboard.html')
 @login_required
-def input(request):
-    return render(request, 'pages/input.html')
+def input(request, **kwargs):
+    user_code = request.session.get('user_code')
+    user = get_object_or_404(CustomUser, code=user_code)
+
+    # Sanitize and validate the 'id' parameter
+    package_id = kwargs.get('id')
+    if not package_id or not isinstance(package_id, str) or not re.match(r'^[a-zA-Z0-9_-]+$', package_id):
+        raise Http404("Invalid package ID")
+
+    # Escape the package_id to prevent XSS attacks
+    package_id = escape(package_id)
+
+    package = get_object_or_404(Package_detail, package_name_hash=package_id)
+
+    if user not in {package.inserter, package.checker_1, package.checker_2}:
+        raise Http404("Document does not exist")
+
+    documents = Document.objects.filter(package_name=package.package_name)
+
+    # Sanitize and validate the 'index' parameter
+    try:
+        index = int(kwargs.get('index', 0))  # Default to 0 if no index is provided
+        if index < 0:
+            raise ValueError
+    except (ValueError, TypeError):
+        raise Http404("Invalid document index")
+
+    if not documents or not (0 <= index < len(documents)):
+        raise Http404("Document does not exist")
+
+    document = documents[index]
+
+    # Debugging print statements
+    print(package, index, document)
+
+    if document.type == "KS":
+        return render(request, 'pages/input.html', {'document': document})
 
 @login_required
 def info(request):
