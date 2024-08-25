@@ -273,63 +273,37 @@ def statistic_project(doc_name,user):
     total_project_details = statistic_Nhap(doc_name, user)[1] + statistic_Check(doc_name,user)[1]
     return total_project_details
 
+def statistic_salary(user):
+    total_salary = Salary.objects.filter(user=user).aggregate(Sum('final_salary'))['final_salary__sum']
+    if total_salary is None:
+        return 0
+    return f"{total_salary:,}"
 
-def statistic_salary(doc_name, user):
-    total_salary = statistic_Nhap(doc_name,user)[2] + statistic_Check(doc_name, user)[2]
-    return total_salary
+
+def statistic_human(request):
+    record = request.GET.get('record', 10)
+    try:
+        record = int(record)
+        if record < 1:
+            record = 10
+    except ValueError:
+        record = 10
+    users_query = CustomUser.objects.all()[:record]
+    return users_query
 
 
-def statistic_human():
-    group_id = Group.objects.get(name='CTV')
-    users = CustomUser.objects.filter(groups=group_id)
-    user_dict = {}
+def normalize_phone(phone_no):
+    phone = re.sub(r'\D', '', phone)
 
-    for user in users:
-        if user.email not in user_dict:
-            user_dict[user.email] = []
-        user_dict[user.email].extend([user.code_ctv, user.role, user.is_verified, user.note])
+    if len(phone_no) < 9:
+        raise ValueError("Phone number must be more than 9 digits")
 
-    user_list = [{email: attributes} for email, attributes in user_dict.items()]
-    return user_list
+    return int(phone)
 
-from .forms import FilterForm
-from .models import Project
+def normalize_username(full_name):
+    normalized_name = unicodedata.normalize('NFKD', full_name).encode('ASCII', 'ignore').decode('ASCII')
+    normalized_name = normalized_name.lower()
+    normalized_name = re.sub(r'\s+', '', normalized_name)
+    normalized_name = re.sub(r'[^a-z0-9]', '', normalized_name)
 
-def project_list(request):
-    form = FilterForm(request.GET or None)
-    projects = Project.objects.all()
-
-    if form.is_valid():
-        if form.cleaned_data['status']:
-            projects = projects.filter(status__in=form.cleaned_data['status'])
-        if form.cleaned_data['document_type']:
-            projects = projects.filter(document_type__in=form.cleaned_data['document_type'])
-        if form.cleaned_data['region']:
-            projects = projects.filter(region__in=form.cleaned_data['region'])
-        if form.cleaned_data['received_date']:
-            projects = projects.filter(received_date=form.cleaned_data['received_date'])
-        if form.cleaned_data['deadline']:
-            projects = projects.filter(deadline=form.cleaned_data['deadline'])
-
-    context = {
-        'form': form,
-        'projects': projects,
-    }
-    return render(request, 'datastatis.html', context)
-
-def input_view(request):
-    so = "123"
-    quyen_so = "456"
-    trang_so = "789"
-    ngay_dang_ky = "10/08/2024"
-    loai_dang_ky = "Loại 1"
-    
-    context = {
-        'so': so,
-        'quyen_so': quyen_so,
-        'trang_so': trang_so,
-        'ngay_dang_ky': ngay_dang_ky,
-        'loai_dang_ky': loai_dang_ky,
-    }
-
-    return render(request, 'input.html', context)
+    return normalized_name
