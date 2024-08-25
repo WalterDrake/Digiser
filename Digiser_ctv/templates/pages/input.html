@@ -190,7 +190,7 @@
 
         <div class="scrollable-image-container">
             {% comment %} <iframe id= "MyPDF" src="{% static 'pdf/sample.pdf' %}" frameborder="0"></iframe> {% endcomment %}
-            <iframe id= "MyPDF" src="https://drive.google.com/file/d/16sTXKCzNJVszTYROt4XDsl3BXhvGEXQG/preview?usp=drivesdk" frameborder="0"></iframe>
+            <iframe id= "MyPDF" src="{{ document.document_path }}" frameborder="0"></iframe>
         </div>  
         <div class="image-buttons">
             <button onclick="goBack()">
