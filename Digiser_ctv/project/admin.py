@@ -21,8 +21,8 @@ class CustomDocumentsite(admin.ModelAdmin):
     search_fields= ('document_path',)
 class CustomBirthCertificateDocumentsite(admin.ModelAdmin):
     model = Birth_Certificate_Document
-    list_display = ('document','insert_user')
-    search_fields= ('document',)
+    list_display = ('document',)
+    search_fields= ('document__document_path',)
 
 admin.site.register(Birth_Certificate_Document, CustomBirthCertificateDocumentsite)
 admin.site.register(Project,CustomProjectsite)
