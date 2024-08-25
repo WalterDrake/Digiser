@@ -114,7 +114,8 @@ class Package_detail(models.Model):
     
 class Document(models.Model):
     package_name = models.ForeignKey(Package, on_delete=models.CASCADE)
-    document_path = models.CharField(_('document path'), max_length=50, blank=True, null=True)
+    document_path = models.CharField(_('document path'), max_length=100, blank=True, null=True)
+    document_name = models.CharField(_('document name'), max_length=50, blank=True, null=True)
     document_id = models.IntegerField(_('document id'), blank=True, null=True)
     _STATUS = (
         ('Đã nhập', 'Đã nhập'),
@@ -145,7 +146,7 @@ class Document(models.Model):
         _('type'),choices=_TYPE, max_length=4, blank=True, null=True)
     
     def __str__(self):
-        return self.document_path
+        return self.document_name
 
 
 
