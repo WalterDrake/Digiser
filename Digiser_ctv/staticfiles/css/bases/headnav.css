@@ -1,9 +1,12 @@
 .head-navbar {
   display: flex;
   column-gap: 24px;
-  padding: 10px 0px 10px 0px;
+  padding: 10px 0px;
   justify-content: center;
   position: sticky;
+  top: 0;
+  background-color: white; /* Tạo background màu trắng */
+  z-index: 1000; /* Giữ thanh nav luôn trên mọi content */
 }
 
 .search-container {
@@ -20,6 +23,7 @@
   justify-content: end;
   border-radius: 6px;
   column-gap: 8px;
+  position: relative; /* Giữ vị trí so với container */
 }
 
 .search-container button {
@@ -49,7 +53,6 @@
   margin-right: 12px;
 }
 
-
 .profile-img {
   border-radius: 50%;
   width: 45px;
@@ -62,6 +65,7 @@
   font-size: large;
   color: var(--text-color);
   border: none !important;
+  background-color: transparent;
 }
 
 .profile-btn:focus,
@@ -69,8 +73,14 @@
   border: 1px solid var(--text-color);
 }
 
-.dropdown-menu.show {
-  z-index: 10;
+.dropdown-menu {
+  z-index: 100;
+  position: absolute;
+  right: 0;
+  top: 100%;
+  background-color: white;
+  border-radius: 4px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
 
 .dropdown-container ul > li > a {
@@ -78,6 +88,9 @@
   align-items: center;
   justify-content: space-between;
   color: var(--text-color);
+  padding: 10px 20px;
 }
 
-
+.dropdown-container ul > li > a:hover {
+  background-color: rgba(69, 69, 233, 0.1);
+}
