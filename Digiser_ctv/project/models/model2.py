@@ -99,10 +99,6 @@ class Birth_Certificate_Document(models.Model):
 
     document = models.ForeignKey(
         Document, blank=True, null=True, on_delete=models.SET_NULL)
-    insert_user = models.ForeignKey(CustomUser, blank=True, null=True,
-                                    on_delete=models.SET_NULL, related_name='%(class)s_insert_user')
-    check_user = models.ForeignKey(CustomUser, blank=True, null=True,
-                                   on_delete=models.SET_NULL, related_name='%(class)s_check_user')
 
     # Các trường thông tin cơ bản (10 trường)
     so = models.CharField(max_length=10, default='',
