@@ -99,7 +99,6 @@ class Birth_Certificate_Document(models.Model):
 
     document = models.ForeignKey(
         Document, blank=True, null=True, on_delete=models.SET_NULL)
-    
     # Các trường thông tin cơ bản (10 trường)
     so = models.CharField(max_length=10, default='',
                           verbose_name='Số', blank=True)
