@@ -13,5 +13,5 @@ urlpatterns = [
     path('info/', views.info, name='info'),
     path('statistic/', views.show_data_statistic, name="data_statistic"),
     path('employees/', views.statistic_human, name = "human_statistic"),
-    path('input/', views.input, name="input"),
+    path('input/<str:id>/<int:index>', views.input, name="input"),
 ]
