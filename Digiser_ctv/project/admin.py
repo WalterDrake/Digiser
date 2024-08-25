@@ -17,8 +17,8 @@ class CustomPackageDetailsite(admin.ModelAdmin):
     search_fields= ('package_name__package_name',)
 class CustomDocumentsite(admin.ModelAdmin):
     model = Document
-    list_display = ('document_path', 'package_name', 'status_insert','status_check_1', 'status_check_2')
-    search_fields= ('document_path',)
+    list_display = ('document_name', 'package_name', 'status_insert','status_check_1', 'status_check_2')
+    search_fields= ('document_name',)
 class CustomBirthCertificateDocumentsite(admin.ModelAdmin):
     model = Birth_Certificate_Document
     list_display = ('document',)
