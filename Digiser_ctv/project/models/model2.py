@@ -1,7 +1,7 @@
 from django.db import models
 from authentication.models import CustomUser
 from .model1 import Document
-
+from django.utils.translation import gettext_lazy as _
 
 class Options:
 
@@ -110,7 +110,7 @@ class Birth_Certificate_Document(models.Model):
     ngayDangKy = models.DateField(
         default=True, verbose_name='Ngày Đăng Ký', blank=True)
     loaiDangKy = models.CharField(max_length=1, choices=Options._REGISTER_TYPE,
-                                  default='1', verbose_name='Loại Đăng Ký', blank=True)  # Default value is 1
+                                  default='1', verbose_name='Loại Đăng Ký', blank=True)
     noiDangKy = models.CharField(
         max_length=100, default=True, null=True, verbose_name='Nơi Đăng Ký', blank=True)
     nguoiKy = models.CharField(
@@ -120,13 +120,13 @@ class Birth_Certificate_Document(models.Model):
     nguoiThucHien = models.CharField(
         max_length=50, default=True, null=True, verbose_name="Người Thực Hiện", blank=True)
     ghiChu = models.CharField(
-        max_length=20, default=True, null=True, verbose_name="Ghi Chú", blank=True)
+        max_length=100, default=True, null=True, verbose_name="Ghi Chú", blank=True)
 
     # Thông tin về người được đăng ký khai sinh (11 trường)
     nksHoTen = models.CharField(
         max_length=30, default=True, null=True, verbose_name='Họ Tên (Người Khai Sinh)', blank=True)
     nksGioiTinh = models.CharField(max_length=1, choices=Options._SEX_TYPE, verbose_name='Giới Tính (Người Khai Sinh)',
-                                   default='3', blank=True)  # Default value is 3 (Not indentified)
+                                   default='3', blank=True)
     nksNgaySinh = models.DateField(
         default=True, verbose_name='Ngày Sinh (Người Khai Sinh)', blank=True, null=True)
     nksNgaySinhBangChu = models.CharField(
@@ -144,7 +144,7 @@ class Birth_Certificate_Document(models.Model):
     nksQuocTichKhac = models.CharField(
         max_length=65, default=True, null=True, verbose_name='Quốc Tịch Khác (Người Khai Sinh)', blank=True)
     nksLoaiKhaiSinh = models.CharField(max_length=1, default=True, null=True, verbose_name='Loại Khai Sinh (Người Khai Sinh)',
-                                       choices=Options._BIRTH_CERT_TYPE, blank=False)  # Required Field
+                                       choices=Options._BIRTH_CERT_TYPE, blank=False)
 
     # Thông tin mất tích của người khai sinh (5 trường)
     nksMatTich = models.CharField(
@@ -237,4 +237,4 @@ class Birth_Certificate_Document(models.Model):
         max_length=63, choices=Options._COUNTRIES_LIST, default=True, null=True, verbose_name="Quốc Gia Đăng Ký Nước Ngoài", blank=True)
 
     def __str__(self):
-        return self.document.document_path
+        return self.document.document_name
