@@ -95,6 +95,7 @@ def courses(request):
 @login_required
 def dashboard(request):
     return render(request, 'pages/dashboard.html')
+
 @login_required
 def input(request, **kwargs):
     user_code = request.session.get('user_code')
@@ -133,6 +134,7 @@ def input(request, **kwargs):
 
     if document.type == "KS":
         return render(request, 'pages/input.html', {'document': document})
+
 
 @login_required
 def info(request):
