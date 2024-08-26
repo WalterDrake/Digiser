@@ -12,139 +12,155 @@
                 <!-- First Section -->
                 <div class="horizontal-form horizontal-three-columns">
                     <div class="horizontal-form-group">
-                        <input type="number" id="horizontal-so" name="{{form.so}}" required>
+                        <input type="number" id="horizontal-so" name="so" value="{{form.so}}" required>
                         <label for="horizontal-so">Số</label>
                     </div>
                     <div class="horizontal-form-group">
-                        <input type="number" id="horizontal-quyenSo" name="quyenSo" required>
+                        <input type="number" id="horizontal-quyenSo" name="quyenSo" value="{{form.quyenSo}}" required>
                         <label for="horizontal-quyenSo">Quyển Sổ</label>
                     </div>
                     <div class="horizontal-form-group">
-                        <input type="number" id="horizontal-trangSo" name="trangSo" required>
+                        <input type="number" id="horizontal-trangSo" name="trangSo" value="{{form.trangSo}}" required>
                         <label for="horizontal-trangSo">Trang Số</label>
                     </div>
                 </div>
                 <div class="horizontal-form horizontal-two-columns">
                     <div class="horizontal-form-group">
-                        <input type="number" id="horizontal-ngayDangKy" name="ngayDangKy" required>
+                        <input type="number" id="horizontal-ngayDangKy" name="ngayDangKy" value="{{form.ngayDangKy}}" required>
                         <label for="horizontal-ngayDangKy">Ngày Đăng Ký</label>
                     </div>
                     <div class="horizontal-form-group">
                         <select id="horizontal-loaiDangKy" name="loaiDangKy" required>
-                            <option value="1">Loại Đăng Ký 1</option>
-                            <option value="2">Loại Đăng Ký 2</option>
+                            {% for value, display in form.LoaiDangKy %}
+                                <option value="{{ value }}" {% if value == form.loaiDangKy %}selected{% endif %}>
+                                    {{ display }}
+                                </option>
+                            {% endfor %}
                         </select>
                         <label for="horizontal-loaiDangKy">Loại Đăng Ký</label>
                     </div>
                 </div>
                 <div class="horizontal-form horizontal-full-width">
                     <div class="horizontal-form-group">
-                        <input type="text" id="horizontal-noiDangKy" name="noiDangKy" required>
+                        <input type="text" id="horizontal-noiDangKy" name="noiDangKy" value="{{form.noiDangKy}}" required>
                         <label for="horizontal-noiDangKy">Nơi Đăng Ký</label>
                     </div>
                 </div>
                 <div class="horizontal-form horizontal-three-columns">
                     <div class="horizontal-form-group">
-                        <input type="text" id="horizontal-nguoiKy" name="nguoiKy" required>
+                        <input type="text" id="horizontal-nguoiKy" name="nguoiKy" value="{{form.nguoiKy}}" required>
                         <label for="horizontal-nguoiKy">Người Ký</label>
                     </div>
                     <div class="horizontal-form-group">
-                        <input type="text" id="horizontal-chucVuNguoiKy" name="chucVuNguoiKy" required>
+                        <input type="text" id="horizontal-chucVuNguoiKy" name="chucVuNguoiKy" value="{{form.chucVuNguoiKy}}" required>
                         <label for="horizontal-chucVuNguoiKy">Chức Vụ Người Ký</label>
                     </div>
                     <div class="horizontal-form-group">
-                        <input type="text" id="horizontal-nguoiThucHien" name="nguoiThucHien" required>
+                        <input type="text" id="horizontal-nguoiThucHien" name="nguoiThucHien" value="{{form.nguoiThucHien}}" required>
                         <label for="horizontal-nguoiThucHien">Người Thực Hiện</label>
                     </div>
                 </div>
                 <div class="horizontal-form horizontal-full-width">
                     <div class="horizontal-form-group textarea-active">
-                        <textarea id="horizontal-ghiChu" name="ghiChu" required></textarea>
+                        <textarea id="horizontal-ghiChu" name="ghiChu" required>{{ form.ghiChu }}</textarea>
                         <label for="horizontal-ghiChu">Ghi Chú</label>
                     </div>
                 </div>
                 <!-- Second Section -->
                 <div class="horizontal-form horizontal-two-columns">
                     <div class="horizontal-form-group">
-                        <input type="text" id="horizontal-nksHoTen" name="nksHoTen" required>
+                        <input type="text" id="horizontal-nksHoTen" name="nksHoTen" value="{{form.nksHoTen}}" required>
                         <label for="horizontal-nksHoTen">NKS: Họ và tên</label>
                     </div>
                     <div class="horizontal-form-group">
                         <select id="horizontal-nksGioiTinh" name="nksGioiTinh" required>
-                            <option value="1">Nam</option>
-                            <option value="2">Nữ</option>
+                            {% for value, display in form.GioiTinh %}
+                                <option value="{{ value }}" {% if value == form.nksGioiTinh %}selected{% endif %}>
+                                    {{ display }}</option>
+                            {% endfor %}
                         </select>
                         <label for="horizontal-nksGioiTinh">NKS: Giới Tính</label>
                     </div>
                 </div>
                 <div class="horizontal-form horizontal-two-columns">
                     <div class="horizontal-form-group">
-                        <input type="number" id="horizontal-nksNgaySinh" name="nksNgaySinh" required>
+                        <input type="number" id="horizontal-nksNgaySinh" name="nksNgaySinh" value="{{form.nksNgaySinh}}" required>
                         <label for="horizontal-nksNgaySinh">NKS: Ngày Sinh</label>
                     </div>
                     <div class="horizontal-form-group">
-                        <input type="text" id="horizontal-nksNgaySinhBangChu" name="nksNgaySinhBangChu" required>
+                        <input type="text" id="horizontal-nksNgaySinhBangChu" name="nksNgaySinhBangChu" value="{{form.nksNgaySinhBangChu}}" required>
                         <label for="horizontal-nksNgaySinhBangChu">NKS: Ngày Sinh Bằng Chữ</label>
                     </div>
                 </div>
                 <div class="horizontal-form horizontal-two-columns">
                     <div class="horizontal-form-group">
-                        <input type="text" id="horizontal-nksNoiSinh" name="nksNoiSinh" required>
+                        <input type="text" id="horizontal-nksNoiSinh" name="nksNoiSinh" value="{{form.nksNoiSinh}}" required>
                         <label for="horizontal-nksNoiSinh">NKS: Nơi Sinh</label>
                     </div>
                     <div class="horizontal-form-group">
-                        <select id="horizontal-nksQueQuan" name="nksQueQuan" required>
-                            <option value="1">Tiền Giang</option>
-                            <option value="2">Tp.HCM</option>
-                        </select>
+                        <input type="text" id="horizontal-nksQueQuan" name="nksQueQuan" value="{{form.nksQueQuan}}" required>
                         <label for="horizontal-nksQueQuan">NKS: Quê Quán</label>
                     </div>
                 </div>
                 <div class="horizontal-form horizontal-two-columns">
                     <div class="horizontal-form-group">
                         <select id="horizontal-nksDanToc" name="nksDanToc" required>
-                            <option value="1">Kinh</option>
-                            <option value="2">Khác</option>
+                            {% for value, display in form.DanToc %}
+                            <option value="{{ value }}" {% if value == form.nksDanToc %}selected{% endif %}>
+                                {{ display }}
+                            </option>
+                        {% endfor %}
                         </select>
                         <label for="horizontal-nksDanToc">NKS: Dân Tộc</label>
                     </div>
                     <div class="horizontal-form-group">
                         <select id="horizontal-nksQuocTich" name="nksQuocTich" required>
-                            <option value="1">Việt Nam</option>
-                            <option value="2">Khác</option>
+                            {% for value, display in form.QuocTich %}
+                                <option value="{{ value }}" {% if value == form.nksQuocTich %}selected{% endif %}>
+                                    {{ display }}
+                                </option>
+                            {% endfor %}
                         </select>
                         <label for="horizontal-nksQuocTich">NKS: Quốc Tịch</label>
                     </div>
                 </div>
                 <div class="horizontal-form full-width">
                     <div class="horizontal-form-group">
-                        <input type="text" id="horizontal-nksLoaiKhaiSinh" name="nksLoaiKhaiSinh" required>
+                        <select id="horizontal-nksLoaiKhaiSinh" name="nksLoaiKhaiSinh" required>
+                            {% for value, display in form.LoaiKhaiSinh %}
+                                <option value="{{ value }}" {% if value == form.nksLoaiKhaiSinh %}selected{% endif %}>
+                                    {{ display }}
+                                </option>
+                            {% endfor %}
+                        </select>
                         <label for="horizontal-nksLoaiKhaiSinh">NKS: Loại Khai Sinh</label>
                     </div>
                 </div>
                 <!-- Third Section: Mother's Information -->
                 <div class="horizontal-form horizontal-two-columns">
                     <div class="horizontal-form-group">
-                        <input type="text" id="horizontal-meHoTen" name="meHoTen" required>
+                        <input type="text" id="horizontal-meHoTen" name="meHoTen" value="{{form.meHoTen}}" required>
                         <label for="horizontal-meHoTen">Mẹ: Họ và tên</label>
                     </div>
                     <div class="horizontal-form-group">
-                        <input type="number" id="horizontal-meNgaySinh" name="meNgaySinh" required>
+                        <input type="number" id="horizontal-meNgaySinh" name="meNgaySinh" value="{{form.meNgaySinh}}" required>
                         <label for="horizontal-meNgaySinh">Mẹ: Ngày sinh</label>
                     </div>
                 </div>
                 <div class="horizontal-form horizontal-two-columns">
                     <div class="horizontal-form-group">
                         <select id="horizontal-meDanToc" name="meDanToc" required>
-                            <option value="1">Kinh</option>
-                            <option value="2">Khác</option>
+                            {% for value, display in form.DanToc %}
+                            <option value="{{ value }}" {% if value == form.meDanToc %}selected{% endif %}>{{ display }}</option>
+                        {% endfor %}
                         </select>
                         <label for="horizontal-meDanToc">Mẹ: Dân Tộc</label>
                     </div>
                     <div class="horizontal-form-group">
                         <select id="horizontal-meQuocTich" name="meQuocTich" required>
-                            <option value="1">Việt Nam</option>
-                            <option value="2">Khác</option>
+                            {% for value, display in form.QuocTich %}
+                                <option value="{{ value }}" {% if value == form.meQuocTich %}selected{% endif %} >{{ display }}</option>
+                            {% endfor %}
                         </select>
                         <label for="horizontal-meQuocTich">Mẹ: Quốc tịch</label>
                     </div>
@@ -152,52 +168,56 @@
                 <div class="horizontal-form horizontal-two-columns">
                     <div class="horizontal-form-group">
                         <select id="horizontal-meLoaiCuTru" name="meLoaiCuTru" required>
-                            <option value="1">Thường trú</option>
-                            <option value="2">Khác</option>
+                            {% for value, display in form.LoaiCuTru %}
+                            <option value="{{ value }}" {% if value == form.meLoaiCuTru %}selected{% endif %}>{{ display }}</option>
+                        {% endfor %}
                         </select>
                         <label for="horizontal-meLoaiCuTru">Mẹ: Loại cư trú</label>
                     </div>
                     <div class="horizontal-form-group">
-                        <input type="text" id="horizontal-meNoiCuTru" name="meNoiCuTru" required>
+                        <input type="text" id="horizontal-meNoiCuTru" name="meNoiCuTru" value="{{form.meNoiCuTru}}" required>
                         <label for="horizontal-meNoiCuTru">Mẹ: Nơi cư trú</label>
                     </div>
                 </div>
                 <div class="horizontal-form horizontal-two-columns">
                     <div class="horizontal-form-group">
                         <select id="horizontal-meLoaiGiayToTuyThan" name="meLoaiGiayToTuyThan" required>
-                            <option value="1">Căn cước công dân</option>
-                            <option value="2">Chứng minh nhân dân</option>
+                            {% for value, display in form.LoaiGiayToTuyThan %}
+                                <option value="{{ value }}" {% if value == form.meLoaiGiayToTuyThan %}selected{% endif %}>{{ display }}</option>
+                            {% endfor %}
                         </select>
                         <label for="horizontal-meLoaiGiayToTuyThan">Mẹ: Loại giấy tờ tùy thân</label>
                     </div>
                     <div class="horizontal-form-group">
-                        <input type="number" id="horizontal-meSoGiayToTuyThan" name="meSoGiayToTuyThan" required>
+                        <input type="number" id="horizontal-meSoGiayToTuyThan" name="meSoGiayToTuyThan" value="{{form.meSoGiayToTuyThan}}" required>
                         <label for="horizontal-meSoGiayToTuyThan">Mẹ: Số giấy tờ tùy thân</label>
                     </div>
                 </div>
                 <!-- Fourth Section: Father's Information -->
                 <div class="horizontal-form horizontal-two-columns">
                     <div class="horizontal-form-group">
-                        <input type="text" id="horizontal-chaHoTen" name="chaHoTen" required>
+                        <input type="text" id="horizontal-chaHoTen" name="chaHoTen" value="{{Form.chaHoTen}}" required>
                         <label for="horizontal-chaHoTen">Cha: Họ và tên</label>
                     </div>
                     <div class="horizontal-form-group">
-                        <input type="number" id="horizontal-chaNgaySinh" name="chaNgaySinh" required>
+                        <input type="number" id="horizontal-chaNgaySinh" name="chaNgaySinh" value="{{form.chaNgaySinh}}" required>
                         <label for="horizontal-chaNgaySinh">Cha: Ngày sinh</label>
                     </div>
                 </div>
                 <div class="horizontal-form horizontal-two-columns">
                     <div class="horizontal-form-group">
                         <select id="horizontal-chaDanToc" name="chaDanToc" required>
-                            <option value="1">Kinh</option>
-                            <option value="2">Khác</option>
+                            {% for value, display in form.DanToc %}
+                            <option value="{{ value }}" {% if value == form.chaDanToc %}selected{% endif %}>{{ display }}</option>
+                        {% endfor %}
                         </select>
                         <label for="horizontal-chaDanToc">Cha: Dân tộc</label>
                     </div>
                     <div class="horizontal-form-group">
                         <select id="horizontal-chaQuocTich" name="chaQuocTich" required>
-                            <option value="1">Việt Nam</option>
-                            <option value="2">Khác</option>
+                            {% for value, display in form.QuocTich %}
+                                <option value="{{ value }}" {% if value == form.chaQuocTich %}selected{% endif %}>{{ display }}</option>
+                            {% endfor %}
                         </select>
                         <label for="horizontal-chaQuocTich">Cha: Quốc tịch</label>
                     </div>
@@ -205,8 +225,9 @@
                 <div class="horizontal-form horizontal-two-columns">
                     <div class="horizontal-form-group">
                         <select id="horizontal-chaLoaiCuTru" name="chaLoaiCuTru" required>
-                            <option value="1">Thường trú</option>
-                            <option value="2">Khác</option>
+                            {% for value, display in form.LoaiCuTru %}
+                                <option value="{{ value }}" {% if value == form.chaLoaiCuTru %}selected{% endif %}>{{ display }}</option>
+                            {% endfor %}
                         </select>
                         <label for="horizontal-chaLoaiCuTru">Cha: Loại cư trú</label>
                     </div>
@@ -218,8 +239,9 @@
                 <div class="horizontal-form horizontal-two-columns">
                     <div class="horizontal-form-group">
                         <select id="horizontal-chaLoaiGiayToTuyThan" name="chaLoaiGiayToTuyThan" required>
-                            <option value="1">Căn cước công dân</option>
-                            <option value="2">Chứng minh nhân dân</option>
+                            {% for value, display in form.LoaiGiayToTuyThan %}
+                            <option value="{{ value }}" {% if value == form.chaLoaiGiayToTuyThan %}selected{% endif %}>{{ display }}</option>
+                        {% endfor %}
                         </select>
                         <label for="horizontal-chaLoaiGiayToTuyThan">Cha: Loại giấy tờ tùy thân</label>
                     </div>
@@ -231,42 +253,43 @@
                 <!-- Fifth Section: Others -->
                 <div class="horizontal-form horizontal-two-columns">
                     <div class="horizontal-form-group">
-                        <input type="text" id="horizontal-nycHoTen" name="nycHoTen" required>
+                        <input type="text" id="horizontal-nycHoTen" name="nycHoTen" value="{{form.nycHoTen}}" required>
                         <label for="horizontal-nycHoTen">NYC: Họ và tên</label>
                     </div>
                     <div class="horizontal-form-group">
-                        <input type="text" id="horizontal-nycQuanHe" name="nycQuanHe" required>
+                        <input type="text" id="horizontal-nycQuanHe" name="nycQuanHe" value="{{form.nycQuanHe}}" required>
                         <label for="horizontal-nycQuanHe">NYC: Quan hệ</label>
                     </div>
                 </div>
                 <div class="horizontal-form horizontal-two-columns">
                     <div class="horizontal-form-group">
                         <select id="horizontal-nycLoaiGiayToTuyThan" name="nycLoaiGiayToTuyThan" required>
-                            <option value="1">Căn cước công dân</option>
-                            <option value="2">Chứng minh nhân dân</option>
+                            {% for value, display in form.LoaiGiayToTuyThan %}
+                            <option value="{{ value }}" {% if value == form.nycLoaiGiayToTuyThan %}selected{% endif %}>{{ display }}</option>
+                        {% endfor %}
                         </select>
                         <label for="horizontal-nycLoaiGiayToTuyThan">NYC: Loại giấy tờ tùy thân</label>
                     </div>
                     <div class="horizontal-form-group">
-                        <input type="text" id="horizontal-nycGiayToKhac" name="nycGiayToKhac" required>
+                        <input type="text" id="horizontal-nycGiayToKhac" name="nycGiayToKhac" value="{{form.nycGiayToKhac}}" required>
                         <label for="horizontal-nycGiayToKhac">NYC: Giấy tờ khác</label>
                     </div>
                 </div>
                 <div class="horizontal-form horizontal-two-columns">
                     <div class="horizontal-form-group">
-                        <input type="number" id="horizontal-nycSoGiayToTuyThan" name="nycSoGiayToTuyThan" required>
+                        <input type="number" id="horizontal-nycSoGiayToTuyThan" name="nycSoGiayToTuyThan" value="{{form.nycSoGiayToTuyThan}}" required>
                         </input>
                         <label for="horizontal-nycSoGiayToTuyThan">NYC: Số giấy tờ tùy thân</label>
                     </div>
                     <div class="horizontal-form-group">
-                        <input type="number" id="horizontal-nycNgayCapGiayToTuyThan" name="nycNgayCapGiayToTuyThan"
+                        <input type="number" id="horizontal-nycNgayCapGiayToTuyThan" name="nycNgayCapGiayToTuyThan" value="{{form.nycNgayCapGiayToTuyThan}}"
                             required>
                         <label for="horizontal-nycNgayCapGiayToTuyThan">NYC: Ngày cấp giấy tờ tùy thân</label>
                     </div>
                 </div>
                 <div class="horizontal-form horizontal-full-width">
                     <div class="horizontal-form-group">
-                        <input type="text" id="horizontal-nycNoiCapGiayToTuyThan" name="nycNoiCapGiayToTuyThan"
+                        <input type="text" id="horizontal-nycNoiCapGiayToTuyThan" name="nycNoiCapGiayToTuyThan" value="{{form.nycNoiCapGiayToTuyThan}}"
                             required>
                         <label for="horizontal-nycNoiCapGiayToTuyThan">NYC: Nơi cấp giấy tờ tùy thân</label>
                     </div>
