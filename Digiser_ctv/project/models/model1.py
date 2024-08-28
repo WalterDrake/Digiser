@@ -90,8 +90,10 @@ class Package_detail(models.Model):
         ("Đang check", "Đang check"),
         ('Chưa check', 'Chưa check')
     )
-    check_status = models.CharField(
-        _('check status'),choices=_CHECK_STATUS, max_length=20, blank=True, null=True)
+    check_status_1 = models.CharField(
+        _('check status 1'),choices=_CHECK_STATUS, max_length=20, blank=True, null=True)
+    check_status_2 = models.CharField(
+        _('check status 2'),choices=_CHECK_STATUS, max_length=20, blank=True, null=True)
     insert_url = models.CharField(
         _('package url insert'), max_length=100, blank=True, null=True)
     check_url = models.CharField(
@@ -116,7 +118,7 @@ class Document(models.Model):
     package_name = models.ForeignKey(Package, on_delete=models.CASCADE)
     document_path = models.CharField(_('document path'), max_length=100, blank=True, null=True)
     document_name = models.CharField(_('document name'), max_length=50, blank=True, null=True)
-    document_id = models.IntegerField(_('document id'), blank=True, null=True)
+    document_idx = models.IntegerField(_('document idx'), blank=True, null=True)
     _STATUS = (
         ('Đã nhập', 'Đã nhập'),
         ('Hoàn thành', 'Hoàn thành'),

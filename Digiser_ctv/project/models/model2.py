@@ -2,7 +2,6 @@ from django.db import models
 from authentication.models import CustomUser
 from .model1 import Document
 from django.utils.translation import gettext_lazy as _
-
 class Options:
 
     _REGISTER_TYPE = (
@@ -100,141 +99,143 @@ class Birth_Certificate_Document(models.Model):
 
     document = models.ForeignKey(
         Document, blank=True, null=True, on_delete=models.SET_NULL)
+    
+    executor = models.ForeignKey(CustomUser, blank=True, null=True, on_delete=models.SET_NULL)
     # Các trường thông tin cơ bản (10 trường)
-    so = models.CharField(max_length=10, default=True, null=True,
+    so = models.CharField(max_length=10,  null=True,
                           verbose_name='Số', blank=True)
     quyenSo = models.CharField(
-        max_length=10, default=True, null=True, verbose_name='Quyển Số', blank=True)
+        max_length=10,  null=True, verbose_name='Quyển Số', blank=True)
     trangSo = models.CharField(
-        max_length=10, default=True, null=True, verbose_name='Trang Số', blank=True)
+        max_length=10,  null=True, verbose_name='Trang Số', blank=True)
     ngayDangKy = models.DateField(
-        default=True, verbose_name='Ngày Đăng Ký', blank=True)
+         verbose_name='Ngày Đăng Ký', blank=True)
     loaiDangKy = models.CharField(max_length=1, choices=Options._REGISTER_TYPE,
                                   default='1', verbose_name='Loại Đăng Ký', blank=True)
     noiDangKy = models.CharField(
-        max_length=100, default=True, null=True, verbose_name='Nơi Đăng Ký', blank=True)
+        max_length=100,  null=True, verbose_name='Nơi Đăng Ký', blank=True)
     nguoiKy = models.CharField(
-        max_length=20, default=True, null=True, verbose_name='Người Ký', blank=True)
+        max_length=20,  null=True, verbose_name='Người Ký', blank=True)
     chucVuNguoiKy = models.CharField(
-        max_length=30, default=True, null=True, verbose_name="Chức Vụ Người Ký", blank=True)
+        max_length=30,  null=True, verbose_name="Chức Vụ Người Ký", blank=True)
     nguoiThucHien = models.CharField(
-        max_length=50, default=True, null=True, verbose_name="Người Thực Hiện", blank=True)
+        max_length=50,  null=True, verbose_name="Người Thực Hiện", blank=True)
     ghiChu = models.CharField(
-        max_length=100, default=True, null=True, verbose_name="Ghi Chú", blank=True)
+        max_length=100,  null=True, verbose_name="Ghi Chú", blank=True)
 
     # Thông tin về người được đăng ký khai sinh (11 trường)
     nksHoTen = models.CharField(
-        max_length=30, default=True, null=True, verbose_name='Họ Tên (Người Khai Sinh)', blank=True)
+        max_length=30,  null=True, verbose_name='Họ Tên (Người Khai Sinh)', blank=True)
     nksGioiTinh = models.CharField(max_length=1, choices=Options._SEX_TYPE, verbose_name='Giới Tính (Người Khai Sinh)',
                                    default='3', blank=True)
     nksNgaySinh = models.DateField(
-        default=True, verbose_name='Ngày Sinh (Người Khai Sinh)', blank=True, null=True)
+         verbose_name='Ngày Sinh (Người Khai Sinh)', blank=True, null=True)
     nksNgaySinhBangChu = models.CharField(
-        max_length=100, default=True, null=True, verbose_name='Ngày Sinh Bằng Chữ (Người Khai Sinh)', blank=True)
+        max_length=100,  null=True, verbose_name='Ngày Sinh Bằng Chữ (Người Khai Sinh)', blank=True)
     nksNoiSinh = models.CharField(
-        max_length=100, default=True, null=True, verbose_name='Nơi Sinh Chi Tiết (Người Khai Sinh)', blank=True)
+        max_length=100,  null=True, verbose_name='Nơi Sinh Chi Tiết (Người Khai Sinh)', blank=True)
     nksNoiSinhDDHC = models.CharField(
-        max_length=50, default=True, null=True, verbose_name='Nơi Sinh Bằng Địa Danh Hành Chính (Người Khai Sinh)', blank=True)
+        max_length=50,  null=True, verbose_name='Nơi Sinh Bằng Địa Danh Hành Chính (Người Khai Sinh)', blank=True)
     nksQueQuan = models.CharField(
-        max_length=100, default=True, null=True, verbose_name='Quê Quán (Người Khai Sinh)', blank=True)
-    nksDanToc = models.CharField(max_length=26, default=True, null=True, choices=Options._DANTOC_LIST,
+        max_length=100,  null=True, verbose_name='Quê Quán (Người Khai Sinh)', blank=True)
+    nksDanToc = models.CharField(max_length=26,  null=True, choices=Options._DANTOC_LIST,
                                  verbose_name='Dân Tộc (Người Khai Sinh)', blank=True)
     nksQuocTich = models.CharField(max_length=65, choices=Options._COUNTRIES_LIST,
                                    default='Không có thông tin', verbose_name='Quốc Tịch (Người Khai Sinh)', blank=True)
     nksQuocTichKhac = models.CharField(
-        max_length=65, default=True, null=True, verbose_name='Quốc Tịch Khác (Người Khai Sinh)', blank=True)
-    nksLoaiKhaiSinh = models.CharField(max_length=1, default=True, null=True, verbose_name='Loại Khai Sinh (Người Khai Sinh)',
+        max_length=65,  null=True, verbose_name='Quốc Tịch Khác (Người Khai Sinh)', blank=True)
+    nksLoaiKhaiSinh = models.CharField(max_length=1,  null=True, verbose_name='Loại Khai Sinh (Người Khai Sinh)',
                                        choices=Options._BIRTH_CERT_TYPE, blank=False)
 
     # Thông tin mất tích của người khai sinh (5 trường)
     nksMatTich = models.CharField(
-        max_length=10, default=True, null=True, verbose_name='Mất Tích (Người Khai Sinh)', blank=True)
+        max_length=10,  null=True, verbose_name='Mất Tích (Người Khai Sinh)', blank=True)
     nksMatTichNgayGhiChuTuyenBo = models.DateField(
-        default=True, null=True, verbose_name='Ngày Ghi Chú Tuyên Bố Mất Tích (Người Khai Sinh)', blank=True)
+         null=True, verbose_name='Ngày Ghi Chú Tuyên Bố Mất Tích (Người Khai Sinh)', blank=True)
     nksMatTichCanCuTuyenBo = models.CharField(
-        max_length=10, default=True, null=True, verbose_name='Căn Cứ Tuyên Bố Mất Tích (Người Khai Sinh)', blank=True)
+        max_length=10,  null=True, verbose_name='Căn Cứ Tuyên Bố Mất Tích (Người Khai Sinh)', blank=True)
     nksMatTichNgayGhiChuHuyTuyenBo = models.DateField(
-    default=True, null=True, verbose_name='Ngày Ghi Chú Hủy Tuyên Bố Mất Tích (Người Khai Sinh)', blank=True)
+     null=True, verbose_name='Ngày Ghi Chú Hủy Tuyên Bố Mất Tích (Người Khai Sinh)', blank=True)
     nksMatTichCanCuHuyTuyenBo = models.CharField(
-        max_length=10, default=True, null=True, verbose_name='Căn Cứ Hủy Tuyên Bố Mất Tích (Người Khai Sinh)', blank=True)
+        max_length=10,  null=True, verbose_name='Căn Cứ Hủy Tuyên Bố Mất Tích (Người Khai Sinh)', blank=True)
 
     # Thông tin hạn chế năng lực hành vi của người khai sinh (5 trường)
     nksHanCheNangLucHanhVi = models.CharField(
-        max_length=10, default=True, null=True, verbose_name='Hạn Chế Năng Lực Hành Vi (Người Khai Sinh)', blank=True)
+        max_length=10,  null=True, verbose_name='Hạn Chế Năng Lực Hành Vi (Người Khai Sinh)', blank=True)
     nksHanCheNangLucHanhViNgayGhiChuTuyenBo = models.DateField(
-        max_length=10, default=True, null=True, verbose_name='Ngày Ghi Chú Tuyên Bố Hạn Chế Năng Lực Hành Vi (Người Khai Sinh)', blank=True)
+        max_length=10,  null=True, verbose_name='Ngày Ghi Chú Tuyên Bố Hạn Chế Năng Lực Hành Vi (Người Khai Sinh)', blank=True)
     nksHanCheNangLucHanhViCanCuTuyenBo = models.CharField(
-        max_length=10, default=True, null=True, verbose_name='Căn Cứ Tuyên Bố Hạn Chế Năng Lực Hành Vi (Người Khai Sinh)', blank=True)
+        max_length=10,  null=True, verbose_name='Căn Cứ Tuyên Bố Hạn Chế Năng Lực Hành Vi (Người Khai Sinh)', blank=True)
     nksHanCheNangLucHanhViNgayGhiChuHuyTuyenBo = models.DateField(
-        default=True, null=True, verbose_name='Ngày Ghi Chú Hủy Tuyên Bố Hạn Chế Năng Lực Hành Vi (Người Khai Sinh)', blank=True)
+         null=True, verbose_name='Ngày Ghi Chú Hủy Tuyên Bố Hạn Chế Năng Lực Hành Vi (Người Khai Sinh)', blank=True)
     nksHanCheNangLucHanhViNgayCanCuHuyTuyenBo = models.CharField(
-        max_length=10, default=True, null=True, verbose_name='Ngày Căn Cứ Hủy Tuyên Bố Hạn Chế Năng Lực Hành Vi (Người Khai Sinh)', blank=True)
+        max_length=10,  null=True, verbose_name='Ngày Căn Cứ Hủy Tuyên Bố Hạn Chế Năng Lực Hành Vi (Người Khai Sinh)', blank=True)
 
     # Thông tin về mẹ của người khai sinh (9 trường)
     meHoTen = models.CharField(
-        max_length=30, default=True, null=True, verbose_name='Họ và Tên (Mẹ)', blank=True)
+        max_length=30,  null=True, verbose_name='Họ và Tên (Mẹ)', blank=True)
     meNgaySinh = models.DateField(
-         default=True, null=True, verbose_name='Ngày Sinh (Mẹ)', blank=True)
+          null=True, verbose_name='Ngày Sinh (Mẹ)', blank=True)
     meDanToc = models.CharField(max_length=26, choices=Options._DANTOC_LIST,
-                                default=True, null=True, verbose_name='Dân Tộc (Mẹ)', blank=True)
+                                 null=True, verbose_name='Dân Tộc (Mẹ)', blank=True)
     meQuocTich = models.CharField(
-        max_length=20, default=True, null=True, verbose_name='Quốc Tịch (Mẹ)', blank=True)
+        max_length=20,  null=True, verbose_name='Quốc Tịch (Mẹ)', blank=True)
     meQuocTichKhac = models.CharField(
-        max_length=10, default=True, null=True, verbose_name='Quốc Tịch Khác (Mẹ)', blank=True)
+        max_length=10,  null=True, verbose_name='Quốc Tịch Khác (Mẹ)', blank=True)
     meLoaiCuTru = models.CharField(max_length=1, choices=Options._RESIDENCE_TYPE,
-                                   default=True, null=True, verbose_name='Loại Cư Trú (Mẹ)', blank=True)
+                                    null=True, verbose_name='Loại Cư Trú (Mẹ)', blank=True)
     meNoiCuTru = models.CharField(
-        max_length=100, default=True, null=True, verbose_name='Nơi Cư Trú (Mẹ)', blank=True)
+        max_length=100,  null=True, verbose_name='Nơi Cư Trú (Mẹ)', blank=True)
     meLoaiGiayToTuyThan = models.CharField(
-        max_length=1, choices=Options._IDENTIFICATION_TYPE, default=True, null=True, verbose_name='Loại Giấy Tờ Tùy Thân (Mẹ)', blank=True)
+        max_length=1, choices=Options._IDENTIFICATION_TYPE,  null=True, verbose_name='Loại Giấy Tờ Tùy Thân (Mẹ)', blank=True)
     meSoGiayToTuyThan = models.CharField(
-        max_length=12, default=True, null=True, verbose_name='Số Giấy Tờ Tùy Thân (Mẹ)', blank=True)
+        max_length=12,  null=True, verbose_name='Số Giấy Tờ Tùy Thân (Mẹ)', blank=True)
 
     # Thông tin về cha của người khai sinh (9 trường)
     chaHoTen = models.CharField(
-        max_length=30, default=True, null=True, verbose_name='Họ Tên (Cha)', blank=True)
+        max_length=30,  null=True, verbose_name='Họ Tên (Cha)', blank=True)
     chaNgaySinh = models.DateField(
-       default=True, null=True, verbose_name='Ngày Sinh (Cha)', blank=True)
+        null=True, verbose_name='Ngày Sinh (Cha)', blank=True)
     chaDanToc = models.CharField(max_length=26, choices=Options._DANTOC_LIST,
-                                 default=True, null=True, verbose_name='Dân Tộc (Cha)', blank=True)
+                                  null=True, verbose_name='Dân Tộc (Cha)', blank=True)
     chaQuocTich = models.CharField(
-        max_length=20, default=True, null=True, verbose_name='Quốc Tịch (Cha)', blank=True)
+        max_length=20,  null=True, verbose_name='Quốc Tịch (Cha)', blank=True)
     chaQuocTichKhac = models.CharField(
-        max_length=20, default=True, null=True, verbose_name='Quốc Tịch Khác (Cha)', blank=True)
+        max_length=20,  null=True, verbose_name='Quốc Tịch Khác (Cha)', blank=True)
     chaLoaiCuTru = models.CharField(
-        max_length=1, default=True, null=True, verbose_name='Loại Cư Trú (Cha)', blank=True)
+        max_length=1,  null=True, verbose_name='Loại Cư Trú (Cha)', blank=True)
     chaNoiCuTru = models.CharField(
-        max_length=100, default=True, null=True, verbose_name='Nơi Cư Trú (Cha)', blank=True)
+        max_length=100,  null=True, verbose_name='Nơi Cư Trú (Cha)', blank=True)
     chaLoaiGiayToTuyThan = models.CharField(
-        max_length=1, default=True, null=True, verbose_name='Loại Giấy Tờ Tùy Thân (Cha)', blank=True)
+        max_length=1,  null=True, verbose_name='Loại Giấy Tờ Tùy Thân (Cha)', blank=True)
     chaSoGiayToTuyThan = models.CharField(
-        max_length=12, default=True, null=True, verbose_name='Số Giấy Tờ Tùy Thân (Cha)', blank=True)
+        max_length=12,  null=True, verbose_name='Số Giấy Tờ Tùy Thân (Cha)', blank=True)
 
     # Thông tin về người đi khai - người yêu cầu (7 trường)
     nycHoTen = models.CharField(
-        max_length=30, default=True, null=True, verbose_name='Họ Tên (Người Yêu Cầu)', blank=True)
+        max_length=30,  null=True, verbose_name='Họ Tên (Người Yêu Cầu)', blank=True)
     nycQuanHe = models.CharField(
-        max_length=10, default=True, null=True, verbose_name='Quan Hệ (Người Yêu Cầu)', blank=True)
+        max_length=10,  null=True, verbose_name='Quan Hệ (Người Yêu Cầu)', blank=True)
     nycLoaiGiayToTuyThan = models.CharField(max_length=1, choices=Options._IDENTIFICATION_TYPE,
-                                            default=True, null=True, verbose_name='Loại Giấy Tờ Tùy Thân (Người Yêu Cầu)', blank=True)
+                                             null=True, verbose_name='Loại Giấy Tờ Tùy Thân (Người Yêu Cầu)', blank=True)
     nycGiayToKhac = models.CharField(
-        max_length=20, default=True, null=True, verbose_name='Giấy Tờ Khác (Người Yêu Cầu)', blank=True)
+        max_length=20,  null=True, verbose_name='Giấy Tờ Khác (Người Yêu Cầu)', blank=True)
     nycSoGiayToTuyThan = models.CharField(
-        max_length=12, default=True, null=True, verbose_name='Số Giấy Tờ Tùy Thân (Người Yêu Cầu)', blank=True)
+        max_length=12,  null=True, verbose_name='Số Giấy Tờ Tùy Thân (Người Yêu Cầu)', blank=True)
     nycNgayCapGiayToTuyThan = models.DateField(
-         default=True, null=True, verbose_name='Ngày Cấp Giấy Tờ Tùy Thân (Người Yêu Cầu)', blank=True)
+          null=True, verbose_name='Ngày Cấp Giấy Tờ Tùy Thân (Người Yêu Cầu)', blank=True)
     nycNoiCapGiayToTuyThan = models.CharField(
-        max_length=100, default=True, null=True, verbose_name='Nơi Cấp Giấy Tờ Tùy Thân (Người Yêu Cầu)', blank=True)
+        max_length=100,  null=True, verbose_name='Nơi Cấp Giấy Tờ Tùy Thân (Người Yêu Cầu)', blank=True)
 
     # Thông tin đăng ký nước ngoài (4 trường)
     soDangKyNuocNgoai = models.CharField(
-        max_length=12, default=True, null=True, verbose_name="Số Đăng Ký Nước Ngoài", blank=True)
+        max_length=12,  null=True, verbose_name="Số Đăng Ký Nước Ngoài", blank=True)
     ngayDangKyNuocNgoai = models.DateField(
-        default=True, null=True, verbose_name="Ngày Đăng Ký Nước Ngoài", blank=True)
+         null=True, verbose_name="Ngày Đăng Ký Nước Ngoài", blank=True)
     cqNuocNgoaiDaDangKy = models.CharField(
-        max_length=30, default=True, null=True, verbose_name="Cơ Quan Đăng Ký Nước Ngoài", blank=True)
+        max_length=30,  null=True, verbose_name="Cơ Quan Đăng Ký Nước Ngoài", blank=True)
     qgNuocNgoaiDaDangKy = models.CharField(
-        max_length=63, choices=Options._COUNTRIES_LIST, default=True, null=True, verbose_name="Quốc Gia Đăng Ký Nước Ngoài", blank=True)
+        max_length=63, choices=Options._COUNTRIES_LIST,  null=True, verbose_name="Quốc Gia Đăng Ký Nước Ngoài", blank=True)
 
     def __str__(self):
         return self.document.document_name
