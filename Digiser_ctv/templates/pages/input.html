@@ -189,8 +189,7 @@
         </div>
 
         <div class="scrollable-image-container">
-            {% comment %} <iframe id= "MyPDF" src="{% static 'pdf/sample.pdf' %}" frameborder="0"></iframe> {% endcomment %}
-            <iframe id= "MyPDF" src="{{ document.document_path }}" frameborder="0"></iframe>
+            <iframe id= "MyPDF" src="{{ form.pdf_path }}" frameborder="0"></iframe>
         </div>  
         <div class="image-buttons">
             <button onclick="goBack()">
