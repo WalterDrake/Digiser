@@ -306,7 +306,7 @@
         {% for record in package.datarecord_set %}
         <tr class="child" data-parent="{{ forloop.parentloop.counter }}" style="display: none;">
             <td></td>
-            <td>{{ record.document_path }}</td>
+            <td>{{ record.document_name }}</td>
             <td></td>
             <td>{{ record.fields }}</td>
             <td>{{ record.executor }}</td>

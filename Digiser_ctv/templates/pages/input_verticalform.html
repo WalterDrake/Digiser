@@ -12,21 +12,21 @@
                 <!-- First Section -->
                 <div class="vertical-form vertical-three-columns">
                     <div class="vertical-form-group">
-                        <input type="number" id="vertical-so" name="so" value="{{form.so}}" required>
+                        <input type="text" id="vertical-so" name="so" value="{{form.so}}" required>
                         <label for="vertical-so">Số</label>
                     </div>
                     <div class="vertical-form-group">
-                        <input type="number" id="vertical-quyenSo" name="quyenSo" value="{{form.quyenSo}}" required>
+                        <input type="text" id="vertical-quyenSo" name="quyenSo" value="{{form.quyenSo}}" required>
                         <label for="vertical-quyenSo">Quyển Sổ</label>
                     </div>
                     <div class="vertical-form-group">
-                        <input type="number" id="vertical-trangSo" name="trangSo" value="{{form.trangSo}}" required>
+                        <input type="text" id="vertical-trangSo" name="trangSo" value="{{form.trangSo}}" required>
                         <label for="vertical-trangSo">Trang Số</label>
                     </div>
                 </div>
                 <div class="vertical-form vertical-two-columns">
                     <div class="vertical-form-group">
-                        <input type="number" id="vertical-ngayDangKy" name="ngayDangKy" value="{{form.ngayDangKy}}" required>
+                        <input type="text" id="vertical-ngayDangKy" name="ngayDangKy" value="{{form.ngayDangKy}}" required>
                         <label for="vertical-ngayDangKy">Ngày Đăng Ký</label>
                     </div>
                     <div class="vertical-form-group">
@@ -62,7 +62,7 @@
                 </div>
                 <div class="vertical-form vertical-full-width">
                     <div class="vertical-form-group textarea-active">
-                        <textarea id="vertical-ghiChu" name="ghiChu" required></textarea>
+                        <textarea id="vertical-ghiChu" name="ghiChu" required> {{form.ghiChu}} </textarea>
                         <label for="vertical-ghiChu">Ghi Chú</label>
                     </div>
                 </div>
@@ -84,7 +84,7 @@
                 </div>
                 <div class="vertical-form vertical-two-columns">
                     <div class="vertical-form-group">
-                        <input type="number" id="vertical-nksNgaySinh" name="nksNgaySinh" value="{{form.nksNgaySinh}}" required>
+                        <input type="text" id="vertical-nksNgaySinh" name="nksNgaySinh" value="{{form.nksNgaySinh}}" required>
                         <label for="vertical-nksNgaySinh">NKS: Ngày Sinh</label>
                     </div>
                     <div class="vertical-form-group">
@@ -143,7 +143,7 @@
                         <label for="vertical-meHoTen">Mẹ: Họ và tên</label>
                     </div>
                     <div class="vertical-form-group">
-                        <input type="number" id="vertical-meNgaySinh" name="meNgaySinh" value="{{form.meNgaySinh}}" required>
+                        <input type="text" id="vertical-meNgaySinh" name="meNgaySinh" value="{{form.meNgaySinh}}" required>
                         <label for="vertical-meNgaySinh">Mẹ: Ngày sinh</label>
                     </div>
                 </div>
@@ -189,7 +189,7 @@
                         <label for="vertical-meLoaiGiayToTuyThan">Mẹ: Loại giấy tờ tùy thân</label>
                     </div>
                     <div class="vertical-form-group">
-                        <input type="number" id="vertical-meSoGiayToTuyThan" name="vertical-meSoGiayToTuyThan" value="{{form.meSoGiayToTuyThan}}" required>
+                        <input type="number" id="vertical-meSoGiayToTuyThan" name="meSoGiayToTuyThan" value="{{form.meSoGiayToTuyThan}}" required>
                         <label for="vertical-meSoGiayToTuyThan">Mẹ: Số giấy tờ tùy thân</label>
                     </div>
                 </div>
@@ -200,7 +200,7 @@
                         <label for="vertical-chaHoTen">Cha: Họ và tên</label>
                     </div>
                     <div class="vertical-form-group">
-                        <input type="number" id="vertical-chaNgaySinh" name="chaNgaySinh" value="{{form.chaNgaySinh}}" required>
+                        <input type="text" id="vertical-chaNgaySinh" name="chaNgaySinh" value="{{form.chaNgaySinh}}" required>
                         <label for="vertical-chaNgaySinh">Cha: Ngày sinh</label>
                     </div>
                 </div>
@@ -232,7 +232,7 @@
                         <label for="vertical-chaLoaiCuTru">Cha: Loại cư trú</label>
                     </div>
                     <div class="vertical-form-group">
-                        <input type="text" id="vertical-chaHoTen" name="chaHoTen" value="{{form.chaHoTen}}" required>
+                        <input type="text" id="vertical-chaHoTen" name="chaNoiCuTru" value="{{form.chaNoiCuTru}}" required>
                         <label for="vertical-chaHoTen">Cha: Nơi cư trú</label>
                     </div>
                 </div>
@@ -246,18 +246,18 @@
                         <label for="vertical-chaLoaiGiayTo">Cha: Loại giấy tờ tùy thân</label>
                     </div>
                     <div class="vertical-form-group">
-                        <input type="number" id="vertical-chaSoGiayTo" name="chaSoGiayTo" value="{{form.chaSoGiayTo}}" required>
-                        <label for="vertical-chaSoGiayTo">Cha: Số giấy tờ tùy thân</label>
+                        <input type="number" id="vertical-chaSoGiayToTuyThan" name="chaSoGiayToTuyThan" value="{{form.chaSoGiayToTuyThan}}" required>
+                        <label for="vertical-chaSoGiayToTuyThan">Cha: Số giấy tờ tùy thân</label>
                     </div>
                 </div>
                 <div class="vertical-form-section">
                     <div class="vertical-form vertical-two-columns">
                         <div class="vertical-form-group">
-                            <input type="text" id="vertical-nycHoTen" name="vertical-nycHoTen" value="{{form.nycHoTen}}" required>
+                            <input type="text" id="vertical-nycHoTen" name="nycHoTen" value="{{form.nycHoTen}}" required>
                             <label for="vertical-nycHoTen">NYC: Họ và tên</label>
                         </div>
                         <div class="vertical-form-group">
-                            <input type="text" id="vertical-nycQuanHe" name="vertical-nycQuanHe" value="{{form.nycQuanHe}}" required>
+                            <input type="text" id="vertical-nycQuanHe" name="nycQuanHe" value="{{form.nycQuanHe}}" required>
                             <label for="vertical-nycQuanHe">NYC: Quan hệ</label>
                         </div>
                     </div>
@@ -271,26 +271,26 @@
                             <label for="vertical-nycLoaiGiayToTuyThan">NYC: Loại giấy tờ tùy thân</label>
                         </div>
                         <div class="vertical-form-group">
-                            <input type="text" id="vertical-nycGiayToKhac" name="vertical-nycGiayToKhac" value="{{form.nycGiayToKhac}}" required>
+                            <input type="text" id="vertical-nycGiayToKhac" name="nycGiayToKhac" value="{{form.nycGiayToKhac}}" required>
                             <label for="vertical-nycGiayToKhac">NYC: Giấy tờ khác</label>
                         </div>
                     </div>
                     <div class="vertical-form vertical-two-columns">
                         <div class="vertical-form-group">
-                            <input type="number" id="vertical-nycSoGiayToTuyThan" name="vertical-nycSoGiayToTuyThan" value="{{form.nycSoGiayToTuyThan}}" required>
+                            <input type="number" id="vertical-nycSoGiayToTuyThan" name="nycSoGiayToTuyThan" value="{{form.nycSoGiayToTuyThan}}" required>
                             </input>
                             <label for="vertical-nycSoGiayToTuyThan">NYC: Số giấy tờ tùy thân</label>
                         </div>
                         <div class="vertical-form-group">
-                            <input type="number" id="vertical-nycNgayCapGiayToTuyThan"
-                                name="vertical-nycNgayCapGiayToTuyThan" value="{{form.nycNgayCapGiayToTuyThan}}" required>
+                            <input type="text" id="vertical-nycNgayCapGiayToTuyThan"
+                                name="nycNgayCapGiayToTuyThan" value="{{form.nycNgayCapGiayToTuyThan}}" required>
                             <label for="vertical-nycNgayCapGiayToTuyThan">NYC: Ngày cấp giấy tờ tùy thân</label>
                         </div>
                     </div>
                     <div class="vertical-form vertical-full-width">
                         <div class="vertical-form-group">
                             <input type="text" id="vertical-nycNoiCapGiayToTuyThan"
-                                name="vertical-nycNoiCapGiayToTuyThan" value="{{form.nycNoiCapGiayToTuyThan}}" required>
+                                name="nycNoiCapGiayToTuyThan" value="{{form.nycNoiCapGiayToTuyThan}}" required>
                             <label for="vertical-nycNoiCapGiayToTuyThan">NYC: Nơi cấp giấy tờ tùy thân</label>
                         </div>
                     </div>
