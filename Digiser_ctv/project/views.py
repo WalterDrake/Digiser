@@ -72,10 +72,15 @@ def birth_certificate_document(request, document, user, role):
 
         return render(request, 'pages/input.html', {'form': form_data})
     else:
+        lock = False
         if role == 'inserter':
             form_instance = Birth_Certificate_Document.objects.filter(document=document).first()
+            if form_instance.document.status_insert == 'Đã nhập':
+                lock = True
         else:
             form_instance = Birth_Certificate_Document.objects.filter(document=document, executor=user).first()
+            if form_instance and form_instance.document.status_check_1 or form_instance.document.status_check_2  == 'Hoàn thành':
+                lock = True
             if not form_instance and role == 'checker_2':
                 form_instance = Birth_Certificate_Document.objects.filter(document=document, executor=user)[1:2]
                 form_instance = form_instance.first()
@@ -88,7 +93,8 @@ def birth_certificate_document(request, document, user, role):
         form_data = get_form_data()
         if form_instance:
             form_data.update(handle_date_fields(model_to_dict(form_instance), date_fields, rule="format"))
-            form_data.update({'pdf_path': form_instance.document.document_path})
+            form_data.update({'pdf_path': form_instance.document.document_path,
+                              'lock': lock})
 
         return render(request, 'pages/input.html', {'form': form_data})
 
