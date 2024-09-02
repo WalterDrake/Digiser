@@ -79,14 +79,15 @@ def birth_certificate_document(request, document, user, role):
                 lock = True
         else:
             form_instance = Birth_Certificate_Document.objects.filter(document=document, executor=user).first()
-            if form_instance and form_instance.document.status_check_1 or form_instance.document.status_check_2  == 'Hoàn thành':
-                lock = True
             if not form_instance and role == 'checker_2':
                 form_instance = Birth_Certificate_Document.objects.filter(document=document, executor=user)[1:2]
                 form_instance = form_instance.first()
             if not form_instance:
                 form_instance = Birth_Certificate_Document.objects.filter(document=document).first()
-        
+            if form_instance and form_instance.document.status_check_1 == 'Hoàn thành' or form_instance.document.status_check_2 == 'Hoàn thành':
+                lock = True
+                
+        print(lock)
         document_name = form_instance.document.document_name
         form_instance.so = document_name.split('.')[4]
         form_instance.quyenSo = document_name.split('.')[2]
