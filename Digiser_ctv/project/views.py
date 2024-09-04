@@ -58,46 +58,60 @@ def get_valid_index(index_str, documents_count):
 
 def birth_certificate_document(request, document, user, role):
     date_fields = ['ngayDangKy', 'nksNgaySinh', 'meNgaySinh', 'chaNgaySinh', 'nycNgayCapGiayToTuyThan']
+    
+    def prepare_form_data(form_instance, lock=False):
+        if form_instance:
+            document_name = form_instance.document.document_name.split('.')
+            form_instance.so = document_name[4] if len(document_name) > 4 else ""
+            form_instance.quyenSo = document_name[2] if len(document_name) > 2 else ""
+            
+            form_data = handle_date_fields(model_to_dict(form_instance), date_fields, rule="format")
+            form_data.update({
+                'pdf_path': form_instance.document.document_path,
+                'lock': lock,
+                'total_fields': form_instance.document.package_name.total_fields,
+                'entered_tickets': form_instance.document.package_name.entered_tickets or 0,
+                'total_real_tickets': form_instance.document.package_name.total_real_tickets
+            })
+            return form_data
+        return {}
+
     if request.method == 'POST':
         form_data = get_form_data(request)
         if form_data is None:
             return render(request, 'pages/input.html', {'error': 'Invalid form.'})
+        
         form_data = handle_date_fields(form_data, date_fields)
         form_data['executor'] = user
-        instance, created = Birth_Certificate_Document.objects.update_or_create(document=document, executor=user, defaults=form_data)
-        updated_form_data = handle_date_fields(model_to_dict(instance), date_fields, rule="format")
-        form_data = get_form_data()
-        form_data.update(updated_form_data)
-        form_data.update({'pdf_path': instance.document.document_path})
+        form_instance, _ = Birth_Certificate_Document.objects.update_or_create(
+            document=document, executor=user, defaults=form_data)
+        
+        form_data.update(prepare_form_data(form_instance))
 
         return render(request, 'pages/input.html', {'form': form_data})
+    
+    lock = False
+    form_instance = None
+    
+    if role == 'inserter':
+        form_instance = Birth_Certificate_Document.objects.filter(document=document).first()
+        if form_instance and form_instance.document.status_insert == 'Đã nhập':
+            lock = True
     else:
-        lock = False
-        if role == 'inserter':
+        form_instance = Birth_Certificate_Document.objects.filter(document=document, executor=user).first()
+        if not form_instance and role == 'checker_2':
+            form_instance = Birth_Certificate_Document.objects.filter(document=document, executor=user)[1:2].first()
+        if not form_instance:
             form_instance = Birth_Certificate_Document.objects.filter(document=document).first()
-            if form_instance.document.status_insert == 'Đã nhập':
-                lock = True
-        else:
-            form_instance = Birth_Certificate_Document.objects.filter(document=document, executor=user).first()
-            if not form_instance and role == 'checker_2':
-                form_instance = Birth_Certificate_Document.objects.filter(document=document, executor=user)[1:2]
-                form_instance = form_instance.first()
-            if not form_instance:
-                form_instance = Birth_Certificate_Document.objects.filter(document=document).first()
-            if form_instance and form_instance.document.status_check_1 == 'Hoàn thành' or form_instance.document.status_check_2 == 'Hoàn thành':
-                lock = True
-                
-        print(lock)
-        document_name = form_instance.document.document_name
-        form_instance.so = document_name.split('.')[4]
-        form_instance.quyenSo = document_name.split('.')[2]
-        form_data = get_form_data()
-        if form_instance:
-            form_data.update(handle_date_fields(model_to_dict(form_instance), date_fields, rule="format"))
-            form_data.update({'pdf_path': form_instance.document.document_path,
-                              'lock': lock})
-
-        return render(request, 'pages/input.html', {'form': form_data})
+        if form_instance and (form_instance.document.status_check_1 == 'Hoàn thành' or 
+                              form_instance.document.status_check_2 == 'Hoàn thành'):
+            lock = True
+    
+    form_data = get_form_data()  # Get initial form data here
+    form_data.update(prepare_form_data(form_instance, lock))
+    
+    template = 'pages/input.html' if role == 'inserter' else 'pages/check_birth.html'
+    return render(request, template, {'form': form_data})
 
 
 def get_form_data(request=None):
