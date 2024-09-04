@@ -11,7 +11,7 @@ from django.forms.models import model_to_dict
 from datetime import datetime, date
 from django.contrib.auth.decorators import user_passes_test
 from django.contrib.auth.models import User
-from .utils import birth_certificate_documents_to_sheet
+# from .utils import birth_certificate_documents_to_sheet
 
 @login_required
 def input_redirect(request, **kwargs):
@@ -85,8 +85,8 @@ def birth_certificate_document(request, document, user, role):
     def prepare_form_data(form_instance, lock=False):
         if form_instance:
             document_name = form_instance.document.document_name.split('.')
-            form_instance.so = document_name[4] if len(document_name) > 4 else ""
-            form_instance.quyenSo = document_name[2] if len(document_name) > 2 else ""
+            form_instance.so = document_name[4] if len(document_name) > 0 else ""
+            form_instance.quyenSo = document_name[2] if len(document_name) > 0 else ""
             
             form_data = handle_date_fields(model_to_dict(form_instance), date_fields, rule="format")
             form_data.update({
@@ -109,8 +109,8 @@ def birth_certificate_document(request, document, user, role):
         form_instance, _ = Birth_Certificate_Document.objects.update_or_create(
             document=document, executor=user, defaults=form_data)
         
+        form_data.update(get_form_data())
         form_data.update(prepare_form_data(form_instance))
-
         return render(request, 'pages/input.html', {'form': form_data})
     
     lock = False
@@ -130,7 +130,7 @@ def birth_certificate_document(request, document, user, role):
                               form_instance.document.status_check_2 == 'Hoàn thành'):
             lock = True
     
-    form_data = get_form_data()  # Get initial form data here
+    form_data = get_form_data()
     form_data.update(prepare_form_data(form_instance, lock))
     
     template = 'pages/input.html' if role == 'inserter' else 'pages/check_birth.html'
