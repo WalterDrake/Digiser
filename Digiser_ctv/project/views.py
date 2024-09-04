@@ -9,6 +9,9 @@ from .models.model1 import Document, Package_detail
 from authentication.models import CustomUser
 from django.forms.models import model_to_dict
 from datetime import datetime, date
+from django.contrib.auth.decorators import user_passes_test
+from django.contrib.auth.models import User
+from .utils import birth_certificate_documents_to_sheet
 
 @login_required
 def input_redirect(request, **kwargs):
@@ -40,7 +43,27 @@ def input_redirect(request, **kwargs):
             return birth_certificate_document(request, document, user, role="checker_2")
     else:
         raise Http404("Document type not supported")
+    
+def is_superuser(user):
+    return user.is_superuser
 
+@user_passes_test(is_superuser)
+@login_required
+def export_package(request, **kwargs):
+    package_id = kwargs.get('id')
+    if not is_valid_package_id(package_id):
+        raise Http404("Invalid package ID")
+
+    package_id = escape(package_id)
+    package = get_object_or_404(Package_detail, package_name_hash=package_id)
+
+    # Optimize database query to fetch all 'Document' objects related to the 'Package_detail' object
+    documents = Document.objects.select_related('package_name').filter(package_name=package.package_name)
+
+    # Optimize database query to fetch all 'Birth_Certificate_Document' objects related to the 'Document' objects
+    birth_certificate_documents = Birth_Certificate_Document.objects.select_related('executor').prefetch_related('document').filter(document__in=documents)
+    birth_certificate_documents_to_sheet(birth_certificate_documents)
+        
 
 def is_valid_package_id(package_id):
     return isinstance(package_id, str) and re.match(r'^[a-zA-Z0-9_-]+$', package_id)
