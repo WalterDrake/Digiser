@@ -5,33 +5,33 @@ from django.utils.translation import gettext_lazy as _
 class Options:
 
     _REGISTER_TYPE = (
-        (0, "Không có thông tin"),
-        (1, "Đăng ký đúng Hạn"),
-        (2, "Đăng ký Lại"),
-        (3, "Ghi vào sổ việc khai tử tại cơ quan có thẩm quyền ở nước ngoài"),
-        (4, "Đăng ký quá hạn")
+        ('0', "Không có thông tin"),
+        ('1', "Đăng ký đúng Hạn"),
+        ('2', "Đăng ký Lại"),
+        ('3', "Ghi vào sổ việc khai tử tại cơ quan có thẩm quyền ở nước ngoài"),
+        ('4', "Đăng ký quá hạn")
     )
     _SEX_TYPE = (
-        (1, "Nam"),
-        (2, "Nữ"),
-        (3, "Chưa xác định được giới tính")
+        ('1', "Nam"),
+        ('2', "Nữ"),
+        ('3', "Chưa xác định được giới tính")
     )
     _RESIDENCE_TYPE = (
-        (0, "Không có thông tin"),
-        (1, "Thường trú"),
-        (2, "Tạm trú"),
+        ('0', "Không có thông tin"),
+        ('1', "Thường trú"),
+        ('2', "Tạm trú"),
     )
 
     _IDENTIFICATION_TYPE = (
-        (1, "CMND"),
-        (2, "Hộ chiếu"),
-        (3, "Thẻ thường trú"),
-        (4, "Thẻ căn cước công dân"),
-        (5, "Giấy chứng minh quân đội nhân dân"),
-        (6, "Giấy chứng minh sĩ quan quân đội"),
-        (7, "Giấy chứng minh công an nhân dân"),
-        (8, "Giấy tờ khác"),
-        (0, "Để trống"),
+        ('1', "CMND"),
+        ('2', "Hộ chiếu"),
+        ('3', "Thẻ thường trú"),
+        ('4', "Thẻ căn cước công dân"),
+        ('5', "Giấy chứng minh quân đội nhân dân"),
+        ('6', "Giấy chứng minh sĩ quan quân đội"),
+        ('7', "Giấy chứng minh công an nhân dân"),
+        ('8', "Giấy tờ khác"),
+        ('0', "Để trống"),
     )
 
     _DANTOC_LIST = (('Khác', 'Khác'), ('Kinh', 'Kinh'), ('Ba Na', 'Ba Na'), ('Ba Na (A-la Công)', 'Ba Na (A-la Công)'), ('Ba Na (Bơ-nâm)', 'Ba Na (Bơ-nâm)'), ('Ba Na (ConKđe)', 'Ba Na (ConKđe)'), ('Ba Na (Giơ-lar)', 'Ba Na (Giơ-lar)'), ('Ba Na (Giơ-lâng)', 'Ba Na (Giơ-lâng)'), ('Ba Na (Kpăng Công)', 'Ba Na (Kpăng Công)'), ('Ba Na (Krem)', 'Ba Na (Krem)'), ('Ba Na (Roh)', 'Ba Na (Roh)'), ('Ba Na (Rơ-ngao)', 'Ba Na (Rơ-ngao)'), ('Ba Na (Tơ-lô)', 'Ba Na (Tơ-lô)'), ('Ba Na (Y-lăng)', 'Ba Na (Y-lăng)'), ('Bố Y', 'Bố Y'), ('Bố Y (Chủng Chá)', 'Bố Y (Chủng Chá)'), ('Bố Y (Trọng Gia)', 'Bố Y (Trọng Gia)'), ('Bố Y (Tu Di)', 'Bố Y (Tu Di)'), ('Bố Y (Tu Din)', 'Bố Y (Tu Din)'), ('Brâu', 'Brâu'), ('Brâu (Brao)', 'Brâu (Brao)'), ('Bru Vân Kiều', 'Bru Vân Kiều'), ('Bru Vân Kiều (Bru)', 'Bru Vân Kiều (Bru)'), ('Bru Vân Kiều (Măng Coong)', 'Bru Vân Kiều (Măng Coong)'), ('Bru Vân Kiều (Tri Khùa)', 'Bru Vân Kiều (Tri Khùa)'), ('Bru Vân Kiều (Vân Kiều)', 'Bru Vân Kiều (Vân Kiều)'), ('Chăm', 'Chăm'), ('Chăm (Chàm)', 'Chăm (Chàm)'), ('Chăm (Chiêm Thành)', 'Chăm (Chiêm Thành)'), ('Chăm (Hroi)', 'Chăm (Hroi)'), ('Chơ Ro', 'Chơ Ro'), ('Chơ Ro (Châu-ro)', 'Chơ Ro (Châu-ro)'), ('Chơ Ro (Dơ-ro)', 'Chơ Ro (Dơ-ro)'), ('Chu Ru', 'Chu Ru'), ('Chu Ru (Chơ-ru)', 'Chu Ru (Chơ-ru)'), ('Chu Ru (Chu)', 'Chu Ru (Chu)'), ('Chứt', 'Chứt'), ('Chứt (A-rem)', 'Chứt (A-rem)'), ('Chứt (Chà-củi)', 'Chứt (Chà-củi)'), ('Chứt (Mã-liêng)', 'Chứt (Mã-liêng)'), ('Chứt (Máy)', 'Chứt (Máy)'), ('Chứt (Pa-leng)', 'Chứt (Pa-leng)'), ('Chứt (Rục)', 'Chứt (Rục)'), ('Chứt (Sách)', 'Chứt (Sách)'), ('Chứt (Tắc-củi)', 'Chứt (Tắc-củi)'), ('Chứt (Tơ-hung)', 'Chứt (Tơ-hung)'), ('Chứt (Tu vang)', 'Chứt (Tu vang)'), ('Chứt (U-mo)', 'Chứt (U-mo)'), ('Chứt (Xá Lá Vàng)', 'Chứt (Xá Lá Vàng)'), ('Chứt (Xơ-Lang)', 'Chứt (Xơ-Lang)'), ('Co', 'Co'), ('Co (Col)', 'Co (Col)'), ('Co (Cor)', 'Co (Cor)'), ('Co (Cùa)', 'Co (Cùa)'), ('Co (Trầu)', 'Co (Trầu)'), ('Cống', 'Cống'), ('Cống (Mấng Nhé)', 'Cống (Mấng Nhé)'), ('Cống (Xá Xeng)', 'Cống (Xá Xeng)'), ('Cống (Xắm Khống)', 'Cống (Xắm Khống)'), ('Cơ Ho', 'Cơ Ho'), ('Cơ Ho (Chil)', 'Cơ Ho (Chil)'), ('Cơ Ho (Cơ-don)', 'Cơ Ho (Cơ-don)'), ('Cơ Ho (Kơ Ho)', 'Cơ Ho (Kơ Ho)'), ('Cơ Ho (Lach)', 'Cơ Ho (Lach)'), ('Cơ Ho (Lat)', 'Cơ Ho (Lat)'), ('Cơ Ho (Nốp)', 'Cơ Ho (Nốp)'), ('Cơ Ho (Trinh)', 'Cơ Ho (Trinh)'), ('Cơ Ho (Tu-lốp)', 'Cơ Ho (Tu-lốp)'), ('Cơ Ho (Xrê)', 'Cơ Ho (Xrê)'), ('Cơ Lao', 'Cơ Lao'), ('Cơ Tu', 'Cơ Tu'), ('Cơ Tu (Cao)', 'Cơ Tu (Cao)'), ('Cơ Tu (Ca-tang)', 'Cơ Tu (Ca-tang)'), ('Cơ Tu (Ca-tu)', 'Cơ Tu (Ca-tu)'), ('Cơ Tu (Hạ)', 'Cơ Tu (Hạ)'), ('Cơ Tu (Phương)', 'Cơ Tu (Phương)'), ('Dao', 'Dao'), ('Dao (Cóc Mùn)', 'Dao (Cóc Mùn)'), ('Dao (Cóc Ngáng)', 'Dao (Cóc Ngáng)'), ('Dao (Dao Đỏ)', 'Dao (Dao Đỏ)'), ('Dao (Dao Tiền)', 'Dao (Dao Tiền)'), ('Dao (Dìu)', 'Dao (Dìu)'), ('Dao (Đại Bản)', 'Dao (Đại Bản)'), ('Dao (Động)', 'Dao (Động)'), ('Dao (Kiềm)', 'Dao (Kiềm)'), ('Dao (Lan Tẻn)', 'Dao (Lan Tẻn)'), ('Dao (Lô Giang)', 'Dao (Lô Giang)'), ('Dao (Mán)', 'Dao (Mán)'), ('Dao (Miên)', 'Dao (Miên)'), ('Dao (Miền)', 'Dao (Miền)'), ('Dao (Quần Chẹt)', 'Dao (Quần Chẹt)'), ('Dao (Quần Trắng)', 'Dao (Quần Trắng)'), ('Dao (Sơn Đầu)', 'Dao (Sơn Đầu)'), ('Dao (Thanh Y)', 'Dao (Thanh Y)'), ('Dao (Tiểu Bản)', 'Dao (Tiểu Bản)'), ('Dao (Trại)', 'Dao (Trại)'), ('Dao (Xá)', 'Dao (Xá)'), ('Ê Đê', 'Ê Đê'), ('Ê Đê (A-đham)', 'Ê Đê (A-đham)'), ('Ê Đê (Bih)', 'Ê Đê (Bih)'), ('Ê Đê (Blô)', 'Ê Đê (Blô)'), ('Ê Đê (Đê)', 'Ê Đê (Đê)'), ('Ê Đê (Đliê Ruê)', 'Ê Đê (Đliê Ruê)'), ('Ê Đê (Epan)', 'Ê Đê (Epan)'), ('Ê Đê (Kpạ)', 'Ê Đê (Kpạ)'), ('Ê Đê (Krung)', 'Ê Đê (Krung)'), ('Ê Đê (Ktul)', 'Ê Đê (Ktul)'), ('Ê Đê (Mđhur)', 'Ê Đê (Mđhur)'), ('Ê Đê (Ra-đê)', 'Ê Đê (Ra-đê)'), ('Gia Rai', 'Gia Rai'), ('Gia Rai (Chor)', 'Gia Rai (Chor)'), ('Gia Rai (Chơ-rai)', 'Gia Rai (Chơ-rai)'), ('Gia Rai (Giơ-rai)', 'Gia Rai (Giơ-rai)'), ('Gia Rai (Hđrung)', 'Gia Rai (Hđrung)'), ('Gia Rai (Hơ-bau)', 'Gia Rai (Hơ-bau)'), ('Gia Rai (Tơ-buăn)', 'Gia Rai (Tơ-buăn)'), ('Giáy', 'Giáy'), ('Giáy (Cùi Chu)', 'Giáy (Cùi Chu)'), ('Giáy (Dẩng)', 'Giáy (Dẩng)'), ('Giáy (Nhắng)', 'Giáy (Nhắng)'), ('Giáy (Pầu Thìn Nu Nà)', 'Giáy (Pầu Thìn Nu Nà)'), ('Giáy (Xa)', 'Giáy (Xa)'), ('Giẻ-Triêng', 'Giẻ-Triêng'), ('Giẻ-Triêng (Ca-tang)', 'Giẻ-Triêng (Ca-tang)'), ('Giẻ-Triêng (Đgiéh)', 'Giẻ-Triêng (Đgiéh)'), ('Giẻ-Triêng (Giang Rẫy Pin)', 'Giẻ-Triêng (Giang Rẫy Pin)'), ('Giẻ-Triêng (Gié Triêng)', 'Giẻ-Triêng (Gié Triêng)'), ('Giẻ-Triêng (La-ve)', 'Giẻ-Triêng (La-ve)'), ('Giẻ-Triêng (Tareb)', 'Giẻ-Triêng (Tareb)'), ('Giẻ-Triêng (Ta-riêng)', 'Giẻ-Triêng (Ta-riêng)'), ('Giẻ-Triêng (Treng)', 'Giẻ-Triêng (Treng)'), ('Giẻ-Triêng (Triêng)', 'Giẻ-Triêng (Triêng)'), ('Giẻ-Triêng (Ve)', 'Giẻ-Triêng (Ve)'), ('Giẻ-Triêng (Veh)', 'Giẻ-Triêng (Veh)'), ('Hà Nhì', 'Hà Nhì'), ('Hà Nhì (U Ni)', 'Hà Nhì (U Ni)'), ('Hà Nhì (Xá U Ni)', 'Hà Nhì (Xá U Ni)'), ('Hoa', 'Hoa'), ('Hoa (Hạ)', 'Hoa (Hạ)'), ('Hoa (Hải Nam)', 'Hoa (Hải Nam)'), ('Hoa (Hán)', 'Hoa (Hán)'), ('Hoa (Phúc Kiến)', 'Hoa (Phúc Kiến)'), ('Hoa (Quảng Đông)', 'Hoa (Quảng Đông)'), ('Hoa (Triều Châu)', 'Hoa (Triều Châu)'), ('Hoa (Xạ Phạng)', 'Hoa (Xạ Phạng)'), ('Hrê', 'Hrê'), ('Hrê (Chăm Rê)', 'Hrê (Chăm Rê)'), ('Hrê (Chom)', 'Hrê (Chom)'), ('Hrê (Krẹ Luỹ)', 'Hrê (Krẹ Luỹ)'), ('Kháng', 'Kháng'), ('Kháng (Quảng Lâm)', 'Kháng (Quảng Lâm)'), ('Kháng (Xá Ái)', 'Kháng (Xá Ái)'), ('Kháng (Xá Bung)', 'Kháng (Xá Bung)'), ('Kháng (Xá Dẩng)', 'Kháng (Xá Dẩng)'), ('Kháng (Xá Dón)', 'Kháng (Xá Dón)'), ('Kháng (Xá Hốc)', 'Kháng (Xá Hốc)'), ('Kháng (Xá Khao)', 'Kháng (Xá Khao)'), ('Kháng (Xá Súa)', 'Kháng (Xá Súa)'), ('Khơ Me', 'Khơ Me'), ('Khơ Me (Cu)', 'Khơ Me (Cu)'), ('Khơ Me (Cul)', 'Khơ Me (Cul)'), ('Khơ Me (Cur)', 'Khơ Me (Cur)'), ('Khơ Me (Khmer)', 'Khơ Me (Khmer)'), ('Khơ Me (Krôm)', 'Khơ Me (Krôm)'),
@@ -74,11 +74,11 @@ _MARRIED_STATUS = (
 )
 
 _INTENDED_USE = (
-    (1, "Để đăng ký kết hôn trong nước (với người Việt Nam)"),
-    (2, "Để đăng ký kết hôn trong nước (với người nước ngoài)"),
-    (3, "Để đăng ký kết hôn ở nước ngoài (với người Việt Nam)"),
-    (4, "Để đăng ký kết hôn ở nước ngoài (với người nước ngoài)"),
-    (5, "Mục đích khác"),
+    ('1', "Để đăng ký kết hôn trong nước (với người Việt Nam)"),
+    ('2', "Để đăng ký kết hôn trong nước (với người nước ngoài)"),
+    ('3', "Để đăng ký kết hôn ở nước ngoài (với người Việt Nam)"),
+    ('4', "Để đăng ký kết hôn ở nước ngoài (với người nước ngoài)"),
+    ('5', "Mục đích khác"),
 )
 
 _CERTIFICATE_TYPE = (
