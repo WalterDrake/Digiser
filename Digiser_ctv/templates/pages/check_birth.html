@@ -235,9 +235,9 @@
 </div>
 <div class="progress-container">
     <div class="progress-text">Số lượng nhập</div>
-    <div class="progress-box">35/230</div>
+    <div class="progress-box">{{form.entered_tickets}}/{{form.total_real_tickets}}</div>
     <div class="progress-text">Số trường</div>
-    <div class="progress-box">12456</div>
+    <div class="progress-box">{{form.total_fields}}</div>
 </div>
 
 <script>
@@ -370,6 +370,45 @@
             toggleLayout();
         });
     });
+
+    const documentsCount = "{{form.total_real_tickets}}";
+
+    function goBack() {
+        const currentUrl = window.location.href;
+        const newUrl = changeIndex(currentUrl, -1);
+        if (newUrl) {
+            window.location.href = newUrl;
+        }
+    }
+
+    function goNext() {
+        const currentUrl = window.location.href;
+        const newUrl = changeIndex(currentUrl, 1);
+        if (newUrl) {
+            window.location.href = newUrl;
+        }
+    }
+
+    function changeIndex(url, step) {
+        const urlParts = url.split('/');
+        const currentIndex = parseInt(urlParts[urlParts.length - 1], 10);
+
+        if (isNaN(currentIndex)) {
+            console.error("Invalid URL format: index is not a number.");
+            return null;
+        }
+
+        const newIndex = currentIndex + step;
+
+        if (newIndex < 0 || newIndex >= documentsCount) {
+            console.log("Index out of bounds.");
+            return null;
+        }
+
+        urlParts[urlParts.length - 1] = newIndex;
+        return urlParts.join('/');
+    }
+
 </script>
 
 {% endblock %}
