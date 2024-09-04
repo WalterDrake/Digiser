@@ -299,7 +299,7 @@
             </div>
         </div>
         <div class="vertical-buttons">
-            <button type="button" class="review">Review</button>
+            <button type="button" class="complete">Hoàn Thành</button>
             <button type="submit" class="save">Lưu</button>
         </div>
     </form>
@@ -447,9 +447,11 @@
 
     .vertical-buttons {
         display: flex;
-        justify-content: flex-end;
+        justify-content: space-between;
         gap: 10px;
-        margin-top: 20px;
+        padding-top: 20px;
+        padding-left: 10px;
+        padding-right: 10px;
     }
 
     .vertical-buttons button {
@@ -462,8 +464,8 @@
         cursor: pointer;
     }
 
-    .vertical-buttons .review {
-        background-color: #4CAF50;
+    .vertical-buttons .complete {
+        background-color: #FF3B30;
     }
 
     .vertical-buttons .save {
