@@ -1,87 +1,137 @@
 {% extends 'bases/base.html' %}
 {% block content %}
 {% load static %}
-<link rel="stylesheet" href="{% static "css/home/wiki.css" %}">
+<style>
+    .left-container-max-width {
+        max-width: 250px;
+    }
+    .wiki-footer-container{
+        max-height: fit-content;
+    }
+</style>
+<link rel="stylesheet" href="{% static 'css/home/wiki.css' %}">
 <div class="wiki-container">
     <div class="wiki-info-container">
         <div class="left-container">
             <strong>Câu hỏi được hỏi nhiều nhất</strong>
             <div class="questions-container">
-                <span class="question-title" data-bs-toggle="collapse" href="#question1" role="button"
+                <span class="question-title" data-bs-toggle="collapse" data-bs-target="#question1" role="button"
                     aria-expanded="false" aria-controls="question1">
-                    1. Các lỗi sai thường gặp khi nhập liệu
+                    1. Các lỗi sai thường gặp khi nhập liệu.
                 </span>
-                <div class="collapse" id="question1">
-                    Some placeholder content for the collapse component.
+                <div class="collapse" id="question1" type="button">
+                    <div class=" card card-body">
+                        - Mỗi loại dữ liệu thường có yêu cầu khác nhau, các bạn CTV nên theo dõi file hướng dẫn và yêu
+                        cầu của từng dự án. <br>
+                        - Trong quá trình làm, có gặp vướng mắt chỗ nào thì vui lòng liên hệ với tổng đài để được hướng dẫn xử lý và tránh sai sót. <br>
+                        - Các vấn đề của các dự án thường lập đi lập lại, nên các bạn chưa quen việc có thể nhập lâu hoặc sai nhiều trong quá trình làm lần đầu. Các bạn cần kiên trì trong quá trình làm để có kinh nghiệm và quen thao tác trên hệ thống để làm việc tốt hơn.
+                    </div>
                 </div>
-                <span class="question-title" data-bs-toggle="collapse" href="#question2" role="button"
+                <span class="question-title" data-bs-toggle="collapse" data-bs-target="#question2" role="button"
                     aria-expanded="false" aria-controls="question2">
-                    2. Làm sao để nhập nhanh
+                    2. Làm sao để nhập nhanh ?
                 </span>
                 <div class="collapse" id="question2">
-                    Some placeholder content for the collapse component.
+                    <div class=" card card-body">
+                        - Sử dụng phần mềm gõ tắt trong window như unikey hoặc keyboard trên macbook để gợi ý các đối
+                        tượng ký tự thường lập đi lập lại. <br>
+                        - Nhìn quen mặt chữ viết , các chữ viết tay rất khó dọc trong lúc mới nhìn nên các bạn cần rèn
+                        luyện kỹ năng đọc và thao tác lại cách viết của người điền thông tin , từ đó suy luận ra loại ký tự mà đối tượng đó muốn viết. <br>
+                        - Đoán, có những loại văn bản thiếu hoặc sai sót quá nhiều dẫn tới là đoán thông tin trong quá
+                        trình làm việc nhập liệu, tỷ lệ nhập liệu chấp nhận sai sót, nên các bạn có thể thoải mái trong việc đoán dạng ký tự làm sao đúng nhất có thể. TRước tiên là liên hệ với tổng đài để được hỗ trợ.
+                    </div>
                 </div>
                 <span class="question-title" data-bs-toggle="collapse" href="#question3" role="button"
                     aria-expanded="false" aria-controls="question3">
-                    3. Sao bao lâu thì CTV nhận được tiền
+                    3. Sau bao lâu thì CTV nhận được tiền ?
                 </span>
                 <div class="collapse" id="question3">
-                    Some placeholder content for the collapse component
+                    <div class=" card card-body">
+                        - Mỗi dự án có thời điểm chốt và kiểm tra dữ liệu khác nhau, thông thường thì DGS sẽ thanh toán khi đủ số liệu (đã kiểm và đã bàn giao). <br>
+                        - Dựa án có thể chờ tới quyết toán của bên Thầu mới thanh toán.
+                    </div>
                 </div>
                 <span class="question-title" data-bs-toggle="collapse" href="#question4" role="button"
                     aria-expanded="false" aria-controls="question4">
                     4. Điểm đánh giá được chấm như thế nào?
                 </span>
                 <div class="collapse" id="question4">
-                    Some placeholder content for the collapse component
+                    <div class=" card card-body">
+                        - Các trường được tính theo dạng trường - Mỗi trường là một ô thông tin để điền. <br>
+                        - Trong mỗi dự án đều có hướng dẫn công dự án tính toán, các bạn theo dõi và nếu có gì thắc mắc thì liên hệ với tổng đài để được hỗ trợ. <br>
+                        - cuối dự án mới được đánh giá hoặc bạn có thể theo dõi trên trang quản lý hệ thống để được cập nhật sớm nhất.
+                    </div>
                 </div>
                 <span class="question-title" data-bs-toggle="collapse" href="#question5" role="button"
                     aria-expanded="false" aria-controls="question5">
                     5. Tôi muốn hỏi vấn đề thì làm như thế nào?
                 </span>
                 <div class="collapse" id="question5">
-                    Some placeholder content for the collapse component
+                    <div class=" card card-body">
+                        - Hiện tại DGS chỉ có một kênh tổng đài để tư vấn thống nhất.<br>
+                        - Không có kênh nào khác, kể cả cá nhân bất kỳ ai.<br>
+                        - Bạn vui lòng liên hệ tổng đài để được hỗ trợ trong thời gian sớm nhất.
+                    </div>
                 </div>
                 <span class="question-title" data-bs-toggle="collapse" href="#question6" role="button"
                     aria-expanded="false" aria-controls="question6">
                     6. Mật khẩu quá hạn hoặc không đăng nhập được?
                 </span>
                 <div class="collapse" id="question6">
-                    Some placeholder content for the collapse component
+                    <div class=" card card-body">
+                        - Mỗi tài khoản đều được cấp độc lập, nếu bạn không đăng nhập được sau khi được cấp mã, vui lòng liên hệ với tổng đài để được hỗ trợ update hoặc đổi gói khác để đảm bảo thực hiện đúng deadline của dự án.
+                    </div>
                 </div>
                 <span class="question-title" data-bs-toggle="collapse" href="#question7" role="button"
                     aria-expanded="false" aria-controls="question7">
-                    7. Chương trình phúc lợi cho CTV của DGS
+                    7. Chương trình phúc lợi cho CTV của DGS.
                 </span>
                 <div class="collapse" id="question7">
-                    Some placeholder content for the collapse component
+                    <div class=" card card-body">
+                        - Tuỳ vào vị trí công việc được nhận mà có các chế độ chính sách phúc lợi khác nhau.<br>
+                        - Các bạn đạt tổng gói dự án cao hoặc hỗ trợ dặc biệt cho dự án thì sẽ được xem xét nhận thưởng sau khi kết thúc dự án.
+                    </div>
                 </div>
                 <span class="question-title" data-bs-toggle="collapse" href="#question8" role="button"
                     aria-expanded="false" aria-controls="question8">
                     8. Tôi muốn làm leader hoặc nhân viên chính thức thì làm như thế nào?
                 </span>
                 <div class="collapse" id="question8">
-                    Some placeholder content for the collapse component
+                    <div class=" card card-body">
+                        - Tuỳ vào yêu cầu của DGS và yêu cầu của dự án sẽ cần lượng nhân sự hỗ trợ phù hợp. <br>
+                        - Các thông báo tuyển dụng nhân sự sẽ được cập nhật trên trang fanpage của DGS.
+                    </div>
                 </div>
                 <span class="question-title" data-bs-toggle="collapse" href="#question9" role="button"
                     aria-expanded="false" aria-controls="question9">
                     9. Các loại công việc có thể nhận trên DGS
                 </span>
                 <div class="collapse" id="question9">
-                    Some placeholder content for the collapse component
+                    <div class=" card card-body">
+                        - Mỗi công việc có yêu cầu kỹ thuật và nội dung khác nhau, các bạn phải qua đào tạo thì mới có thể làm được các loại dự án khác nhau. <br>
+                        - Các loại dự án đa dạng từ hộ tịch, văn bản hành chính, đặt tên dữ liệu, chỉnh liệu và thêm các hoạt động khác được update thường xuyên trên hệ thống.
+                    </div>
                 </div>
                 <span class="question-title" data-bs-toggle="collapse" href="#question10" role="button"
                     aria-expanded="false" aria-controls="question10">
                     10. Các bước đăng ký công việc và nhận việc
                 </span>
                 <div class="collapse" id="question10">
-                    Some placeholder content for the collapse component
+                    <div class=" card card-body">
+                        Bước 1: Liên hệ với tổng đài để được hỗ trợ.<br>
+                        Bước 2: Theo dõi fanpage facebook để cập nhật thông tin.<br>
+                        Bước 3: Tham gia đào tạo và tranning từ DGS.<br>
+                        Bươc 4: Nhận bài và làm việc, nếu có gì khó khăn có thể liên hệ với tổng đài để được hỗ trợ xử lý trong thời gian sớm nhất.
+                    </div>
                 </div>
             </div>
         </div>
         <div class="right-container">
             <div class="payment-container">
                 <strong>Hình thức thanh toán</strong>
+                <div style="height: 50px;">
+
+                </div>
             </div>
             <div class="certificate-container">
                 <strong>Chứng nhận</strong>
@@ -138,5 +188,37 @@
         </div>
     </div>
 </div>
+<script>
+    document.querySelectorAll('.question-title').forEach(element => {
+        element.addEventListener('click', function () {
+            // Count how many elements are currently open (i.e., have the 'show' class)
+            const openElements = document.querySelectorAll('.collapse.show').length;
 
+            // Proceed only if two or more elements are open
+            if (openElements >= 1) {
+                // Get the target collapse element based on the aria-controls attribute
+                const targetId = this.getAttribute('aria-controls');
+                const targetElement = document.querySelector(`#${targetId}`);
+
+                // Check if the target element is already expanded
+                const isExpanded = targetElement.classList.contains('show');
+
+                // Collapse all elements (remove 'show' class and set aria-expanded to 'false')
+                document.querySelectorAll('.collapse').forEach(collapseElement => {
+                    collapseElement.classList.remove('show');
+                });
+
+                document.querySelectorAll('.question-title').forEach(titleElement => {
+                    titleElement.setAttribute('aria-expanded', 'false');
+                });
+
+                // If the clicked element was not already expanded, expand it
+                if (!isExpanded) {
+                    targetElement.classList.add('show');
+                    this.setAttribute('aria-expanded', 'true');
+                }
+            }
+        });
+    });
+</script>
 {% endblock %}
