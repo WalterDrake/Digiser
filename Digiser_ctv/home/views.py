@@ -210,7 +210,129 @@ def show_data_statistic(request):
     }
     return render(request, 'pages/statistic.html', context)
 
+def show_data_insert(request):
+    user_code = request.session.get('user_code')
+    user = get_object_or_404(CustomUser, code=user_code)
+    
+    salary_data = Salary.objects.filter(user=user).select_related('package_name')
+    package_names = [s.package_name for s in salary_data]
+    
+    package_details = Package_detail.objects.filter(package_name__in=package_names)
+    documents = Document.objects.filter(package_name__in=package_names)
 
+    package_detail_dict = {detail.package_name: detail for detail in package_details}
+    documents_dict = {}
+    for doc in documents:
+        if doc.package_name not in documents_dict:
+            documents_dict[doc.package_name] = []
+        documents_dict[doc.package_name].append(doc)
+
+    packages = []
+    for datum in salary_data:
+        package_name = datum.package_name
+        package_detail = package_detail_dict.get(package_name)
+        
+        package_info = {
+            'package': package_name.package_name,
+            'total_tickets': package_name.total_tickets,
+            'executor': user.full_name,
+            'status': package_name.payment,
+            'start_day': format(package_detail.start_insert, 'd/m/y') if package_detail and package_detail.start_insert else None,
+            'finish_day': format(package_detail.finish_insert, 'd/m/y') if package_detail and package_detail.finish_insert else None,
+            'datarecord_set': []
+        }
+
+        related_documents = documents_dict.get(package_name, [])
+        for document in related_documents:
+            document_info = {
+                'document_name': document.document_name,
+                'fields': document.fields,
+                'executor' : None,
+                'status' : None,
+                'errors': document.errors,
+                'type': document.type,
+            }
+
+            if package_detail.inserter and user.full_name == package_detail.inserter.full_name:
+                document_info['executor'] = package_detail.inserter.full_name
+                document_info['status'] = document.status_insert
+            elif package_detail.checker_1 and user.full_name == package_detail.checker_1.full_name:
+                document_info['executor'] = package_detail.checker_1.full_name
+                document_info['status'] = document.status_check_1
+            elif package_detail.checker_2 and user.full_name == package_detail.checker_2.full_name:
+                document_info['executor'] = package_detail.checker_2.full_name
+                document_info['status'] = document.status_check_2
+
+            package_info['datarecord_set'].append(document_info)
+        
+        packages.append(package_info)
+
+    context = {
+        'packages': packages
+    }
+    return render(request, 'pages/insert.html', context)
+
+def show_data_check(request):
+    user_code = request.session.get('user_code')
+    user = get_object_or_404(CustomUser, code=user_code)
+    
+    salary_data = Salary.objects.filter(user=user).select_related('package_name')
+    package_names = [s.package_name for s in salary_data]
+    
+    package_details = Package_detail.objects.filter(package_name__in=package_names)
+    documents = Document.objects.filter(package_name__in=package_names)
+
+    package_detail_dict = {detail.package_name: detail for detail in package_details}
+    documents_dict = {}
+    for doc in documents:
+        if doc.package_name not in documents_dict:
+            documents_dict[doc.package_name] = []
+        documents_dict[doc.package_name].append(doc)
+
+    packages = []
+    for datum in salary_data:
+        package_name = datum.package_name
+        package_detail = package_detail_dict.get(package_name)
+        
+        package_info = {
+            'package': package_name.package_name,
+            'total_tickets': package_name.total_tickets,
+            'executor': user.full_name,
+            'status': package_name.payment,
+            'start_day': format(package_detail.start_insert, 'd/m/y') if package_detail and package_detail.start_insert else None,
+            'finish_day': format(package_detail.finish_insert, 'd/m/y') if package_detail and package_detail.finish_insert else None,
+            'datarecord_set': []
+        }
+
+        related_documents = documents_dict.get(package_name, [])
+        for document in related_documents:
+            document_info = {
+                'document_name': document.document_name,
+                'fields': document.fields,
+                'executor' : None,
+                'status' : None,
+                'errors': document.errors,
+                'type': document.type,
+            }
+
+            if package_detail.inserter and user.full_name == package_detail.inserter.full_name:
+                document_info['executor'] = package_detail.inserter.full_name
+                document_info['status'] = document.status_insert
+            elif package_detail.checker_1 and user.full_name == package_detail.checker_1.full_name:
+                document_info['executor'] = package_detail.checker_1.full_name
+                document_info['status'] = document.status_check_1
+            elif package_detail.checker_2 and user.full_name == package_detail.checker_2.full_name:
+                document_info['executor'] = package_detail.checker_2.full_name
+                document_info['status'] = document.status_check_2
+
+            package_info['datarecord_set'].append(document_info)
+        
+        packages.append(package_info)
+
+    context = {
+        'packages': packages
+    }
+    return render(request, 'pages/check.html', context)
 
 def statistic_project(user):
     total_project_details = Salary.objects.filter(user=user).count()
