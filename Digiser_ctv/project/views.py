@@ -5,7 +5,7 @@ from django.utils.dateparse import parse_date
 from django.contrib.auth.decorators import login_required
 import re
 from .models.model2 import Birth_Certificate_Document
-from .models.model1 import Document, Package_detail
+from .models.model1 import Document, Package_detail, Package
 from authentication.models import CustomUser
 from django.forms.models import model_to_dict
 from datetime import datetime, date
@@ -23,23 +23,23 @@ def input_redirect(request, **kwargs):
         raise Http404("Invalid package ID")
 
     package_id = escape(package_id)
-    package = get_object_or_404(Package_detail, package_name_hash=package_id)
+    package_detail = get_object_or_404(Package_detail, package_name_hash=package_id)
 
-    if user not in {package.inserter, package.checker_1, package.checker_2}:
+    if user not in {package_detail.inserter, package_detail.checker_1, package_detail.checker_2}:
         raise Http404("Document does not exist")
 
-    documents = Document.objects.filter(package_name=package.package_name)
+    documents = Document.objects.filter(package_name=package_detail.package_name)
 
     index = get_valid_index(kwargs.get('index', 0), len(documents))
 
     document = documents[index]
 
     if document.type == "KS":
-        if user == package.inserter:
-            return birth_certificate_document(request, document, user, role="inserter")
-        elif user == package.checker_1:
+        if user == package_detail.inserter:
+            return birth_certificate_document(request, document, user, role="inserter", package_detail_name=package_detail)
+        elif user == package_detail.checker_1:
             return birth_certificate_document(request, document, user, role="checker_1")
-        elif user == package.checker_2:
+        elif user == package_detail.checker_2:
             return birth_certificate_document(request, document, user, role="checker_2")
     else:
         raise Http404("Document type not supported")
@@ -57,10 +57,8 @@ def export_package(request, **kwargs):
     package_id = escape(package_id)
     package = get_object_or_404(Package_detail, package_name_hash=package_id)
 
-    # Optimize database query to fetch all 'Document' objects related to the 'Package_detail' object
     documents = Document.objects.select_related('package_name').filter(package_name=package.package_name)
 
-    # Optimize database query to fetch all 'Birth_Certificate_Document' objects related to the 'Document' objects
     birth_certificate_documents = Birth_Certificate_Document.objects.select_related('executor').prefetch_related('document').filter(document__in=documents)
     birth_certificate_documents_to_sheet(birth_certificate_documents)
         
@@ -79,7 +77,7 @@ def get_valid_index(index_str, documents_count):
     raise Http404("Invalid document index")
 
 
-def birth_certificate_document(request, document, user, role):
+def birth_certificate_document(request, document, user, role, package_detail_name=None):
     date_fields = ['ngayDangKy', 'nksNgaySinh', 'meNgaySinh', 'chaNgaySinh', 'nycNgayCapGiayToTuyThan']
     
     def prepare_form_data(form_instance, lock=False):
@@ -108,7 +106,9 @@ def birth_certificate_document(request, document, user, role):
         form_data['executor'] = user
         form_instance, _ = Birth_Certificate_Document.objects.update_or_create(
             document=document, executor=user, defaults=form_data)
-        
+        if role == 'inserter':
+            package = Package.objects.filter(package_name=package_detail_name).first()
+            form_instance.document.package_name.entered_tickets = Birth_Certificate_Document.objects.filter(document__package_name=package, executor=user).count()
         form_data.update(get_form_data())
         form_data.update(prepare_form_data(form_instance))
         return render(request, 'pages/input.html', {'form': form_data})
