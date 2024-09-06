@@ -10,6 +10,7 @@
   margin-top: 30px;
   width: 100%;
   gap: 24px;
+  min-height: 300px;
 }
 
 .questions-container {
