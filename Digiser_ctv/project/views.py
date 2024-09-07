@@ -11,7 +11,7 @@ from django.forms.models import model_to_dict
 from datetime import datetime, date
 from django.contrib.auth.decorators import user_passes_test
 from django.contrib.auth.models import User
-# from .utils import birth_certificate_documents_to_sheet
+from .utils import birth_certificate_documents_to_sheet
 
 @login_required
 def input_redirect(request, **kwargs):
