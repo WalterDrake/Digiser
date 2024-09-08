@@ -227,10 +227,13 @@ def show_data_statistic(request):
     # Dữ liệu giả lập
     projects = []
     for i in range(1, 21):
+        # Kiểm tra điều kiện cho `loai_cv`
+        loai_cv = 'Nhập' if i % 2 == 0 else 'Check'
+        
         project = {
             'name': f'DA050524_TKGoCong_KH2010_{i:02d}',
             'tong_phieu': i * 10,
-            'thuc_hien': f'Nguyễn Văn {chr(64 + i)}',
+            'loai_cv': loai_cv,  # Sử dụng `loai_cv` từ biến đã kiểm tra
             'trang_thai': 'Đang thực hiện' if i % 2 == 0 else 'Đã thanh toán',
             'ngay_nhan': f'{20 + i % 10}/04/24',
             'deadline': f'{30 + i % 10}/05/24',
@@ -242,7 +245,6 @@ def show_data_statistic(request):
                 'ten_du_lieu': f'Dữ liệu {j:02d}',
                 'tong_phieu': 10 * j,
                 'tong_truong': 18,
-                'thuc_hien': f'Nguyễn Văn {chr(64 + i)}',
                 'trang_thai': 'Đã nhập' if j % 2 == 0 else 'Chưa check',
                 'ngay_nhan': f'{20 + i % 10}/04/24',
                 'deadline': f'{30 + i % 10}/05/24',
@@ -253,9 +255,11 @@ def show_data_statistic(request):
 
         projects.append(project)
 
-    records_per_page = request.GET.get('records_per_page', '5')  # Default to 5 if not set, keep it as a string
-    records_per_page = int(records_per_page)  # Convert to integer for use in slicing
+    # Xử lý phân trang
+    records_per_page = request.GET.get('records_per_page', '5')  # Lấy số bản ghi trên mỗi trang, mặc định là 5
+    records_per_page = int(records_per_page)  # Chuyển về kiểu số nguyên để sử dụng
 
+    # Lấy giới hạn dựa trên số bản ghi trên mỗi trang
     limited_projects = projects[:records_per_page]
 
     paginator = Paginator(limited_projects, records_per_page)
@@ -264,7 +268,7 @@ def show_data_statistic(request):
 
     context = {
         'page_obj': page_obj,
-        'records_per_page': str(records_per_page),  # Convert back to string to match the option values
+        'records_per_page': str(records_per_page),  # Đổi lại về chuỗi để khớp với các giá trị tùy chọn
     }
     return render(request, 'pages/data_statistic.html', context)
 
