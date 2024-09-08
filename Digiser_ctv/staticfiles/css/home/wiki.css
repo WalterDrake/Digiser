@@ -10,6 +10,7 @@
   margin-top: 30px;
   width: 100%;
   gap: 24px;
+  min-height: 300px;
 }
 
 .questions-container {
@@ -24,6 +25,7 @@
   font-weight: 500;
   color: var(--primary-color);
   text-wrap: pretty;
+  width: fit-content;
 }
 
 .left-container {
@@ -35,6 +37,7 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  max-height: 50%;
 }
 
 .badges-container {
@@ -110,3 +113,8 @@
   padding: 2px;
   transition: var(--tran-05);
 }
+
+.card-body{
+  padding: 12px;
+}
+

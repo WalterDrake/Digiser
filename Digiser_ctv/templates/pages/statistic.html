@@ -262,6 +262,8 @@
 </div>
 
 
+{% csrf_token %}
+
 <table class="table table-hover table-bordered mt-3">
     <thead class="thead-light">
         <tr>
@@ -284,6 +286,7 @@
             <td colspan="1">
                 <i class='bx bx-chevron-right toggle-icon'></i>{{ package.package }}
             </td>
+
             <td>{{ package.total_tickets }}</td>
             <td></td>
             <td>{{ package.executor }}</td>
@@ -306,7 +309,9 @@
         {% for record in package.datarecord_set %}
         <tr class="child" data-parent="{{ forloop.parentloop.counter }}" style="display: none;">
             <td></td>
-            <td>{{ record.document_path }}</td>
+            <td class="document-handle" onclick="openDocument('{{ record.parent }}', {{ forloop.counter0 }})">
+                {{ record.document_name }}
+            </td>            
             <td></td>
             <td>{{ record.fields }}</td>
             <td>{{ record.executor }}</td>
@@ -331,6 +336,35 @@
     </tbody>
 </table>
 <script>
+    function getCsrfToken() {
+        return document.querySelector('[name=csrfmiddlewaretoken]').value;
+    }
+
+    function openDocument(package_name, idx) {
+        $.ajax({
+            url: '/statistic/',  // Relative URL
+            type: 'POST',
+            data: {
+                package_name: package_name,
+                idx: idx
+            },
+            headers: {
+                'X-CSRFToken': getCsrfToken()  // Add CSRF token to the request header
+            },
+            success: function(response) {
+                if (response.redirect_url) {
+                    // Redirect the browser to the URL provided in the JSON response
+                    window.location.href = response.redirect_url;
+                } else {
+                    console.log("Response received but no redirect_url found:", response);
+                }
+            },
+            error: function(xhr, status, error) {
+                console.error("Error:", error);
+            }
+        });
+    }
+
     document.addEventListener('DOMContentLoaded', function () {
         var toggles = document.querySelectorAll('.toggle');
         toggles.forEach(function (toggle) {
@@ -351,5 +385,6 @@
             });
         });
     });
+
 </script>
 {% endblock %}
