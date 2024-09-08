@@ -9,9 +9,8 @@
         flex-direction: row;
         width: 100%;
         background-color: #f8f9fa;
-        height: 88vh;
+        height: 83vh;
     }
-
 
     .right-side {
         max-width: 40%;
@@ -206,7 +205,7 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
-        padding: 3px;
+        padding: 8px;
         background-color: #ffffff;
         border-bottom: 1px solid #ccc;
     }
@@ -217,18 +216,7 @@
         color: #000;
     }
 
-    .progress-container {
-        display: flex;
-        align-items: center;
-        font-size: 14px;
-        font-weight: bold;
-        color: #000;
-        padding: 2px;
-    }
 
-    .progress-text {
-        margin-right: auto;
-    }
 
     .image-buttons {
         display: flex;
@@ -244,7 +232,7 @@
         border: 1px solid #ccc;
         box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
         padding: inherit;
-        padding: inherit;
+
     }
 
 
@@ -330,6 +318,26 @@
         width: 100px;
         padding: 10px 20px;
     }
+    .progress-container {
+        display: flex;
+        gap: 20px;
+        align-items: center;
+        color: black;
+    }
+    .progress-text {
+        font-size: 13px;
+        font-weight: bold;
+        color: black;
+    }
+    .progress-box {
+        background-color: #f2f2f2;
+        padding: 10px 15px;
+        border-radius: 5px;
+        font-size: 13px;
+        font-weight: bold;
+        color: black;
+    }
+
 
 #horizontal-form.under-side {
     width: 100%;
@@ -337,7 +345,7 @@
 }
     .left-side {
     width: 60%;
-    height: 80vh;
+    height: 74vh;
 }
 
 .scrollable-image-container {
@@ -349,22 +357,46 @@
     width: 100%;
     height: 100%; /* Make sure the iframe uses full height */
 }
+.form-group {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
 
+.info-label {
+    font-weight: bold;
+    flex: 1;
+    color: black;
+}
+
+.info-input {
+    flex: 2;
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: #f9f9f9;
+}
+
+.info-input:disabled {
+    background-color: #e9ecef;
+}
+.info-container {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: #f9f9f9;
+}
 </style>
 
 <div class="input-container">
     <div class="left-side">
         <div class="progress-bar-container">
-            <span> <a href="../statistic/" style="color:black; text-decoration:none">
+            <span> <a href="/statistic" style="color:black; text-decoration:none">
                     < Danh sách</a></span>
-            <div class="progress-container">
-                <span class="progress-text">Khối lượng file đã thực hiện:</span>
-                <div class="progress-value">35%</div>
-            </div>
         </div>
 
         <div class="scrollable-image-container">
-            <iframe id= "MyPDF" src="{% static 'pdf/sample.pdf' %}" frameborder="0"></iframe>
+            <iframe id= "MyPDF" src="{{ form.pdf_path }}" frameborder="0"></iframe>
         </div>  
         <div class="image-buttons">
             <button onclick="goBack()">
@@ -381,6 +413,13 @@
         {% include 'pages/input_horizontalform.html' %}
     </div>
 
+</div>
+
+<div class="progress-container">
+    <div class="progress-text">Số lượng nhập</div>
+    <div class="progress-box">{{form.entered_tickets}}/{{form.total_real_tickets}}</div>
+    <div class="progress-text">Số trường</div>
+    <div class="progress-box">{{form.total_fields}}</div>
 </div>
 
 <script>
@@ -515,6 +554,44 @@
             toggleLayout();
         });
     });
+
+    const documentsCount = "{{form.total_real_tickets}}";
+
+    function goBack() {
+        const currentUrl = window.location.href;
+        const newUrl = changeIndex(currentUrl, -1);
+        if (newUrl) {
+            window.location.href = newUrl;
+        }
+    }
+
+    function goNext() {
+        const currentUrl = window.location.href;
+        const newUrl = changeIndex(currentUrl, 1);
+        if (newUrl) {
+            window.location.href = newUrl;
+        }
+    }
+
+    function changeIndex(url, step) {
+        const urlParts = url.split('/');
+        const currentIndex = parseInt(urlParts[urlParts.length - 1], 10);
+
+        if (isNaN(currentIndex)) {
+            console.error("Invalid URL format: index is not a number.");
+            return null;
+        }
+
+        const newIndex = currentIndex + step;
+
+        if (newIndex < 0 || newIndex >= documentsCount) {
+            console.log("Index out of bounds.");
+            return null;
+        }
+
+        urlParts[urlParts.length - 1] = newIndex;
+        return urlParts.join('/');
+    }
 </script>
 
 {% endblock %}

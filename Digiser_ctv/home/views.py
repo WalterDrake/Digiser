@@ -1,13 +1,15 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
+from django.http import JsonResponse
 from authentication.forms import CustomUserInfoChangeForm, CustomUserBankChangeForm
-from django.db.models import Max, Sum
+from django.db.models import Max, Sum, Q
 from authentication.models import CustomUser
 from .models import Salary
 import re
 from project.models.model1 import Package_detail, Document
 import unicodedata
 from django.utils.dateformat import format
+import hashlib
 
 
 @login_required
@@ -55,9 +57,7 @@ def handle_get_request(request):
         'total_project_details' : total_project_details,
         'total_salary' : total_salary
     }
-    data = statistic_human(request)
     return render(request, 'pages/dashboard.html', context)
-
 
 
 @login_required
