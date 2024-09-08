@@ -1,5 +1,6 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
+from django.http import JsonResponse
 from authentication.forms import CustomUserInfoChangeForm, CustomUserBankChangeForm
 from django.db.models import Max, Sum, Q
 from authentication.models import CustomUser
@@ -8,6 +9,7 @@ import re
 from project.models.model1 import Package_detail, Document
 import unicodedata
 from django.utils.dateformat import format
+import hashlib
 
 
 @login_required
@@ -180,6 +182,7 @@ def build_package_info(user, data, package_detail_dict, documents_dict):
         related_documents = documents_dict.get(package_name, [])
         for document in related_documents:
             document_info = {
+                'parent': package_name.package_name,
                 'document_name': document.document_name,
                 'fields': document.fields,
                 'executor': None,
@@ -206,15 +209,37 @@ def build_package_info(user, data, package_detail_dict, documents_dict):
     return packages
 
 def show_data_statistic(request):
-    user_code = request.session.get('user_code')
-    user = get_object_or_404(CustomUser, code=user_code)
+    if request.method == 'POST':
+        package_name = request.POST.get('package_name')
+        idx = request.POST.get('idx')
+        # Ensure the package_name is not None
+        if package_name:
+            # Create a SHAKE-128 hash object
+            shake = hashlib.shake_128()
 
-    filter_condition = Q(inserter=user) | Q(checker_1=user) | Q(checker_2=user)
-    data, package_detail_dict, documents_dict = get_package_data(filter_condition)
-    
-    packages = build_package_info(user, data, package_detail_dict, documents_dict)
-    
-    return render(request, 'pages/statistic.html', {'packages': packages})
+            # Update the hash object with the byte-encoded data
+            shake.update(package_name.encode('utf-8'))
+
+            # Generate a 8-byte digest
+            digest = shake.digest(8)
+
+            redirect_url = f'/document/{digest.hex()}/{idx}'
+
+            # Return the URL in the JSON response
+            return JsonResponse({'redirect_url': redirect_url})
+        
+        return JsonResponse({'status': 'error', 'message': 'No package_name provided'})
+
+    elif request.method == 'GET':
+        user_code = request.session.get('user_code')
+        user = get_object_or_404(CustomUser, code=user_code)
+
+        filter_condition = Q(inserter=user) | Q(checker_1=user) | Q(checker_2=user)
+        data, package_detail_dict, documents_dict = get_package_data(filter_condition)
+        
+        packages = build_package_info(user, data, package_detail_dict, documents_dict)
+        
+        return render(request, 'pages/statistic.html', {'packages': packages})
 
 def show_data_insert(request):
     user_code = request.session.get('user_code')
