@@ -383,7 +383,7 @@
         <tr class="child" data-parent="{{ forloop.parentloop.counter }}" style="display: none;">
             <td></td> <!-- Cột ID cho bản ghi con -->
             <td class="ten_du_lieu">{{ record.ten_du_lieu }}</td> <!-- Tên dữ liệu -->
-            <td class="document-handle tong_phieu" onclick="openDocument('{{ record.parent }}', {{ forloop.counter0 }})">
+            <td class="document-handle tong_phieu" onclick="openDocument('{{ record.parent }}', {{ forloop.counter0 }})" style="cursor: pointer;">
                 {{ record.document_name }}
             </td> <!-- Số phiếu -->
             <td class="tong_truong">{{ record.fields }}</td> <!-- Số trường -->
