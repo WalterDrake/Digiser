@@ -84,9 +84,6 @@ def system(request):
 def wiki(request):
     return render(request, 'pages/wiki.html')
 
-@login_required
-def input(request):
-    return render(request, 'pages/input.html')
 
 @login_required
 def courses(request):
@@ -95,7 +92,6 @@ def courses(request):
 @login_required
 def dashboard(request):
     return render(request, 'pages/dashboard.html')
-
 
 @login_required
 def info(request):
@@ -153,128 +149,124 @@ def checkManager(user):
     return user.groups.filter(name='ADMIN').exists()
 
 
-def data_statistics(request):
-    user_id = request.session.get('user_id')
-    user = get_object_or_404(CustomUser, username=user_id)
-    statistics = {
-        "Nhap": {},
-        "Check": {},
-    }
-    statistics["Nhap"] = statistic_Insert(user)
-    statistics["Check"] = statistic_Check(user)
-    return statistics
+def get_package_data(filter_condition):
+    data = Package_detail.objects.filter(filter_condition).select_related('package_name')
+    package_names = [s.package_name for s in data]
 
-def process_statistics(user, key):
-    data = Salary.objects.filter(user=user,type=key)
-    stats = {"Project": {}}
+    package_details = Package_detail.objects.filter(package_name__in=package_names)
+    documents = Document.objects.filter(package_name__in=package_names)
+
+    package_detail_dict = {detail.package_name: detail for detail in package_details}
+    documents_dict = {doc.package_name: [] for doc in documents}
+    for doc in documents:
+        documents_dict[doc.package_name].append(doc)
+
+    return data, package_detail_dict, documents_dict
+
+def build_package_info(user, data, package_detail_dict, documents_dict):
+    packages = []
     for datum in data:
-        project_name = (datum.project_name.project_name).split("_")[0]
-        project_name = re.sub(r'(?<=[a-z])(?=[A-Z])', ' ', project_name)
-        package_name = datum.package_name.package_name
+        package_name = datum.package_name
+        package_detail = package_detail_dict.get(package_name)
 
-        if project_name not in stats["Project"]:
-            stats["Project"][project_name] = {
-                'packages': {},
-                'total_votes': 0,
-                'total_acceptances': 0,
-                'total_rejections': 0,
-                'total_erroring_fields': 0,
-            }
-
-        if package_name not in stats["Project"][project_name]['packages']:
-            stats["Project"][project_name]['packages'][package_name] = {
-                'votes': 0,
-                'acceptances': 0,
-                'rejections': 0,
-                'erroring_fields': 0,
-                'status': set()
-            }
-
-        stats["Project"][project_name]['packages'][package_name]['votes'] += datum.total_votes or 0
-        stats["Project"][project_name]['packages'][package_name]['acceptances'] += datum.total_fields or 0
-        stats["Project"][project_name]['packages'][package_name]['rejections'] += datum.total_merging_votes or 0
-        stats["Project"][project_name]['packages'][package_name]['erroring_fields'] += datum.total_erroring_fields or 0
-        stats["Project"][project_name]['packages'][package_name]['status'].add(datum.status.insert_status if datum.type == "I" else datum.status.check_status )
-
-        stats["Project"][project_name]['total_votes'] += datum.total_votes or 0
-        stats["Project"][project_name]['total_acceptances'] += datum.total_fields or 0
-        stats["Project"][project_name]['total_rejections'] += datum.total_merging_votes or 0
-        stats["Project"][project_name]['total_erroring_fields'] += datum.total_erroring_fields or 0
-        
-    return stats
-
-
-def statistic_Insert(user):
-    return process_statistics(user, "I")
-
-
-def statistic_Check(doc_name, user):
-    raw_data = get_all_rows(doc_name, 3)
-    return process_statistics(raw_data, user.code_ctv, "ID CTV check")
-    
-
-
-def show_data_statistic(request):
-    data = data_statistics(request)
-    context = {
-         'data': data
-    }
-    return render(request, 'pages/data_statistic.html', context)
-
-from django.core.paginator import Paginator
-
-def show_data_statistic(request):
-    # Dữ liệu giả lập
-    projects = []
-    for i in range(1, 21):
-        # Kiểm tra điều kiện cho `loai_cv`
-        loai_cv = 'Nhập' if i % 2 == 0 else 'Check'
-        
-        project = {
-            'name': f'DA050524_TKGoCong_KH2010_{i:02d}',
-            'tong_phieu': i * 10,
-            'loai_cv': loai_cv,  # Sử dụng `loai_cv` từ biến đã kiểm tra
-            'trang_thai': 'Đang thực hiện' if i % 2 == 0 else 'Đã thanh toán',
-            'ngay_nhan': f'{20 + i % 10}/04/24',
-            'deadline': f'{30 + i % 10}/05/24',
+        package_info = {
+            'package': package_name.package_name,
+            'total_tickets': package_name.total_tickets,
+            'executor': user.full_name,
+            'status': package_name.payment,
+            'start_day': format(package_detail.start_insert, 'd/m/y') if package_detail and package_detail.start_insert else None,
+            'finish_day': format(package_detail.finish_insert, 'd/m/y') if package_detail and package_detail.finish_insert else None,
             'datarecord_set': []
         }
 
-        for j in range(1, 11):
-            record = {
-                'ten_du_lieu': f'Dữ liệu {j:02d}',
-                'tong_phieu': 10 * j,
-                'tong_truong': 18,
-                'trang_thai': 'Đã nhập' if j % 2 == 0 else 'Chưa check',
-                'ngay_nhan': f'{20 + i % 10}/04/24',
-                'deadline': f'{30 + i % 10}/05/24',
-                'so_loi': j % 3,
-                'loai_file': 'KS' if j % 3 == 0 else 'HN',
+        related_documents = documents_dict.get(package_name, [])
+        for document in related_documents:
+            document_info = {
+                'parent': package_name.package_name,
+                'document_name': document.document_name,
+                'fields': document.fields,
+                'executor': None,
+                'status': None,
+                'errors': document.errors or 0,
+                'type': document.type,
             }
-            project['datarecord_set'].append(record)
 
-        projects.append(project)
+            if package_detail:
+                if package_detail.inserter and user.full_name == package_detail.inserter.full_name:
+                    document_info['executor'] = package_detail.inserter.full_name
+                    document_info['status'] = document.status_insert
+                elif package_detail.checker_1 and user.full_name == package_detail.checker_1.full_name:
+                    document_info['executor'] = package_detail.checker_1.full_name
+                    document_info['status'] = document.status_check_1
+                elif package_detail.checker_2 and user.full_name == package_detail.checker_2.full_name:
+                    document_info['executor'] = package_detail.checker_2.full_name
+                    document_info['status'] = document.status_check_2
 
-    # Xử lý phân trang
-    records_per_page = request.GET.get('records_per_page', '5')  # Lấy số bản ghi trên mỗi trang, mặc định là 5
-    records_per_page = int(records_per_page)  # Chuyển về kiểu số nguyên để sử dụng
+            package_info['datarecord_set'].append(document_info)
+        
+        packages.append(package_info)
 
-    # Lấy giới hạn dựa trên số bản ghi trên mỗi trang
-    limited_projects = projects[:records_per_page]
+    return packages
 
-    paginator = Paginator(limited_projects, records_per_page)
-    page_number = request.GET.get('page')
-    page_obj = paginator.get_page(page_number)
+def show_data_statistic(request):
+    if request.method == 'POST':
+        package_name = request.POST.get('package_name')
+        idx = request.POST.get('idx')
+        # Ensure the package_name is not None
+        if package_name:
+            # Create a SHAKE-128 hash object
+            shake = hashlib.shake_128()
 
-    context = {
-        'page_obj': page_obj,
-        'records_per_page': str(records_per_page),  # Đổi lại về chuỗi để khớp với các giá trị tùy chọn
-    }
-    return render(request, 'pages/data_statistic.html', context)
+            # Update the hash object with the byte-encoded data
+            shake.update(package_name.encode('utf-8'))
+
+            # Generate a 8-byte digest
+            digest = shake.digest(8)
+
+            redirect_url = f'/document/{digest.hex()}/{idx}'
+
+            # Return the URL in the JSON response
+            return JsonResponse({'redirect_url': redirect_url})
+        
+        return JsonResponse({'status': 'error', 'message': 'No package_name provided'})
+
+    elif request.method == 'GET':
+        user_code = request.session.get('user_code')
+        user = get_object_or_404(CustomUser, code=user_code)
+
+        filter_condition = Q(inserter=user) | Q(checker_1=user) | Q(checker_2=user)
+        data, package_detail_dict, documents_dict = get_package_data(filter_condition)
+        
+        packages = build_package_info(user, data, package_detail_dict, documents_dict)
+        
+        return render(request, 'pages/statistic.html', {'packages': packages})
+
+def show_data_insert(request):
+    user_code = request.session.get('user_code')
+    user = get_object_or_404(CustomUser, code=user_code)
+
+    # Filter for inserter only
+    filter_condition = Q(inserter=user)
+    data, package_detail_dict, documents_dict = get_package_data(filter_condition)
+    
+    packages = build_package_info(user, data, package_detail_dict, documents_dict)
+    
+    return render(request, 'pages/insert.html', {'packages': packages})
+
+def show_data_check(request):
+    user_code = request.session.get('user_code')
+    user = get_object_or_404(CustomUser, code=user_code)
+
+    filter_condition = Q(checker_1=user) | Q(checker_2=user)
+    data, package_detail_dict, documents_dict = get_package_data(filter_condition)
+    
+    packages = build_package_info(user, data, package_detail_dict, documents_dict)
+    
+    return render(request, 'pages/check.html', {'packages': packages})
 
 
-def statistic_project(doc_name,user):
-    total_project_details = statistic_Nhap(doc_name, user)[1] + statistic_Check(doc_name,user)[1]
+def statistic_project(user):
+    total_project_details = Salary.objects.filter(user=user).count()
     return total_project_details
 
 def statistic_salary(user):
