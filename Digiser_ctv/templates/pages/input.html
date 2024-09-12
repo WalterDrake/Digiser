@@ -320,10 +320,19 @@
     }
     .progress-container {
         display: flex;
+        padding-top: 20px;
         gap: 20px;
         align-items: center;
         color: black;
     }
+
+    .horizontal-layout .progress-container {
+    position: absolute;
+    flex-direction: row;
+    justify-content: space-between; 
+    width: 50%;
+    align-items: center;
+}
     .progress-text {
         font-size: 13px;
         font-weight: bold;
@@ -516,6 +525,8 @@
 
             container.style.height = 'fit-content'; 
 
+            container.classList.remove('horizontal-layout'); 
+
             if (activeTab) {
                 const correspondingTab = horizontalForm.querySelector(`#${activeTab.id}`);
                 if (correspondingTab) {
@@ -534,6 +545,7 @@
 
             container.style.height = '100%'; 
 
+            container.classList.add('horizontal-layout'); 
 
             if (activeTab) {
                 const correspondingTab = verticalForm.querySelector(`#${activeTab.id}`);

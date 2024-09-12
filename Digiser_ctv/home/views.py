@@ -208,38 +208,64 @@ def build_package_info(user, data, package_detail_dict, documents_dict):
 
     return packages
 
+
 def show_data_statistic(request):
-    if request.method == 'POST':
-        package_name = request.POST.get('package_name')
-        idx = request.POST.get('idx')
-        # Ensure the package_name is not None
-        if package_name:
-            # Create a SHAKE-128 hash object
-            shake = hashlib.shake_128()
+    data = data_statistics(request)
+    context = {
+         'data': data
+    }
+    return render(request, 'pages/data_statistic.html', context)
 
-            # Update the hash object with the byte-encoded data
-            shake.update(package_name.encode('utf-8'))
+from django.core.paginator import Paginator
 
-            # Generate a 8-byte digest
-            digest = shake.digest(8)
-
-            redirect_url = f'/document/{digest.hex()}/{idx}'
-
-            # Return the URL in the JSON response
-            return JsonResponse({'redirect_url': redirect_url})
+def show_data_statistic(request):
+    # Dữ liệu giả lập
+    projects = []
+    for i in range(1, 21):
+        # Kiểm tra điều kiện cho `loai_cv`
+        loai_cv = 'Nhập' if i % 2 == 0 else 'Check'
         
-        return JsonResponse({'status': 'error', 'message': 'No package_name provided'})
+        project = {
+            'name': f'DA050524_TKGoCong_KH2010_{i:02d}',
+            'tong_phieu': i * 10,
+            'loai_cv': loai_cv,  # Sử dụng `loai_cv` từ biến đã kiểm tra
+            'trang_thai': 'Đang thực hiện' if i % 2 == 0 else 'Đã thanh toán',
+            'ngay_nhan': f'{20 + i % 10}/04/24',
+            'deadline': f'{30 + i % 10}/05/24',
+            'datarecord_set': []
+        }
 
-    elif request.method == 'GET':
-        user_code = request.session.get('user_code')
-        user = get_object_or_404(CustomUser, code=user_code)
+        for j in range(1, 11):
+            record = {
+                'ten_du_lieu': f'Dữ liệu {j:02d}',
+                'tong_phieu': 10 * j,
+                'tong_truong': 18,
+                'trang_thai': 'Đã nhập' if j % 2 == 0 else 'Chưa check',
+                'ngay_nhan': f'{20 + i % 10}/04/24',
+                'deadline': f'{30 + i % 10}/05/24',
+                'so_loi': j % 3,
+                'loai_file': 'KS' if j % 3 == 0 else 'HN',
+            }
+            project['datarecord_set'].append(record)
 
-        filter_condition = Q(inserter=user) | Q(checker_1=user) | Q(checker_2=user)
-        data, package_detail_dict, documents_dict = get_package_data(filter_condition)
-        
-        packages = build_package_info(user, data, package_detail_dict, documents_dict)
-        
-        return render(request, 'pages/statistic.html', {'packages': packages})
+        projects.append(project)
+
+    # Xử lý phân trang
+    records_per_page = request.GET.get('records_per_page', '5')  # Lấy số bản ghi trên mỗi trang, mặc định là 5
+    records_per_page = int(records_per_page)  # Chuyển về kiểu số nguyên để sử dụng
+
+    # Lấy giới hạn dựa trên số bản ghi trên mỗi trang
+    limited_projects = projects[:records_per_page]
+
+    paginator = Paginator(limited_projects, records_per_page)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+
+    context = {
+        'page_obj': page_obj,
+        'records_per_page': str(records_per_page),  # Đổi lại về chuỗi để khớp với các giá trị tùy chọn
+    }
+    return render(request, 'pages/data_statistic.html', context)
 
 def show_data_insert(request):
     user_code = request.session.get('user_code')
