@@ -54,38 +54,6 @@ body.dark .home .text {
   text-align: center;
 }
 
-/* Style for the table */
-.user_table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-top: 15px;
-  font-size: 16px;
-}
-
-/* Style for the table headers */
-.user_table thead th {
-  background-color: #f8f9fa;
-  font-weight: bold;
-  padding: 10px;
-  text-align: left;
-  border-bottom: 2px solid #dee2e6;
-}
-
-/* Style for the table rows */
-.user_table tbody tr {
-  border-bottom: 1px solid #dee2e6;
-}
-
-/* Style for the table cells */
-.user_table tbody td {
-  padding: 10px;
-}
-
-/* Add hover effect to table rows */
-.user_table tbody tr:hover {
-  background-color: #f1f1f1;
-}
-
 .sidebar.close ~ .home {
   left: 78px;
   height: 100vh;
@@ -93,17 +61,4 @@ body.dark .home .text {
 }
 body.dark .home .text {
   color: var(--text-color);
-}
-
-/* Style for the status check cell */
-.user_table tbody td.status_check {
-  font-weight: bold;
-  color: #28a745;
-  /* You can change this color based on the status */
-}
-
-/* Style for the log sup cell */
-.user_table tbody td.log_sup {
-  color: #6c757d;
-  font-style: italic;
 }
