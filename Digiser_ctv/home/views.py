@@ -1,6 +1,5 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
-from django.http import JsonResponse
 from authentication.forms import CustomUserInfoChangeForm, CustomUserBankChangeForm
 from django.db.models import Max, Sum, Q
 from authentication.models import CustomUser
@@ -8,8 +7,7 @@ from .models import Salary
 import re
 from project.models.model1 import Package_detail, Document
 import unicodedata
-from django.utils.dateformat import format
-import hashlib
+import json
 
 
 @login_required
@@ -149,18 +147,16 @@ def checkManager(user):
     return user.groups.filter(name='ADMIN').exists()
 
 
-def get_package_data(filter_condition):
-    data = Package_detail.objects.filter(filter_condition).select_related('package_name')
+def get_package_data(filter_user):
+    data = Package_detail.objects.filter(filter_user).select_related('package_name')
     package_names = [s.package_name for s in data]
 
     package_details = Package_detail.objects.filter(package_name__in=package_names)
     documents = Document.objects.filter(package_name__in=package_names)
-
     package_detail_dict = {detail.package_name: detail for detail in package_details}
     documents_dict = {doc.package_name: [] for doc in documents}
     for doc in documents:
         documents_dict[doc.package_name].append(doc)
-
     return data, package_detail_dict, documents_dict
 
 def build_package_info(user, data, package_detail_dict, documents_dict):
@@ -173,11 +169,19 @@ def build_package_info(user, data, package_detail_dict, documents_dict):
             'package': package_name.package_name,
             'total_tickets': package_name.total_tickets,
             'executor': user.full_name,
-            'status': package_name.payment,
-            'start_day': format(package_detail.start_insert, 'd/m/y') if package_detail and package_detail.start_insert else None,
-            'finish_day': format(package_detail.finish_insert, 'd/m/y') if package_detail and package_detail.finish_insert else None,
+            'status_package': package_name.payment,
+            'received_day': None,
+            'deadline_day': None,
             'datarecord_set': []
         }
+
+        if package_detail:
+            if package_detail.inserter and user.full_name == package_detail.inserter.full_name:
+                package_info['received_day'] = package_detail.start_insert.strftime('%d/%m/%Y')
+                package_info['deadline_day'] = package_detail.finish_insert.strftime('%d/%m/%Y')
+            elif package_detail.checker_1 and user.full_name == package_detail.checker_1.full_name or package_detail.checker_2 and user.full_name == package_detail.checker_2.full_name:
+                package_info['received_day'] = package_detail.start_check.strftime('%d/%m/%Y')
+                package_info['deadline_day'] = package_detail.finish_check.strftime('%d/%m/%Y')
 
         related_documents = documents_dict.get(package_name, [])
         for document in related_documents:
@@ -208,59 +212,77 @@ def build_package_info(user, data, package_detail_dict, documents_dict):
 
     return packages
 
-def show_data_statistic(request):
-    if request.method == 'POST':
-        package_name = request.POST.get('package_name')
-        idx = request.POST.get('idx')
-        # Ensure the package_name is not None
-        if package_name:
-            # Create a SHAKE-128 hash object
-            shake = hashlib.shake_128()
+def filter_packages(request, packages):
+    filters = json.loads(request.body)
+    filtered_packages = []
+    record_fields = ['status','type']
+    package_filters = {}
+    record_filters = {}
+    package_matches = False
+    filtered_datarecord_set = None
 
-            # Update the hash object with the byte-encoded data
-            shake.update(package_name.encode('utf-8'))
+    for key, value in filters.items():
+        if key in record_fields:
+            record_filters[key] = value
+        else:
+            package_filters[key] = value
+    for package in packages:
+        if len(record_filters) and len(package_filters):
+            if len(package['datarecord_set']):
+                package_matches = all(key in package and package.get(key) == value for key, value in package_filters.items())
+                filtered_datarecord_set = [
+                    record for record in package['datarecord_set']
+                    if all(key in record and record.get(key) == value for key, value in record_filters.items())
+                ]
+                if package_matches and filtered_datarecord_set:
+                    filtered_package = package.copy()
+                    filtered_package['datarecord_set'] = filtered_datarecord_set
+                    filtered_packages.append(filtered_package)
 
-            # Generate a 8-byte digest
-            digest = shake.digest(8)
+        elif len(package_filters) and len(package['datarecord_set']):
+            package_matches = all(key in package and package.get(key) == value for key, value in package_filters.items())
+            if package_matches:
+                filtered_package = package.copy()
+                filtered_packages.append(filtered_package)
 
-            redirect_url = f'/document/{digest.hex()}/{idx}'
+        elif len(record_filters) and len(package['datarecord_set']):
+            filtered_datarecord_set = [
+                record for record in package['datarecord_set']
+                if all(key in record and record.get(key) == value for key, value in record_filters.items())
+            ]
+            if filtered_datarecord_set:
+                filtered_package = package.copy()
+                filtered_package['datarecord_set'] = filtered_datarecord_set
+                filtered_packages.append(filtered_package)
 
-            # Return the URL in the JSON response
-            return JsonResponse({'redirect_url': redirect_url})
-        
-        return JsonResponse({'status': 'error', 'message': 'No package_name provided'})
-
-    elif request.method == 'GET':
-        user_code = request.session.get('user_code')
-        user = get_object_or_404(CustomUser, code=user_code)
-
-        filter_condition = Q(inserter=user) | Q(checker_1=user) | Q(checker_2=user)
-        data, package_detail_dict, documents_dict = get_package_data(filter_condition)
-        
-        packages = build_package_info(user, data, package_detail_dict, documents_dict)
-        
-        return render(request, 'pages/statistic.html', {'packages': packages})
+    print(filtered_packages)
+    return filtered_packages
 
 def show_data_insert(request):
     user_code = request.session.get('user_code')
     user = get_object_or_404(CustomUser, code=user_code)
 
     # Filter for inserter only
-    filter_condition = Q(inserter=user)
-    data, package_detail_dict, documents_dict = get_package_data(filter_condition)
+    filter_user  = Q(inserter=user)
+    data, package_detail_dict, documents_dict = get_package_data(filter_user)
     
     packages = build_package_info(user, data, package_detail_dict, documents_dict)
-    
+
+    if (request.body):
+        return render(request, 'pages/statistic.html', {'packages': filter_packages(request, packages)})                                           
     return render(request, 'pages/insert.html', {'packages': packages})
 
 def show_data_check(request):
     user_code = request.session.get('user_code')
     user = get_object_or_404(CustomUser, code=user_code)
 
-    filter_condition = Q(checker_1=user) | Q(checker_2=user)
-    data, package_detail_dict, documents_dict = get_package_data(filter_condition)
+    filter_user = Q(checker_1=user) | Q(checker_2=user)
+    data, package_detail_dict, documents_dict = get_package_data(filter_user)
     
     packages = build_package_info(user, data, package_detail_dict, documents_dict)
+
+    if (request.body):
+        return render(request, 'pages/statistic.html', {'packages': filter_packages(request, packages)})                         
     
     return render(request, 'pages/check.html', {'packages': packages})
 
@@ -277,13 +299,14 @@ def statistic_salary(user):
 
 
 def statistic_human(request):
-    record = request.GET.get('record', 10)
+    limit = 200
+    record = request.GET.get('record', limit)
     try:
         record = int(record)
         if record < 1:
-            record = 10
+            record = limit
     except ValueError:
-        record = 10
+        record = limit
     users_query = CustomUser.objects.all()[:record]
     return users_query
 
