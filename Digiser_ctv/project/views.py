@@ -270,7 +270,7 @@ def get_form_data(request=None):
             'nycLoaiGiayToTuyThan': request.POST.get('nycLoaiGiayToTuyThan'),
             'nycGiayToKhac': request.POST.get('nycGiayToKhac'),
             'nycSoGiayToTuyThan': request.POST.get('nycSoGiayToTuyThan'),
-            'nycNoiCapGiayToTuyThan': request.POST.get('nycNoiCapGiayToTuyThan'),
+            'nycNoiCapGiayToTuyThan': request.POST.get('nycNoiCapGiayToTuyThan')
         }
     except (ValueError, TypeError):
         return None
