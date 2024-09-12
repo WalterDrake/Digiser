@@ -414,12 +414,21 @@
         </div>
     </div>
 
-    <div id="vertical-form" class="right-side">
-        {% include 'pages/input_verticalform.html' %}
-    </div>
 
+    <div id="vertical-form" class="right-side">
+        {% if form.form_type == 1 %}
+            {% include 'pages/input_verticalform.html' %}
+        {% elif form.form_type == 2 %}
+            {% include 'pages/input2_verticalform.html' %}
+        {% endif %}
+    </div>
+    
     <div id="horizontal-form" class="under-side" style="display: none;">
-        {% include 'pages/input_horizontalform.html' %}
+        {% if form.form_type == 1 %}
+            {% include 'pages/input_horizontalform.html' %}
+        {% elif form.form_type == 2 %}
+            {% include 'pages/input2_horizontalform.html' %}
+        {% endif %}
     </div>
 
 </div>

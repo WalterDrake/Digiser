@@ -47,6 +47,25 @@ def input_redirect(request, **kwargs):
 def is_superuser(user):
     return user.is_superuser
 
+
+#hàm test các trang input khác
+def test_input_switch(request, form_type):
+    # Kiểm tra giá trị form_type
+    print(f"Form type from URL: {form_type}")
+    
+    pdf_path = 'http://127.0.0.1:8000/static/pdf/sample.pdf'
+    
+    dummy_form_data = {
+        'pdf_path': pdf_path,  # Đường dẫn PDF mẫu
+        'lock': False,
+        'total_fields': 15,
+        'entered_tickets': 5,
+        'total_real_tickets': 20,
+        'form_type': form_type  # Sử dụng form_type từ URL
+    }
+
+    return render(request, 'pages/input.html', {'form': dummy_form_data})
+
 @user_passes_test(is_superuser)
 @login_required
 def export_package(request, **kwargs):
