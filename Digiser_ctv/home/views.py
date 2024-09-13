@@ -228,11 +228,9 @@ def filter_packages(request, packages):
     package_matches = False
     filtered_datarecord_set = None
 
-    for key, value in filters.items():
-        if key in record_fields:
-            record_filters[key] = value
-        else:
-            package_filters[key] = value
+    record_filters = {key: value for key, value in filters.items() if key in record_fields}
+    package_filters = {key: value for key, value in filters.items() if key not in record_fields}
+    
     for package in packages:
         if len(record_filters) and len(package_filters):
             if len(package['datarecord_set']):
