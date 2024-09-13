@@ -379,15 +379,15 @@
                     {{ package.status_package }}
                 </span>
             </td>
-            <td class="ngay_nhan">{{ package.received_day }}</td>
-            <td class="deadline">{{ package.deadline_day }}</td>
-            <td class="so_loi"></td>
-            <td class="loai_file"></td>
+            <td>{{ package.received_day }}</td>
+            <td>{{ package.deadline_day }}</td>
+            <td></td>
+            <td></td>
         </tr>
         {% for record in package.datarecord_set %}
         <tr class="child" data-parent="{{ forloop.parentloop.counter }}" style="display: none;">
             <td></td> <!-- Cột ID cho bản ghi con -->
-            <td class="document-handle ten_du_lieu" onclick="openDocument('{{ record.parent }}', {{ forloop.counter0 }})"> <!-- Tên dữ liệu -->
+            <td class="document-handle ten_du_lieu" onclick="openDocument('{{ record.parent }}', {{ forloop.counter0 }})" style="cursor: pointer;"> <!-- Tên dữ liệu -->
                 {{ record.document_name }}
             <td class="tong_phieu"></td>
             </td> <!-- Số phiếu -->

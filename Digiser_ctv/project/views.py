@@ -177,7 +177,7 @@ def birth_certificate_document(request, document, user, role, package_detail_nam
     if request.method == 'POST':
         form_data = get_form_data(request)
         if form_data is None:
-            return render(request, 'pages/input.html', {'error': 'Invalid form.'})
+            return render(request, 'pages/form.html', {'error': 'Invalid form.'})
         
         form_data = handle_date_fields(form_data, date_fields)
         form_data['executor'] = user
@@ -188,7 +188,7 @@ def birth_certificate_document(request, document, user, role, package_detail_nam
             form_instance.document.package_name.entered_tickets = Birth_Certificate_Document.objects.filter(document__package_name=package, executor=user).count()
         form_data.update(get_form_data())
         form_data.update(prepare_form_data(form_instance))
-        return render(request, 'pages/input.html', {'form': form_data})
+        return render(request, 'pages/form.html', {'form': form_data, 'form_instance': 'birth_cert'})
     
     lock = False
     form_instance = None
@@ -210,8 +210,8 @@ def birth_certificate_document(request, document, user, role, package_detail_nam
     form_data = get_form_data()
     form_data.update(prepare_form_data(form_instance, lock))
     
-    template = 'pages/input.html' if role == 'inserter' else 'pages/check_birth.html'
-    return render(request, template, {'form': form_data})
+    template = 'pages/form.html'
+    return render(request, template, {'form': form_data, 'form_instance': 'birth_cert'})
 
 
 def get_form_data(request=None):
@@ -270,7 +270,7 @@ def get_form_data(request=None):
             'nycLoaiGiayToTuyThan': request.POST.get('nycLoaiGiayToTuyThan'),
             'nycGiayToKhac': request.POST.get('nycGiayToKhac'),
             'nycSoGiayToTuyThan': request.POST.get('nycSoGiayToTuyThan'),
-            'nycNoiCapGiayToTuyThan': request.POST.get('nycNoiCapGiayToTuyThan'),
+            'nycNoiCapGiayToTuyThan': request.POST.get('nycNoiCapGiayToTuyThan')
         }
     except (ValueError, TypeError):
         return None
