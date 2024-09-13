@@ -322,5 +322,20 @@ def statistic_human(request):
 #     normalized_name = normalized_name.lower()
 #     normalized_name = re.sub(r'\s+', '', normalized_name)
 #     normalized_name = re.sub(r'[^a-z0-9]', '', normalized_name)
-
 #     return normalized_name
+
+
+
+
+# code duoi nay la phan code cua phan admin sau nay co the se tach ra cho khac nhung tam thoi no se o day
+
+
+def home_admin(request):
+    return render(request, 'pages/home_admin.html')
+
+def list_ctv(request):
+    users = CustomUser.objects.all()
+    return render(request, 'pages/list_ctv.html', {
+        'users': users,
+        'status_choices': CustomUser._STATUSES,
+        })
