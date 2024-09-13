@@ -1,0 +1,423 @@
+<div class="vertical-tab-selection-item vertical-two-columns">
+    <div id="tab1" class="vertical-item-tab active"><i class='bx bx-edit-alt'></i>Nhập Liệu</div>
+    <div id="tab2" class="vertical-item-tab"><i class='bx bx-info-circle'></i>Thông tin tài liệu</div>
+    <button class="vertical-item-tab" id="Tlayoutbutton" onclick="toggleLayout()">Toggle Layout</button>
+</div>
+
+<div id="tab1-content" class="vertical-tab-content active">
+    <form method="POST">
+        {% csrf_token %}
+        <div class="vertical-input-form-border">
+            <div class="vertical-form-container">
+                <!-- First Section -->
+                <div class="vertical-form vertical-three-columns">
+                    <div class="vertical-form-group">
+                        <input type="text" id="vertical-so" name="so" value="{{form.so}}" required>
+                        <label for="vertical-so">Số</label>
+                    </div>
+                    <div class="vertical-form-group">
+                        <input type="text" id="vertical-quyenSo" name="quyenSo" value="{{form.quyenSo}}" required>
+                        <label for="vertical-quyenSo">Quyển Sổ</label>
+                    </div>
+                    <div class="vertical-form-group">
+                        <input type="text" id="vertical-trangSo" name="trangSo" value="{{form.trangSo}}" required>
+                        <label for="vertical-trangSo">Trang Số</label>
+                    </div>
+                </div>
+                <div class="vertical-form vertical-two-columns">
+                    <div class="vertical-form-group">
+                        <input type="text" id="vertical-ngayDangKy" name="ngayDangKy" value="{{form.ngayDangKy}}" required>
+                        <label for="vertical-ngayDangKy">Ngày Đăng Ký</label>
+                    </div>
+                    <div class="vertical-form-group">
+                        <select id="vertical-loaiDangKy" name="noiCap" required>
+                            {% for value, display in form.noiCap %}
+                                <option value="{{ value }}" {% if value == form.noiCap %}selected{% endif %}>
+                                    {{ display }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                        <label for="vertical-noiCap">Nơi cấp</label>
+                    </div>
+                </div>
+                <div class="vertical-form vertical-three-columns">
+                    <div class="vertical-form-group">
+                        <input type="text" id="vertical-nguoiKy" name="nguoiKy" value="{{form.nguoiKy}}" required>
+                        <label for="vertical-nguoiKy">Người Ký</label>
+                    </div>
+                    <div class="vertical-form-group">
+                        <input type="text" id="vertical-chucVuNguoiKy" name="chucVuNguoiKy" value="{{form.chucVuNguoiKy}}" required>
+                        <label for="vertical-chucVuNguoiKy">Chức Vụ Người Ký</label>
+                    </div>
+                    <div class="vertical-form-group">
+                        <input type="text" id="vertical-nguoiThucHien" name="nguoiThucHien" value="{{form.nguoiThucHien}}" required>
+                        <label for="vertical-nguoiThucHien">Người Thực Hiện</label>
+                    </div>
+                </div>
+                <div class="vertical-form vertical-full-width">
+                    <div class="vertical-form-group textarea-active">
+                        <textarea id="vertical-ghiChu" name="ghiChu" required>{{form.ghiChu}}</textarea>
+                        <label for="vertical-ghiChu">Ghi Chú</label>
+                    </div>
+                </div>
+                <!-- Second Section -->
+                <div class="vertical-form vertical-two-columns">
+                    <div class="vertical-form-group">
+                        <input type="text" id="vertical-nxnHoTen" name="nksHoTen" value="{{form.nxnHoTen}}" required>
+                        <label for="vertical-nxnHoTen">NXN: Họ và tên</label>
+                    </div>
+                    <div class="vertical-form-group">
+                        <select id="vertical-nxnGioiTinh" name="nxnGioiTinh" required>
+                            <option value="Nam" unselev> Nam</option>
+                            <option value="Nữ" unselev> Nữ</option>
+                            <option value="Khác..." unselev> Khác...</option>
+                        </select>
+                        <label for="vertical-nksGioiTinh">NXN: Giới Tính</label>
+                    </div>
+                </div>
+                <div class="vertical-form vertical-three-columns">
+                    <div class="vertical-form-group">
+                        <input type="text" id="vertical-nxnNgaySinh" name="nxnNgaySinh" value="{{form.nxnNgaySinh}}" required>
+                        <label for="vertical-nxnNgaySinh">NXN: Ngày Sinh</label>
+                    </div>
+                    <div class="vertical-form-group">
+                        <select type="text" id="vertical-nxnDanToc" name="nxnDanToc" value="{{form.nxnDanToc}}" required>
+                            <option value="Kinh">Kinh</option>
+                        </select>
+                        <label for="vertical-nxnDanToc">NXN: Dân tộc</label>
+                    </div>
+                    <div class="vertical-form-group">
+                        <select type="text" id="vertical-nxnQuocTich" name="nxnQuocTich" value="{{form.nxnQuocTich}}" required>
+                            <option value="VietNam">Việt Nam</option>
+                        </select>
+                        <label for="vertical-nxnQuocTich">NXN: Quốc tịch</label>
+                    </div>
+                </div>
+                <div class="vertical-form vertical-two-columns">
+                    <div class="vertical-form-group">
+                        <select id="vertical-nxnLoaiCuTru" name="nxnLoaiCuTru" required>
+                            <option value=""></option>
+                        </select>
+                        <label for="vertical-nxnLoaiCuTru">NXN: Loại cư trú</label>
+                    </div>
+                    <div class="vertical-form-group">
+                        <select id="vertical-nxnNoiCuTru" name="nxnNoiCuTru" required>
+                            <option value=""></option>
+                        </select>
+                        <label for="vertical-nxnNoiCuTru">NXN: Nơi cư trú</label>
+                    </div>
+                </div>
+                <div class="vertical-form vertical-two-columns">
+                    <div class="vertical-form-group">
+                        <select id="vertical-nxLoaiGiayToTuyThan" name="nxnLoaiGiayToTuyThan" required>
+                            <option value=""></option>
+                        </select>
+                        <label for="vertical-nxnLoaiGiayToTuyThan">NXN: Loại giấy tờ tùy thân</label>
+                    </div>
+                    <div class="vertical-form-group">
+                        <input id="vertical-nxnSoGiayToTuyThan" name="nxnSoGiayToTuyThan" required>
+                        <label for="vertical-nxnSoGiayToTuyThan">NXN: Số giấy tờ tùy thân</label>
+                    </div>
+                </div>
+                <div class="vertical-form vertical-two-columns">
+                    <div class="vertical-form-group">
+                        <input id="vertical-nxnNgayCapGiayToTuyThan" name="nxnNgayCapGiayToTuyThan" required>
+                        <label for="vertical-nxnNgayCapGiayToTuyThan">NXN: Ngày cấp giấy tờ tùy thân</label>
+                    </div>
+                    <div class="vertical-form-group">
+                        <input id="vertical-nxnNoiCapGiayToTuyThan" name="nxnNoiCapGiayToTuyThan" required>
+                        <label for="vertical-nxnNoiCapGiayToTuyThan">NXN: Nơi cấp giấy tờ tùy thân</label>
+                    </div>
+                </div>
+                <div class="vertical-form vertical-full-width">
+                    <div class="vertical-form-group">
+                        <input id="vertical-nxnThoiGianCuTruTai" name="nxnThoiGianCuTruTai" required>
+                        <label for="vertical-nxnThoiGianCuTruTai">NXN: Thời gian cư trú tại</label>
+                    </div>
+                </div>
+                <div class="vertical-form vertical-two-columns">
+                    <div class="vertical-form-group">
+                        <input id="vertical-nxnThoiGianCuTruTu" name="nxnThoiGianCuTruTu" required>
+                        <label for="vertical-nxnThoiGianCuTruTu">NXN: Thời gian cư trú từ</label>
+                    </div>
+                    <div class="vertical-form-group">
+                        <input id="vertical-nxnThoiGianCuTruDen" name="nxnThoiGianCuTruDen" required>
+                        <label for="vertical-nxnThoiGianCuTruDen">NXN: Thời gian cư trú đến</label>
+                    </div>
+                </div>
+                <div class="vertical-form vertical-full-width">
+                    <div class="vertical-form-group">
+                        <input id="vertical-nxnTinhTrangHonNhan" name="nxnTinhTrangHonNhan" required>
+                        <label for="vertical-nxnTinhTrangHonNhan">NXN: Tình trạng hôn nhân</label>
+                    </div>
+                </div>
+                <div class="vertical-form vertical-two-columns">
+                    <div class="vertical-form-group">
+                        <input id="vertical-nxnMucDichSuDung" name="nxnMucDichSuDung" required>
+                        <label for="vertical-nxnMucDichSuDung">NXN: Mục đích sử dụng</label>
+                    </div>
+                    <div class="vertical-form-group">
+                        <select id="vertical-nxnLoaiMucDichSuDung" name="nxnLoaiMucDichSuDung" required>
+                            <option value=""></option>
+                        </select>
+                        <label for="vertical-nxnLoaiMucDichSuDung">NXN: Loại mục đích sử dụng</label>
+                    </div>
+                </div>
+                <div class="vertical-form vertical-two-columns">
+                    <div class="vertical-form-group">
+                        <input id="vertical-nycHoTen" name="nycHoTen" required>
+                        <label for="vertical-nycHoTen">NYC: Họ Tên</label>
+                    </div>
+                    <div class="vertical-form-group">
+                        <input id="vertical-nycQuanHe" name="nycQuanHe" required>
+                        <label for="vertical-nycQuanHe">NYC: Quan Hệ</label>
+                    </div>
+                </div>
+                <div class="vertical-form vertical-two-columns">
+                    <div class="vertical-form-group">
+                        <select id="vertical-nycLoaiGiayToTuyThan" name="nycLoaiGiayToTuyThan" required>
+                            <option value=""></option>
+                        </select>
+                        <label for="vertical-nycLoaiGiayToTuyThan">NYC: Loại giấy tờ tùy thân</label>
+                    </div>
+                    <div class="vertical-form-group">
+                        <input id="vertical-nycSoGiayToTuyThan" name="nycSoGiayToTuyThan" required>
+                        <label for="vertical-nycSoGiayToTuyThan">NYC: Số giấy tờ tùy thân</label>
+                    </div>
+                </div>
+                <div class="vertical-form vertical-two-columns">
+                    <div class="vertical-form-group">
+                        <input id="vertical-nycNgayCapGiayToTuyThan" name="nycNgayCapGiayToTuyThan" required>
+                        <label for="vertical-nycNgayCapGiayToTuyThan">NYC: Ngay cap giấy tờ tùy thân</label>
+                    </div>
+                    <div class="vertical-form-group">
+                        <input id="vertical-nycNoiCapGiayToTuyThan" name="nycNoiCapGiayToTuyThan" required>
+                        <label for="vertical-nycNoiCapGiayToTuyThan">NYC: Nơi cấp giấy tờ tùy thân</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="vertical-buttons">
+            <button type="button" class="complete">Hoàn Thành</button>
+            <button type="submit" class="save">Lưu</button>
+        </div>
+    </form>
+</div>
+<div id="tab2-content" class="vertical-tab-content">
+    <div class="vertical-doc-info-tab">
+        <div class="info-container">
+            <div class="form-group">
+                <label class="info-label">Tên file</label>
+                <input class="info-input" type="text" value="KT.2017.01.2018-03-26:19.pdf" disabled>
+            </div>
+            <div class="form-group">
+                <label class="info-label">Số trang</label>
+                <input class="info-input" type="text" value="1" disabled>
+            </div>
+            <div class="form-group">
+                <label class="info-label">Dung lượng</label>
+                <input class="info-input" type="text" value="714.34 Kb" disabled>
+            </div>
+            <div class="form-group">
+                <label class="info-label">Kích cỡ</label>
+                <input class="info-input" type="text" value="." disabled>
+            </div>
+            <div class="form-group">
+                <label class="info-label">Xã</label>
+                <input class="info-input" type="text" value="xaphuocnam" disabled>
+            </div>
+            <div class="form-group">
+                <label class="info-label">Loại số</label>
+                <input class="info-input" type="text" value="kt" disabled>
+            </div>
+            <div class="form-group">
+                <label class="info-label">Năm hình thành</label>
+                <input class="info-input" type="text" value="2017" disabled>
+            </div>
+            <div class="form-group">
+                <label class="info-label">Quyển số</label>
+                <input class="info-input" type="text" value="01" disabled>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<style>
+    .vertical-form-container {
+        overflow: auto;
+        flex: 1;
+        margin-bottom: 20px;
+        padding-top: inherit;
+        max-height: 65vh;
+    }
+
+    .vertical-form {
+        display: grid;
+        width: 100%;
+        grid-gap: 10px;
+        padding-bottom: 15px;
+    }
+
+    .vertical-form-group {
+        display: flex;
+        flex-direction: column;
+        position: relative;
+    }
+
+    .vertical-form-group textarea {
+        height: 80px;
+    }
+
+    .vertical-form-group label {
+        font-weight: bold;
+        margin-bottom: 5px;
+        font-size: 12px;
+        position: absolute;
+        top: 50%;
+        left: 10px;
+        transform: translateY(-50%);
+        transition: .5s;
+        color: #a5a5a5;
+    }
+
+    .vertical-form-group input,
+    .vertical-form-group select,
+    .vertical-form-group textarea {
+        width: 100%;
+        padding: 6px;
+        border-radius: 5px;
+        border: 1px solid #ccc;
+        box-sizing: border-box;
+        font-size: 14px;
+        outline: none;
+        background: transparent;
+        transition: .5s;
+        resize: none;
+    }
+
+    .vertical-form-group.textarea-active label {
+        top: 0;
+        font-size: 10px;
+        background: #fff;
+        padding: 0 5px;
+    }
+
+    .vertical-form-group input:focus~label,
+    .vertical-form-group input:valid~label,
+    .vertical-form-group select:focus~label,
+    .vertical-form-group select:valid~label,
+    .vertical-form-group textarea:focus~label,
+    .vertical-form-group textarea:valid~label {
+        top: 0;
+        font-size: 10px;
+        background: #fff;
+        padding: 0 5px;
+        color: black;
+    }
+
+    .vertical-specialLabel {
+        font-weight: bold;
+        margin-bottom: 5px;
+        font-size: 12px;
+        position: absolute;
+        top: 0%;
+        left: 10px;
+        transform: translateY(-50%);
+        color: #555;
+        transition: .5s;
+    }
+
+    .vertical-two-columns {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .vertical-three-columns {
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+    .vertical-four-columns {
+        grid-template-columns: repeat(4, 1fr);
+    }
+
+    .vertical-full-width {
+        grid-column: span 4;
+    }
+
+    .vertical-buttons {
+        display: flex;
+        justify-content: space-between;
+        gap: 10px;
+        padding-top: 20px;
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+
+    .vertical-buttons button {
+        width: 28%;
+        padding: 10px 0;
+        border: none;
+        border-radius: 5px;
+        color: white;
+        font-weight: bold;
+        cursor: pointer;
+    }
+
+    .vertical-buttons .complete {
+        background-color: #FF3B30;
+    }
+
+    .vertical-buttons .save {
+        background-color: #007BFF;
+    }
+
+    .vertical-buttons button:hover {
+        opacity: 0.9;
+    }
+
+    .vertical-input-form-border {
+        border-radius: 5px;
+        border: 1px solid #ccc;
+        box-sizing: border-box;
+        padding: 10px;
+    }
+
+    .vertical-tab-selection-item {
+        width: 100%;
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+    .vertical-item-tab {
+        border-radius: 5px;
+        color: black;
+        border: 1px solid #ccc;
+        padding: 5px;
+        margin: 0;
+        text-align: center;
+        cursor: pointer;
+        background-color: #f0f0f0;
+    }
+
+    .vertical-item-tab.active {
+        background-color: #c5c5c5;
+        color: #8383ff;
+        box-shadow: 0px 3px 0px #a5a5a5 inset;
+    }
+
+    .vertical-tab-content {
+        display: none;
+    }
+
+    .vertical-tab-content.active {
+        display: block;
+    }
+
+    .vertical-doc-info-tab {
+        display: grid;
+        min-width: 40%;
+        grid-gap: 10px;
+        padding-bottom: 15px;
+        height: 78.5vh;
+    }
+</style>
