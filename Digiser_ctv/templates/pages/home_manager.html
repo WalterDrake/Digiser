@@ -32,10 +32,60 @@
                 <td>{{ user.full_name }}</td>
                 <td>{{ user.role }}</td>
                 <td></td>
-                <td></td>
+                <td>
+                    <!-- Bootstrap Dropdown -->
+                    <div class="dropdown">
+                        {% csrf_token %}
+                        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton{{ forloop.counter }}" data-bs-toggle="dropdown" aria-expanded="false">
+                            Actions
+                        </button>
+                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton{{ forloop.counter }}">
+                            <li><a class="dropdown-item" href="#">View</a></li>
+                            <li><a class="dropdown-item" href="#" style="color:lightgreen" onclick="exportDocument('{{ user.code }}')">Export</a></li>
+                            <li><a class="dropdown-item" href="#" style="color:coral">Delete</a></li>
+                        </ul>
+                    </div>
+                </td>
                 <td></td>
             </tr>
             {% endfor %}
         </tbody>
     </table>
+
+<script>
+    function getCsrfToken() {
+        return document.querySelector('[name=csrfmiddlewaretoken]').value;
+    }
+
+    function exportDocument(user_code) {
+        // Create a form element
+        const form = document.createElement('form');
+        form.method = 'POST';
+        form.action = '/document/export/user/';
+        form.style.display = 'none';  // Hide the form
+
+        // Add CSRF token to the form
+        const csrfInput = document.createElement('input');
+        csrfInput.type = 'hidden';
+        csrfInput.name = 'csrfmiddlewaretoken';
+        csrfInput.value = getCsrfToken();
+        form.appendChild(csrfInput);
+
+        // Add user_id to the form
+        const userIdInput = document.createElement('input');
+        userIdInput.type = 'hidden';
+        userIdInput.name = 'user_id';
+        userIdInput.value = user_code;
+        form.appendChild(userIdInput);
+
+        // Append form to the body and submit it
+        document.body.appendChild(form);
+        form.submit();
+
+        // Remove the form from the DOM
+        document.body.removeChild(form);
+
+        event.preventDefault();
+    }
+</script>
 {% endblock %}

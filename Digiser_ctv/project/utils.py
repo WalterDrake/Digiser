@@ -2,7 +2,7 @@ import pandas as pd
 from .models.model2 import Birth_Certificate_Document
 from typing import List
 
-def birth_certificate_documents_to_sheet(birth_cert_docs: List[Birth_Certificate_Document]):
+def birth_certificate_documents_to_df(birth_cert_docs: List[Birth_Certificate_Document]):
     data = []
 
     for birth_cert_doc in birth_cert_docs:
@@ -10,7 +10,7 @@ def birth_certificate_documents_to_sheet(birth_cert_docs: List[Birth_Certificate
             'so': birth_cert_doc.so,
             'quyenSo': birth_cert_doc.quyenSo,
             'trangSo': birth_cert_doc.trangSo,
-            'ngayDangKy': birth_cert_doc.ngayDangKy,
+            'ngayDangKy': str(birth_cert_doc.ngayDangKy) if birth_cert_doc.ngayDangKy else None,
             'loaiDangKy': birth_cert_doc.loaiDangKy,
             'noiDangKy': birth_cert_doc.noiDangKy,
             'nguoiKy': birth_cert_doc.nguoiKy,
@@ -19,27 +19,27 @@ def birth_certificate_documents_to_sheet(birth_cert_docs: List[Birth_Certificate
             'ghiChu': birth_cert_doc.ghiChu,
             'nksHoTen': birth_cert_doc.nksHoTen,
             'nksGioiTinh': birth_cert_doc.nksGioiTinh,
-            'nksNgaySinh': birth_cert_doc.nksNgaySinh,
+            'nksNgaySinh': str(birth_cert_doc.nksNgaySinh) if birth_cert_doc.nksNgaySinh else None,
             'nksNgaySinhBangChu': birth_cert_doc.nksNgaySinhBangChu,
             'nksNoiSinh': birth_cert_doc.nksNoiSinh,
             'nksNoiSinhDVHC': birth_cert_doc.nksNoiSinhDVHC,
             'nksQueQuan': birth_cert_doc.nksQueQuan,
             'nksDanToc': birth_cert_doc.nksDanToc,
             'nksQuocTich': birth_cert_doc.nksQuocTich,
-            'nksQuocTichKhac':birth_cert_doc.nksQuocTichKhac,
+            'nksQuocTichKhac': birth_cert_doc.nksQuocTichKhac,
             'nksLoaiKhaiSinh': birth_cert_doc.nksLoaiKhaiSinh,
             'nksMatTich': birth_cert_doc.nksMatTich,
-            'nksMatTichNgayGhiChuTuyenBo': birth_cert_doc.nksMatTichNgayGhiChuTuyenBo,
+            'nksMatTichNgayGhiChuTuyenBo': str(birth_cert_doc.nksMatTichNgayGhiChuTuyenBo) if birth_cert_doc.nksMatTichNgayGhiChuTuyenBo else None,
             'nksMatTichCanCuTuyenBo': birth_cert_doc.nksMatTichCanCuTuyenBo,
-            'nksMatTichNgayGhiChuHuyTuyenBo': birth_cert_doc.nksMatTichNgayGhiChuHuyTuyenBo,
+            'nksMatTichNgayGhiChuHuyTuyenBo': str(birth_cert_doc.nksMatTichNgayGhiChuHuyTuyenBo) if birth_cert_doc.nksMatTichNgayGhiChuHuyTuyenBo else None,
             'nksMatTichCanCuHuyTuyenBo': birth_cert_doc.nksMatTichCanCuHuyTuyenBo,
             'nksHanCheNangLucHanhVi': birth_cert_doc.nksHanCheNangLucHanhVi,
-            'nksHanCheNangLucHanhViNgayGhiChuTuyenBo': birth_cert_doc.nksHanCheNangLucHanhViNgayGhiChuTuyenBo,
+            'nksHanCheNangLucHanhViNgayGhiChuTuyenBo': str(birth_cert_doc.nksHanCheNangLucHanhViNgayGhiChuTuyenBo) if birth_cert_doc.nksHanCheNangLucHanhViNgayGhiChuTuyenBo else None,
             'nksHanCheNangLucHanhViCanCuTuyenBo': birth_cert_doc.nksHanCheNangLucHanhViCanCuTuyenBo,
-            'nksHanCheNangLucHanhViNgayGhiChuHuyTuyenBo': birth_cert_doc.nksHanCheNangLucHanhViNgayGhiChuHuyTuyenBo,
+            'nksHanCheNangLucHanhViNgayGhiChuHuyTuyenBo': str(birth_cert_doc.nksHanCheNangLucHanhViNgayGhiChuHuyTuyenBo) if birth_cert_doc.nksHanCheNangLucHanhViNgayGhiChuHuyTuyenBo else None,
             'nksHanCheNangLucHanhViNgayCanCuHuyTuyenBo': birth_cert_doc.nksHanCheNangLucHanhViNgayCanCuHuyTuyenBo,
             'meHoTen': birth_cert_doc.meHoTen,
-            'meNgaySinh': birth_cert_doc.meNgaySinh,
+            'meNgaySinh': str(birth_cert_doc.meNgaySinh) if birth_cert_doc.meNgaySinh else None,
             'meDanToc': birth_cert_doc.meDanToc,
             'meQuocTich': birth_cert_doc.meQuocTich,
             'meQuocTichKhac': birth_cert_doc.meQuocTichKhac,
@@ -48,7 +48,7 @@ def birth_certificate_documents_to_sheet(birth_cert_docs: List[Birth_Certificate
             'meLoaiGiayToTuyThan': birth_cert_doc.meLoaiGiayToTuyThan,
             'meSoGiayToTuyThan': birth_cert_doc.meSoGiayToTuyThan,
             'chaHoTen': birth_cert_doc.chaHoTen,
-            'chaNgaySinh': birth_cert_doc.chaNgaySinh,
+            'chaNgaySinh': str(birth_cert_doc.chaNgaySinh) if birth_cert_doc.chaNgaySinh else None,
             'chaDanToc': birth_cert_doc.chaDanToc,
             'chaQuocTich': birth_cert_doc.chaQuocTich,
             'chaQuocTichKhac': birth_cert_doc.chaQuocTichKhac,
@@ -61,13 +61,13 @@ def birth_certificate_documents_to_sheet(birth_cert_docs: List[Birth_Certificate
             'nycLoaiGiayToTuyThan': birth_cert_doc.nycLoaiGiayToTuyThan,
             'nycGiayToKhac': birth_cert_doc.nycGiayToKhac,
             'nycSoGiayToTuyThan': birth_cert_doc.nycSoGiayToTuyThan,
-            'nycNgayCapGiayToTuyThan': birth_cert_doc.nycNgayCapGiayToTuyThan,
+            'nycNgayCapGiayToTuyThan': str(birth_cert_doc.nycNgayCapGiayToTuyThan) if birth_cert_doc.nycNgayCapGiayToTuyThan else None,
             'nycNoiCapGiayToTuyThan': birth_cert_doc.nycNoiCapGiayToTuyThan,
             'soDangKyNuocNgoai': birth_cert_doc.soDangKyNuocNgoai,
-            'ngayDangKyNuocNgoai': birth_cert_doc.ngayDangKyNuocNgoai,
+            'ngayDangKyNuocNgoai': str(birth_cert_doc.ngayDangKyNuocNgoai) if birth_cert_doc.ngayDangKyNuocNgoai else None,
             'cqNuocNgoaiDaDangKy': birth_cert_doc.cqNuocNgoaiDaDangKy,
             'qgNuocNgoaiDaDangKy': birth_cert_doc.qgNuocNgoaiDaDangKy,
         })
 
     df = pd.DataFrame(data)
-    df.to_excel('birth_certificate_documents.xlsx', index=False)
+    return df
