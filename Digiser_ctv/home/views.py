@@ -69,11 +69,6 @@ def check(request):
 
 
 @login_required
-def support(request):
-    return render(request, 'pages/support.html')
-
-
-@login_required
 def system(request):
     return render(request, 'pages/system.html')
 
@@ -269,7 +264,7 @@ def show_data_insert(request):
     packages = build_package_info(user, data, package_detail_dict, documents_dict)
 
     if (request.body):
-        return render(request, 'pages/statistic.html', {'packages': filter_packages(request, packages)})                                           
+        return render(request, 'pages/insert.html', {'packages': filter_packages(request, packages)})                                           
     return render(request, 'pages/insert.html', {'packages': packages})
 
 def show_data_check(request):
@@ -282,7 +277,7 @@ def show_data_check(request):
     packages = build_package_info(user, data, package_detail_dict, documents_dict)
 
     if (request.body):
-        return render(request, 'pages/statistic.html', {'packages': filter_packages(request, packages)})                         
+        return render(request, 'pages/check.html', {'packages': filter_packages(request, packages)})                         
     
     return render(request, 'pages/check.html', {'packages': packages})
 
