@@ -7,8 +7,8 @@ from .models import Salary
 import re
 from project.models.model1 import Package_detail, Document
 import unicodedata
+import hashlib
 import json
-
 
 @login_required
 def home(request):
@@ -66,11 +66,6 @@ def insert(request):
 @login_required
 def check(request):
     return render(request, 'pages/check.html')
-
-
-@login_required
-def support(request):
-    return render(request, 'pages/support.html')
 
 
 @login_required
@@ -169,11 +164,18 @@ def build_package_info(user, data, package_detail_dict, documents_dict):
             'package': package_name.package_name,
             'total_tickets': package_name.total_tickets,
             'executor': user.full_name,
-            'status_package': package_name.payment,
+            'status_package': package_name.payment, 
             'received_day': None,
             'deadline_day': None,
-            'datarecord_set': []
+            'datarecord_set': [],
         }
+        if package_detail:
+            if package_detail.inserter and user.full_name == package_detail.inserter.full_name:
+                package_info['received_day'] = package_detail.start_insert.strftime('%d/%m/%Y')
+                package_info['deadline_day'] = package_detail.finish_insert.strftime('%d/%m/%Y')
+            elif package_detail.checker_1 and user.full_name == package_detail.checker_1.full_name or package_detail.checker_2 and user.full_name == package_detail.checker_2.full_name:
+                package_info['received_day'] = package_detail.start_check.strftime('%d/%m/%Y')
+                package_info['deadline_day'] = package_detail.finish_check.strftime('%d/%m/%Y')
 
         if package_detail:
             if package_detail.inserter and user.full_name == package_detail.inserter.full_name:
@@ -221,11 +223,9 @@ def filter_packages(request, packages):
     package_matches = False
     filtered_datarecord_set = None
 
-    for key, value in filters.items():
-        if key in record_fields:
-            record_filters[key] = value
-        else:
-            package_filters[key] = value
+    record_filters = {key: value for key, value in filters.items() if key in record_fields}
+    package_filters = {key: value for key, value in filters.items() if key not in record_fields}
+    
     for package in packages:
         if len(record_filters) and len(package_filters):
             if len(package['datarecord_set']):
@@ -255,21 +255,20 @@ def filter_packages(request, packages):
                 filtered_package['datarecord_set'] = filtered_datarecord_set
                 filtered_packages.append(filtered_package)
 
-    print(filtered_packages)
     return filtered_packages
 
 def show_data_insert(request):
     user_code = request.session.get('user_code')
     user = get_object_or_404(CustomUser, code=user_code)
 
-    # Filter for inserter only
-    filter_user  = Q(inserter=user)
+
+    filter_user = Q(inserter=user)
     data, package_detail_dict, documents_dict = get_package_data(filter_user)
     
     packages = build_package_info(user, data, package_detail_dict, documents_dict)
 
     if (request.body):
-        return render(request, 'pages/statistic.html', {'packages': filter_packages(request, packages)})                                           
+        return render(request, 'pages/insert.html', {'packages': filter_packages(request, packages)})                                           
     return render(request, 'pages/insert.html', {'packages': packages})
 
 def show_data_check(request):
@@ -282,7 +281,7 @@ def show_data_check(request):
     packages = build_package_info(user, data, package_detail_dict, documents_dict)
 
     if (request.body):
-        return render(request, 'pages/statistic.html', {'packages': filter_packages(request, packages)})                         
+        return render(request, 'pages/check.html', {'packages': filter_packages(request, packages)})                         
     
     return render(request, 'pages/check.html', {'packages': packages})
 
@@ -310,23 +309,20 @@ def statistic_human(request):
     users_query = CustomUser.objects.all()[:record]
     return users_query
 
+# def normalize_phone(phone_no):
+#     phone = re.sub(r'\D', '', phone)
 
-def normalize_phone(phone_no):
-    phone = re.sub(r'\D', '', phone)
+#     if len(phone_no) < 9:
+#         raise ValueError("Phone number must be more than 9 digits")
 
-    if len(phone_no) < 9:
-        raise ValueError("Phone number must be more than 9 digits")
+#     return int(phone)
 
-    return int(phone)
-
-def normalize_username(full_name):
-    normalized_name = unicodedata.normalize('NFKD', full_name).encode('ASCII', 'ignore').decode('ASCII')
-    normalized_name = normalized_name.lower()
-    normalized_name = re.sub(r'\s+', '', normalized_name)
-    normalized_name = re.sub(r'[^a-z0-9]', '', normalized_name)
-
-    return normalized_name
-
+# def normalize_username(full_name):
+#     normalized_name = unicodedata.normalize('NFKD', full_name).encode('ASCII', 'ignore').decode('ASCII')
+#     normalized_name = normalized_name.lower()
+#     normalized_name = re.sub(r'\s+', '', normalized_name)
+#     normalized_name = re.sub(r'[^a-z0-9]', '', normalized_name)
+#     return normalized_name
 
 
 
