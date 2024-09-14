@@ -11,11 +11,9 @@ urlpatterns = [
     path('courses/', views.courses, name='courses'),
     path('dashboard/', views.dashboard, name="dashboard"),
     path('info/', views.info, name='info'),
-    path('employees/', views.statistic_human, name = "human_statistic"),
     
-    
-    # duong dan cua phan admin
-    path('homeadmin/', views.home_admin , name="home_admin"),
-    path('listctv/', views.list_ctv, name="list_ctv"),
+    # Admin urls
+    path('home_admin/', views.home_admin , name="home admin"),
+    path('ctv/', views.ctv_list , name="ctv list"),
     path('loginlog/', views.list_loginlog, name="list_loginlog"),
 ]

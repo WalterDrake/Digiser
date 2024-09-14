@@ -1,20 +1,15 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, user_passes_test
 from authentication.forms import CustomUserInfoChangeForm, CustomUserBankChangeForm
 from django.db.models import Max, Sum, Q
 from authentication.models import CustomUser, LoginLog
 from .models import Salary
-import re
 from project.models.model1 import Package_detail, Document
-import unicodedata
-import hashlib
 import json
 
 @login_required
 def home(request):
-    if request.method == 'POST':
-        return handle_post_request(request)
-    elif request.method == 'GET':
+    if request.method == 'GET':
         return handle_get_request(request)
 
 def generate_code(prefix, latest_number):
@@ -30,24 +25,11 @@ def get_latest_ctv_number():
         latest_number = 0
     return latest_number
 
-def handle_post_request(request):
-    if checkManager(request.user):
-        email = request.POST.get('gmail')
-        user = get_object_or_404(CustomUser, email=email)
-        user.is_verified = True
-        user.role = 'EMPLOYEE'
-        latest_number = get_latest_ctv_number()
-        user.code = generate_code("NV", latest_number)
-        user.save()
-    return render(request, 'pages/home_manager.html')
-
-
 def handle_get_request(request):
     user_code = request.session.get('user_code')
     user = get_object_or_404(CustomUser, code=user_code)
     if checkManager(user):
-        data = statistic_human(request)
-        return render(request, 'pages/home_manager.html', {'users': data})
+        return redirect('home admin')  # Redirect to a URL pattern name for managers
     
     total_salary = statistic_salary(user)
     total_project_details = statistic_project(user)
@@ -297,7 +279,7 @@ def statistic_salary(user):
     return f"{total_salary:,}"
 
 
-def statistic_human(request):
+def statistic_users(request):
     limit = 200
     record = request.GET.get('record', limit)
     try:
@@ -325,21 +307,23 @@ def statistic_human(request):
 #     return normalized_name
 
 
-
-
-# code duoi nay la phan code cua phan admin sau nay co the se tach ra cho khac nhung tam thoi no se o day
-
-
+@login_required
+@user_passes_test(checkManager)
 def home_admin(request):
     return render(request, 'pages/home_admin.html')
 
-def list_ctv(request):
-    users = CustomUser.objects.all()
-    return render(request, 'pages/list_ctv.html', {
+@login_required
+@user_passes_test(checkManager)
+def ctv_list(request):
+    users = statistic_users(request)
+    return render(request, 'pages/ctv_list.html', {
         'users': users,
         'status_choices': CustomUser._STATUSES,
         })
-
+  
+@login_required
+@user_passes_test(checkManager)
 def list_loginlog(request):
     loginlogs = LoginLog.objects.all()
     return render(request, 'pages/login_log.html', {'loginlogs': loginlogs})
+    })
