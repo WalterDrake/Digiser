@@ -16,6 +16,6 @@ urlpatterns = [
     
     # duong dan cua phan admin
     path('homeadmin/', views.home_admin , name="home_admin"),
-    path('listctv/', views.list_ctv, name="list_ctv")
-    
+    path('listctv/', views.list_ctv, name="list_ctv"),
+    path('loginlog/', views.list_loginlog, name="list_loginlog"),
 ]
