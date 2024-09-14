@@ -326,4 +326,3 @@ def ctv_list(request):
 def list_loginlog(request):
     loginlogs = LoginLog.objects.all()
     return render(request, 'pages/login_log.html', {'loginlogs': loginlogs})
-    })
