@@ -1,0 +1,40 @@
+{% extends 'bases/base.html' %}
+{% block content %}
+<style>
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+    th, td {
+        border: 1px solid #ddd;
+        padding: 8px;
+    }
+    th {
+        background-color: #f2f2f2;
+    }
+</style>
+<h1>Danh sach nhan vien</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>STT</th>
+                <th>Trang</th>
+                <th>Địa chỉ IP</th>
+                <th>Thời gian truy cập</th>
+                <th>Tài khoản truy cập</th>
+
+            </tr>
+        </thead>
+        <tbody>
+            {% for loginlog in loginlogs %}
+            <tr>
+                <td>{{ loginlog.id }}</td>
+                <td>auth/login/</td>
+                <td>{{ loginlog.ip_address }}</td>
+                <td>{{ loginlog.login_time }}</td>
+                <td>{{ loginlog.user.code }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
