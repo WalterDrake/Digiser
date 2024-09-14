@@ -1,9 +1,202 @@
 {% extends 'bases/base.html' %}   
 {% block content %}
-<p> day la trang home admin</p>
 
+<div class="container">
+    <div class="card">
+        <div class="header-bg">
+            <h3>Phân Quyền User</h3>
+        </div>
 
+        <ul>
+            <li><a href="/listctv">Quản lý CTV</a></li>
+            <li>Rating Score</li>
+        </ul>
+        <div class="icon user"></div>
+    </div>
+    <div class="card">
+        <div class="header-bg">
+            <h3>System Configuration</h3>
+        </div>
 
+        <div class="icon configuration"></div>
+    </div>
+    <div class="card">
+        <div class="header-bg">
+            <h3>Nhật Ký Hệ Thống</h3>
+        </div>
 
+        <ul>
+            <li><a href="/loginlog">Nhật Ký Truy Cập</a></li>
+            <li>Edit Log</li>
+        </ul>
+        <div class="icon logs"></div>
+    </div>
+    <div class="card">
+        <div class="header-bg">
+            <h3>Language</h3>
+        </div>
+
+        <ul>
+            <li>Vietnamese</li>
+            <li>English</li>
+        </ul>
+        <div class="icon language"></div>
+    </div>
+    <div class="card">
+        <div class="header-bg">
+            <h3>Automatic Function</h3>
+        </div>
+
+        <ul>
+            <li>Automatic Assignment</li>
+            <li>Automatic Binding</li>
+            <li>OCR</li>
+        </ul>
+        <div class="icon automatic"></div>
+    </div>
+    <div class="card">
+        <div class="header-bg">
+            <h3>Log Management</h3>
+        </div>
+
+        <ul>
+            <li>Export user activity data</li>
+        </ul>
+        <div class="icon log-management"></div>
+    </div>
+    <div class="card">
+        <div class="header-bg">
+            <h3>Data</h3>
+        </div>
+
+        <ul>
+            <li>Import data</li>
+            <li>Export data</li>
+        </ul>
+        <div class="icon data"></div>
+    </div>
+    <div class="card">
+        <div class="header-bg">
+            <h3>Statistics</h3>
+        </div>
+
+        <ul>
+            <li>Project construction progress</li>
+            <li>Statistics by personnel</li>
+            <li>Statistics by data</li>
+            <li>Worth the results</li>
+        </ul>
+        <div class="icon statistics"></div>
+    </div>
+</div>
+
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: Arial, sans-serif;
+    }
+    
+    body {
+        background-color: #f4f4f4;
+    }
+    
+    .container {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 50px;
+        padding: 80px;
+        max-width: 1400px;
+        margin: 0 auto;
+    }
+    
+    .card {
+        background-color: #fff;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(34, 0, 0, 0.1);
+        position: relative;
+ /* Added padding to make space for the gray header */
+    }
+    
+    /* Full-width but with rounded gray header */
+    .header-bg {
+        position: absolute;
+        top: -20px; /* Adjusted to move it slightly down */
+        left: 50%;
+        transform: translateX(-50%);
+        width: 100%; /* Keeps the width of the rounded rectangle narrower than the card */
+        height: 40px;
+        background-color: #e0e0e0;
+        border-radius: 20px; /* Rounded edges for a pill-like appearance */
+        display: flex;
+        align-items: center; /* Vertically center the title inside */
+        justify-content: center; /* Horizontally center the title */
+    }
+    
+    .card h3 {
+        font-size: 18px;
+        color: #555;
+        margin: 0; /* No margin to center properly inside header-bg */
+    }
+    
+    /* Spacing for the rest of the content under the header */
+    .card ul {
+        list-style: none;
+        margin-bottom: 15px;
+        padding-top: 20px; /* Space between the gray rectangle and the content */
+    }
+    
+    .card ul li {
+        font-size: 14px;
+        color: #777;
+        margin: 5px 0;
+        padding-left: 40px;
+    }
+    
+    .icon {
+        width: 40px;
+        height: 40px;
+        margin: 0 auto;
+        background-repeat: no-repeat;
+        background-size: cover;
+    }
+    
+    .icon.user {
+        background-image: url('icons/user.png'); /* Replace with actual icon path */
+    }
+    
+    .icon.configuration {
+        background-image: url('icons/configuration.png');
+    }
+    
+    .icon.logs {
+        background-image: url('icons/logs.png');
+    }
+    
+    .icon.language {
+        background-image: url('icons/language.png');
+    }
+    
+    .icon.automatic {
+        background-image: url('icons/automatic.png');
+    }
+    
+    .icon.log-management {
+        background-image: url('icons/log-management.png');
+    }
+    
+    .icon.data {
+        background-image: url('icons/data.png');
+    }
+    
+    .icon.statistics {
+        background-image: url('icons/statistics.png');
+    }
+    
+
+    
+</style>
 
 {% endblock %}
+
