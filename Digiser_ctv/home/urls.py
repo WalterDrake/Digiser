@@ -11,8 +11,9 @@ urlpatterns = [
     path('courses/', views.courses, name='courses'),
     path('dashboard/', views.dashboard, name="dashboard"),
     path('info/', views.info, name='info'),
-
+    
     # Admin urls
     path('home_admin/', views.home_admin , name="home admin"),
-    path('ctv/', views.ctv_list , name="ctv list")
+    path('ctv/', views.ctv_list , name="ctv list"),
+    path('loginlog/', views.list_loginlog, name="list_loginlog"),
 ]

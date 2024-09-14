@@ -2,7 +2,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required, user_passes_test
 from authentication.forms import CustomUserInfoChangeForm, CustomUserBankChangeForm
 from django.db.models import Max, Sum, Q
-from authentication.models import CustomUser
+from authentication.models import CustomUser, LoginLog
 from .models import Salary
 from project.models.model1 import Package_detail, Document
 import json
@@ -319,4 +319,11 @@ def ctv_list(request):
     return render(request, 'pages/ctv_list.html', {
         'users': users,
         'status_choices': CustomUser._STATUSES,
+        })
+  
+@login_required
+@user_passes_test(checkManager)
+def list_loginlog(request):
+    loginlogs = LoginLog.objects.all()
+    return render(request, 'pages/login_log.html', {'loginlogs': loginlogs})
     })

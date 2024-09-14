@@ -1,25 +1,187 @@
-{% extends 'bases/base.html' %}   
+{% extends 'bases/base.html' %}
 {% block content %}
-<p> day la trang list ctv</p>
 
 <style>
     table {
         width: 100%;
         border-collapse: collapse;
     }
-    th, td {
+
+    th,
+    td {
         border: 1px solid #ddd;
         padding: 8px;
     }
+
     th {
         background-color: #f2f2f2;
     }
+
+    .selected {
+        background-color: #d1e7dd;
+    }
+</style>
+
+
+<!-- css ban con -->
+<style>
+    * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+        font-family: Arial, sans-serif;
+    }
+
+    body {
+        background-color: #f4f4f4;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+    }
+
+    .container {
+        max-width: 500px;
+        background-color: white;
+        padding: 20px;
+        border: 1px dashed #ccc;
+        border-radius: 10px;
+        width: 650px;
+        background: #dfdedecc;
+    }
+
+    .user-form {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .form-group {
+        margin-bottom: 15px;
+        display: flex;
+        align-items: flex-start;
+        gap: 10px;
+    }
+
+    label {
+        display: block;
+        font-size: 14px;
+        margin-bottom: 5px;
+        font-weight: bold;
+    }
+
+    input[type="text"],
+    select {
+        width: 100%;
+        padding: 8px;
+        font-size: 14px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+    }
+
+    select {
+        height: 40px;
+        background-color: white;
+    }
+
+    input[readonly] {
+        background-color: #f1f1f1;
+    }
+
+    .form-actions {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .reset-btn,
+    .save-btn {
+        padding: 10px 20px;
+        font-size: 14px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+    .reset-btn {
+        background-color: #f4f4f4;
+    }
+
+    .save-btn {
+        background-color: #007bff;
+        color: white;
+    }
+
+    .save-btn:hover {
+        background-color: #0056b3;
+    }
+
+    .reset-btn:hover {
+        background-color: #e0e0e0;
+    }
+
+    .form-label-inline {
+        flex: 1;
+    }
+
+    .form-input-inline,
+    .form-select-inline {
+        flex: 2;
+        width: 100%;
+        padding: 5px;
+        border-radius: 5px;
+        border: 1px solid #ccc;
+    }
+</style>
+
+<!-- Thêm CSS để định dạng các nút tìm kiếm nhanh -->
+<style>
+.search-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    justify-content: flex-start; /* Căn sang bên trái */
+}
+
+.quick-search {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.quick-search input,
+.quick-search select {
+    padding: 8px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    width: auto; /* Đảm bảo kích thước hợp lý */
+}
+
+.quick-search select {
+    width: 150px; /* Đặt chiều rộng cho ô select */
+}
+
+    
 </style>
 <h1>Danh sach nhan vien</h1>
-<!-- Nút lọc -->
-<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#filterModal">
-    <i class='bx bx-filter-alt'></i> Lọc
-</button>
+<!-- Thanh tìm kiếm nhanh và nút lọc -->
+<div class="search-container">
+    <!-- Nút lọc -->
+    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#filterModal">
+        <i class='bx bx-filter-alt'></i> Lọc
+    </button>
+
+    <!-- Tìm kiếm nhanh với các ô nhập liệu -->
+    <div class="quick-search">
+        <input type="text" id="quickSearchName" placeholder="Họ tên">
+        <select id="quickSearchStatus">
+            <option value="">Trạng thái</option>
+            {% for status_value, status_label in status_choices %}
+            <option value="{{ status_value }}">{{ status_label }}</option>
+            {% endfor %}
+        </select>
+    </div>
+</div>
 
 <!-- Modal Lọc -->
 <div class="modal fade" id="filterModal" tabindex="-1" aria-labelledby="filterModalLabel" aria-hidden="true">
@@ -37,14 +199,15 @@
                     </div>
                     <div class="mb-3">
                         <label for="filterName" class="form-label">Tìm kiếm Họ tên</label>
-                        <input type="text" class="form-control" id="filterName" name="filter_name" placeholder="Nhập Họ và tên">
+                        <input type="text" class="form-control" id="filterName" name="filter_name"
+                            placeholder="Nhập Họ và tên">
                     </div>
                     <div class="mb-3">
                         <label for="filterStatus" class="form-label">Tìm kiếm Trạng thái</label>
                         <select class="form-select" id="filterStatus" name="filter_status">
                             <option value="">Chọn trạng thái</option>
                             {% for status_value, status_label in status_choices %}
-                                <option value="{{ status_value }}">{{ status_label }}</option>
+                            <option value="{{ status_value }}">{{ status_label }}</option>
                             {% endfor %}
                         </select>
                     </div>
@@ -54,73 +217,188 @@
                     </div>
                 </form>
             </div>
-            
+
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div style="overflow: auto; height:700px" class="col-xs-7 col-sm-6 col-lg-8">
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Ho va ten</th>
+                    <th>Chuc vu</th>
+                    <th>Trang thai</th>
+                    <th>diem</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for user in users %}
+                <tr>
+                    <td>{{ user.code }}</td>
+                    <td>{{ user.full_name }}</td>
+                    <td>{{ user.role }}</td>
+                    <td>{{ user.status }}</td>
+                    <td>100</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <div class="col-xs-5 col-sm-6 col-lg-4">
+        <div class="container">
+            <form class="user-form">
+                <div class="form-group">
+                    <label for="id" class="form-label-inline form-label">ID:</label>
+                    <input type="text" id="id" name="id" class="form-label-inline" value="">
+                </div>
+
+                <div class="form-group">
+                    <label for="name" class="form-label-inline form-label">Họ và tên:</label>
+                    <input type="text" id="name" name="name" class="form-label-inline" value=" ">
+                </div>
+
+                <div class="form-group">
+                    <label for="role" class="form-label-inline form-label">Vai trò:</label>
+                    <div class="form-label-inline">                    
+
+                        <p>sau nay moi nguoi quyet dinh duoc la role hay group thi phan nay se duoc phat trien them</p>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="status" class="form-label-inline form-label">Trạng thái:</label>
+                    <select class="form-select form-label-inline" id="status" name="status">
+                        {% for status_value, status_label in status_choices %}
+                        <option value="{{ status_value }}">{{ status_label }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div class="form-actions">
+                    <button type="button" class="reset-btn">Đặt lại</button>
+                    <button type="submit" class="save-btn">Lưu</button>
+                </div>
+            </form>
         </div>
     </div>
 </div>
 
-    <table>
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Ho va ten</th>
-                <th>Chuc vu</th>
-                <th>Trang thai</th>
+<script>
+    // Biến lưu trữ dữ liệu của hàng được chọn
+    let selectedRowData = null;
 
-            </tr>
-        </thead>
-        <tbody>
-            {% for user in users %}
-            <tr>
-                <td>{{ user.code }}</td>
-                <td>{{ user.full_name }}</td>
-                <td>{{ user.role }}</td>
-                <td>{{ user.status }}</td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+    // Lấy dữ liệu từ dòng đã chọn của bảng to để gán qua bảng nhỏ
+    document.querySelectorAll('table tbody tr').forEach(row => {
+        row.addEventListener('click', function () {
+            // Bỏ chọn các dòng khác
+            document.querySelectorAll('table tbody tr').forEach(row => row.classList.remove('selected'));
 
-    <script>
-        // Function to filter users
-        function filterUsers() {
-            // Lấy giá trị từ các input fields trong popup
-            const filterId = document.getElementById('filterId').value.toLowerCase();
-            const filterName = document.getElementById('filterName').value.toLowerCase();
-            const filterStatus = document.getElementById('filterStatus').value.toLowerCase();
-        
-            // Lấy tất cả các hàng (rows) của bảng users
-            const rows = document.querySelectorAll('table tbody tr');
-        
-            // Lặp qua từng hàng và kiểm tra các điều kiện
-            rows.forEach(row => {
-                const userId = row.querySelector('td:nth-child(1)').textContent.toLowerCase();
-                const userName = row.querySelector('td:nth-child(2)').textContent.toLowerCase();
-                const userStatus = row.querySelector('td:nth-child(4)').textContent.toLowerCase();
-        
-                // Điều kiện tìm kiếm
-                const matchId = !filterId || userId.includes(filterId);
-                const matchName = !filterName || userName.includes(filterName);
-                const matchStatus = !filterStatus || userStatus.includes(filterStatus);
-        
-                // Nếu hàng phù hợp với tất cả các điều kiện, hiển thị nó, ngược lại ẩn nó
-                if (matchId && matchName && matchStatus) {
-                    row.style.display = '';
-                } else {
-                    row.style.display = 'none';
-                }
-            });
-        }
-        
-        // Khi người dùng nhấn nút "Lọc", thực hiện tìm kiếm
-        document.getElementById('filterSubmit').addEventListener('click', function() {
-            filterUsers();
-            // Sau khi tìm kiếm, đóng popup
-            const modal = document.querySelector('#filterModal');
-            const modalInstance = bootstrap.Modal.getInstance(modal); // Lấy modal instance
-            modalInstance.hide(); // Đóng modal
+            // Chọn dòng hiện tại
+            this.classList.add('selected');
+
+            // Lấy dữ liệu từ hàng và gán vào form
+            const selectedId = this.querySelector('td:nth-child(1)').textContent;
+            const selectedName = this.querySelector('td:nth-child(2)').textContent;
+            const selectedStatus = this.querySelector('td:nth-child(4)').textContent;
+
+            document.getElementById('id').value = selectedId;
+            document.getElementById('name').value = selectedName;
+            document.getElementById('status').value = selectedStatus;
+
+            // Lưu dữ liệu hàng được chọn vào biến
+            selectedRowData = {
+                id: selectedId,
+                name: selectedName,
+                status: selectedStatus
+            };
         });
-        </script>
-        
+    });
 
+    // Khi nhấn nút Đặt lại, điền lại dữ liệu từ hàng đã chọn
+    document.querySelector('.reset-btn').addEventListener('click', function () {
+        if (selectedRowData) {
+            // Điền lại dữ liệu từ hàng đã chọn
+            document.getElementById('id').value = selectedRowData.id;
+            document.getElementById('name').value = selectedRowData.name;
+            document.getElementById('status').value = selectedRowData.status;
+        }
+    });
+</script>
+
+<script>
+    
+    // Hàm tìm kiếm chi tiết
+    function filterUsers() {
+        // Lấy giá trị từ các input fields trong popup
+        const filterId = document.getElementById('filterId').value.toLowerCase();
+        const filterName = document.getElementById('filterName').value.toLowerCase();
+        const filterStatus = document.getElementById('filterStatus').value.toLowerCase();
+
+        // Lấy tất cả các hàng (rows) của bảng users
+        const rows = document.querySelectorAll('table tbody tr');
+
+        // Reset tìm kiếm nhanh khi dùng lọc chi tiết
+        document.getElementById('quickSearchName').value = '';
+        document.getElementById('quickSearchStatus').value = '';
+
+        // Lặp qua từng hàng và kiểm tra các điều kiện
+        rows.forEach(row => {
+            const userId = row.querySelector('td:nth-child(1)').textContent.toLowerCase();
+            const userName = row.querySelector('td:nth-child(2)').textContent.toLowerCase();
+            const userStatus = row.querySelector('td:nth-child(4)').textContent.toLowerCase();
+
+            const matchId = !filterId || userId.includes(filterId);
+            const matchName = !filterName || userName.includes(filterName);
+            const matchStatus = !filterStatus || userStatus.includes(filterStatus);
+
+            if (matchId && matchName && matchStatus) {
+                row.style.display = '';
+            } else {
+                row.style.display = 'none';
+            }
+        });
+    }
+
+    // Hàm tìm kiếm nhanh kết hợp giữa Họ tên và Trạng thái
+    function quickSearchUsers() {
+        const quickSearchName = document.getElementById('quickSearchName').value.toLowerCase().trim();
+        const quickSearchStatus = document.getElementById('quickSearchStatus').value.toLowerCase();
+        const rows = document.querySelectorAll('table tbody tr');
+
+        // Reset dữ liệu lọc chi tiết khi dùng tìm kiếm nhanh
+        document.getElementById('filterId').value = '';
+        document.getElementById('filterName').value = '';
+        document.getElementById('filterStatus').value = '';
+
+        rows.forEach(row => {
+            const userName = row.querySelector('td:nth-child(2)').textContent.toLowerCase();
+            const userStatus = row.querySelector('td:nth-child(4)').textContent.toLowerCase();
+
+            const matchName = !quickSearchName || userName.includes(quickSearchName);
+            const matchStatus = !quickSearchStatus || userStatus.includes(quickSearchStatus);
+
+            if (matchName && matchStatus) {
+                row.style.display = '';
+            } else {
+                row.style.display = 'none';
+            }
+        });
+    }
+
+    // Khi người dùng nhấn nút "Lọc", thực hiện tìm kiếm chi tiết
+    document.getElementById('filterSubmit').addEventListener('click', function () {
+        filterUsers();
+        const modal = document.querySelector('#filterModal');
+        const modalInstance = bootstrap.Modal.getInstance(modal); 
+        modalInstance.hide();
+    });
+
+    // Kích hoạt tìm kiếm khi người dùng nhập vào ô Họ tên (tìm kiếm nhanh)
+    document.getElementById('quickSearchName').addEventListener('input', quickSearchUsers);
+
+    // Kích hoạt tìm kiếm khi người dùng chọn Trạng thái (tìm kiếm nhanh)
+    document.getElementById('quickSearchStatus').addEventListener('change', quickSearchUsers);
+</script> 
 {% endblock %}

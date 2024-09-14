@@ -3,6 +3,7 @@ from django.contrib.auth.models import AbstractUser
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 from .managers import CustomUserManager
+from django.utils import timezone
 # Create your models here.
 
 class CustomUser(AbstractUser):
@@ -75,3 +76,13 @@ class CustomUser(AbstractUser):
 
     def __str__(self):
         return self.code
+
+
+class LoginLog(models.Model):
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    login_time = models.DateTimeField(default=timezone.now)
+    # logout_time = models.DateTimeField(null=True, blank=True)
+    ip_address = models.GenericIPAddressField(null=True, blank=True)
+
+    def __str__(self):
+        return f"{self.user.username} logged in at {self.login_time}"
