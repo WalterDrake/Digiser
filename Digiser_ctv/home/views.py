@@ -2,7 +2,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
 from authentication.forms import CustomUserInfoChangeForm, CustomUserBankChangeForm
 from django.db.models import Max, Sum, Q
-from authentication.models import CustomUser
+from authentication.models import CustomUser, LoginLog
 from .models import Salary
 import re
 from project.models.model1 import Package_detail, Document
@@ -339,3 +339,7 @@ def list_ctv(request):
         'users': users,
         'status_choices': CustomUser._STATUSES,
         })
+
+def list_loginlog(request):
+    loginlogs = LoginLog.objects.all()
+    return render(request, 'pages/login_log.html', {'loginlogs': loginlogs})
