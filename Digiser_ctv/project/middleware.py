@@ -23,15 +23,11 @@ class DataCrossValidator_Middleware:
                     return HttpResponse("Invalid form", content_type="text/plain; charset=utf-8")
                 
                 self.data = form_data
-                try:
-                    error_list = self.process_request_BCD(request)
-                    request.form_data = self.data
-                    # Add error_list to request for further use
+                error_list = self.process_request_BCD(request)
+                request.form_data = self.data
+                if error_list:
                     request.error_list = error_list
-                except AssertionError as e:
-                    return HttpResponse(f"Error: {str(e)}", content_type="text/plain; charset=utf-8")
     
-
         return self.get_response(request)
     
     def process_request_BCD(self, request):
@@ -76,42 +72,42 @@ class DataCrossValidator_Middleware:
         if chaNgaySinh is not None:
             diff_cha = now.year - chaNgaySinh.year - ((now.month, now.day) < (chaNgaySinh.month, chaNgaySinh.day))
             if diff_cha < 20:
-                error_list.append("chaNgaySinh phải lớn hơn hoặc bằng 20 năm trước tính từ thời điểm hiện tại")
+                error_list.append("Cha:Ngày sinh phải lớn hơn hoặc bằng 20 năm trước tính từ thời điểm hiện tại")
             if nksNgaySinh is not None and not chaNgaySinh < nksNgaySinh:
-                error_list.append("chaNgaySinh phải trước nksNgaySinh")
+                error_list.append("Cha:Ngày sinh phải trước NKS:Ngày sinh")
 
         # Check age differences for mother
         if meNgaySinh is not None:
             diff_me = now.year - meNgaySinh.year - ((now.month, now.day) < (meNgaySinh.month, meNgaySinh.day))
             if diff_me < 18:
-                error_list.append("meNgaySinh phải lớn hơn hoặc bằng 18 năm trước tính từ thời điểm hiện tại")
+                error_list.append("Mẹ:Ngày sinh phải lớn hơn hoặc bằng 18 năm trước tính từ thời điểm hiện tại")
             if nksNgaySinh is not None and not meNgaySinh < nksNgaySinh:
-                error_list.append("meNgaySinh phải trước nksNgaySinh")
+                error_list.append("Mẹ:Ngày sinh phải trước NKS:Ngày sinh")
 
         # Check nationality and ethnicity
         if nksQuocTich != "Việt Nam" and nksDanToc != 'Khác':
-            error_list.append("nksDanToc không được thuộc Việt nam nếu nksQuocTich không phải Việt Nam")
+            error_list.append("NKS:Dân tộc không được thuộc Việt nam nếu NKS:Quốc Tịch không phải Việt Nam")
         if chaQuocTich != "Việt Nam" and chaDanToc != 'Khác':
-            error_list.append("chaDanToc không được thuộc Việt nam nếu chaQuocTich không phải Việt Nam")
+            error_list.append("Cha:Dân tộc không được thuộc Việt nam nếu Cha:Quốc Tịch không phải Việt Nam")
         if meQuocTich != "Việt Nam" and meDanToc != 'Khác':
-            error_list.append("meDanToc không được thuộc Việt nam nếu meQuocTich không phải Việt Nam")
+            error_list.append("Mẹ:Dân tộc không được thuộc Việt nam nếu Mẹ:Quốc Tịch không phải Việt Nam")
 
         # Check ID numbers
         if chaSoGiayToTuyThan is not None and nycSoGiayToTuyThan is not None:
             if chaSoGiayToTuyThan == nycSoGiayToTuyThan:
-                error_list.append("chaSoGiayToTuyThan và nycSoGiayToTuyThan không được trùng nhau")
+                error_list.append("Cha:Số giấy tờ tùy thân và NYC:Số giấy tờ tùy thân không được trùng nhau")
         if chaSoGiayToTuyThan is not None and meSoGiayToTuyThan is not None:
             if chaSoGiayToTuyThan == meSoGiayToTuyThan:
-                error_list.append("chaSoGiayToTuyThan và meSoGiayToTuyThan không được trùng nhau")
+                error_list.append("Cha:Số giấy tờ tùy thân và Mẹ:Số giấy tờ tùy thân không được trùng nhau")
         if meSoGiayToTuyThan is not None and nycSoGiayToTuyThan is not None:
             if meSoGiayToTuyThan == nycSoGiayToTuyThan:
-                error_list.append("meSoGiayToTuyThan và nycSoGiayToTuyThan không được trùng nhau")
+                error_list.append("Mẹ:Số giấy tờ tùy thân và NYC:Số giấy tờ tùy thân không được trùng nhau")
 
         # Check residence information
         if chaNoiCuTru is None and chaLoaiCuTru != 0:
-            error_list.append("chaLoaiCuTru phải thuộc trường không có thông tin khi chaNoiCuTru bỏ trống")
+            error_list.append("Cha:Loại cư trú phải thuộc trường không có thông tin khi Cha:Nơi cư trú bỏ trống")
         if meNoiCuTru is None and meLoaiCuTru != 0:
-            error_list.append("meLoaiCuTru phải thuộc trường không có thông tin khi meNoiCuTru bỏ trống")
+            error_list.append("Mẹ:Loại cư trú phải thuộc trường không có thông tin khi Mẹ:Nơi cư trú bỏ trống")
 
         # Check identity determination
         me_variables = ['meSoGiayToTuyThan', 'meLoaiCuTru', 'meNoiCuTru', 'meNgaySinh', 'meQuocTich', 'meHoTen', 'meDanToc']
@@ -131,7 +127,7 @@ class DataCrossValidator_Middleware:
         # Check name duplication
         if nycHoTen is not None and nksHoTen is not None:
             if nycHoTen == nksHoTen:
-                error_list.append("nycHoTen và nksHoTen không được trùng nhau")
+                error_list.append("NYC:Họ tên và NYC:Khai sinh không được trùng nhau")
 
         # Check if ngayDangKy is not None
         if ngayDangKy is not None:
@@ -142,7 +138,7 @@ class DataCrossValidator_Middleware:
                 return True
             
             if not compare_dates(ngayDangKy, meNgaySinh, chaNgaySinh, nksNgaySinh, nycNgayCapGiayToTuyThan):
-                error_list.append("ngayDangKy phải lớn hơn tất cả các ngày trong form")
+                error_list.append("Ngày đăng kí phải lớn hơn tất cả các ngày trong form")
         return error_list
 
     def validate_identity_not_determined(self, variables_list, gender):
