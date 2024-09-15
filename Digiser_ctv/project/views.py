@@ -156,40 +156,59 @@ def get_valid_index(index_str, documents_count):
 
 def birth_certificate_document(request, document, user, role, package_detail_name=None):
     date_fields = ['ngayDangKy', 'nksNgaySinh', 'meNgaySinh', 'chaNgaySinh', 'nycNgayCapGiayToTuyThan']
-    
-    def prepare_form_data(form_instance, lock=False):
+    def prepare_form_data(form_instance=None, lock=False):
+        document_name = form_instance.document.document_name.split('.') if form_instance else document.document_name.split('.')
+        common_data = {
+            'pdf_path': form_instance.document.document_path if form_instance else document.document_path,
+            'lock': lock,
+            'total_fields': form_instance.document.package_name.total_fields if form_instance else document.package_name.total_fields,
+            'entered_tickets': form_instance.document.package_name.entered_tickets if form_instance else document.package_name.entered_tickets or 0,
+            'total_real_tickets': form_instance.document.package_name.total_real_tickets if form_instance else document.package_name.total_real_tickets,
+            'so': document_name[4] if len(document_name) > 0 else "",
+            'quyenSo': document_name[2] if len(document_name) > 0 else ""
+        }
         if form_instance:
-            document_name = form_instance.document.document_name.split('.')
-            form_instance.so = document_name[4] if len(document_name) > 0 else ""
-            form_instance.quyenSo = document_name[2] if len(document_name) > 0 else ""
-            
             form_data = handle_date_fields(model_to_dict(form_instance), date_fields)
-            form_data.update({
-                'pdf_path': form_instance.document.document_path,
-                'lock': lock,
-                'total_fields': form_instance.document.package_name.total_fields,
-                'entered_tickets': form_instance.document.package_name.entered_tickets or 0,
-                'total_real_tickets': form_instance.document.package_name.total_real_tickets
-            })
-            return form_data
-        return {}
+            form_data.update(common_data)
+        else:
+            form_data = common_data
+        return form_data
 
     if request.method == 'POST':
         form_data = getattr(request, 'form_data', None)
         error_list = getattr(request, 'error_list', None)
+        
+        if error_list:
+            form_data.update(get_form_data_choices())
+            form_data.update(prepare_form_data())
+            form_data = handle_date_fields(form_data, date_fields)
+            return render(request, 'pages/form.html', {'form': form_data, 'form_type': 'birth_cert', 'error_list': error_list})
+        
         form_data['executor'] = user
         form_instance, _ = Birth_Certificate_Document.objects.update_or_create(
             document=document, executor=user, defaults=form_data)
-        if role == 'inserter':
+
+        if role == 'inserter' and package_detail_name:
             package = Package.objects.filter(package_name=package_detail_name).first()
-            form_instance.document.package_name.entered_tickets = Birth_Certificate_Document.objects.filter(document__package_name=package, executor=user).count()
-        form_data.update(get_form_data())
+            if package:
+                entered_tickets_count = Birth_Certificate_Document.objects.filter(
+                    document__package_name=package, executor=user).count()
+                package.entered_tickets = entered_tickets_count
+                package.save()  
+                form_instance.document.status_insert = 'Đã nhập'
+                form_instance.document.save()
+                if entered_tickets_count == package.total_real_tickets:
+                    package_detail_name.insert_status = 'Hoàn thành nhập'
+                    package_detail_name.save()
+        form_data.update(get_form_data_choices())
         form_data.update(prepare_form_data(form_instance))
-        return render(request, 'pages/form.html', {'form': form_data, 'form_instance': 'birth_cert', 'error_list': error_list})
-    
+        return render(request, 'pages/form.html', {'form': form_data, 'form_type': 'birth_cert', 'error_list': None})
+
+    # Handling non-POST (GET) request
     lock = False
     form_instance = None
-    
+
+    # Fetching form instance based on role and status
     if role == 'inserter':
         form_instance = Birth_Certificate_Document.objects.filter(document=document).first()
         if form_instance and form_instance.document.status_insert == 'Đã nhập':
@@ -203,15 +222,14 @@ def birth_certificate_document(request, document, user, role, package_detail_nam
         if form_instance and (form_instance.document.status_check_1 == 'Hoàn thành' or 
                               form_instance.document.status_check_2 == 'Hoàn thành'):
             lock = True
-    
-    form_data = get_form_data()
+
+    form_data = get_form_data_choices()
     form_data.update(prepare_form_data(form_instance, lock))
+    return render(request, 'pages/form.html', {'form': form_data, 'form_type': 'birth_cert'})
     
-    template = 'pages/form.html'
-    return render(request, template, {'form': form_data, 'form_instance': 'birth_cert'})
 
 
-def get_form_data():
+def get_form_data_choices():
         return {
             'DanToc': Birth_Certificate_Document._meta.get_field('nksDanToc').choices,
             'GioiTinh': Birth_Certificate_Document._meta.get_field('nksGioiTinh').choices,
@@ -220,7 +238,6 @@ def get_form_data():
             'LoaiCuTru': Birth_Certificate_Document._meta.get_field('meLoaiCuTru').choices,
             'LoaiGiayToTuyThan': Birth_Certificate_Document._meta.get_field('meLoaiGiayToTuyThan').choices,
             'LoaiKhaiSinh': Birth_Certificate_Document._meta.get_field('nksLoaiKhaiSinh').choices,
-            'pdf': Birth_Certificate_Document._meta.get_field('document')
         }
 
 
