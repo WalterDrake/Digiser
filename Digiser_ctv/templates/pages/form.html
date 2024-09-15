@@ -232,6 +232,9 @@
         {% include 'pages/'|add:form_instance|add:'_horizontalform.html' %}
     </div>
 
+    <!-- Container for toasts -->
+    <div id="toast-container" class="toast-container position-fixed bottom-0 end-0 p-3"></div>
+
 </div>
 
 <div class="progress-container">
@@ -242,6 +245,39 @@
 </div>
 
 <script>
+
+    document.addEventListener('DOMContentLoaded', function() {
+        // Get the error list from Django context
+        const errors = {{ error_list|safe }};
+        console.log(errors)
+        const toastContainer = document.getElementById('toast-container');
+        if (errors.length > 0) {
+            // Create a single toast element
+            const toast = document.createElement('div');
+            toast.className = 'toast align-items-center text-bg-danger border-0';
+            toast.role = 'alert';
+            toast.ariaLive = 'assertive';
+            toast.ariaAtomic = 'true';
+
+            // Join all errors with a newline and create the toast content
+            const toastContent = `
+                <div class="toast-header text-bg-light">
+                    <strong class="me-auto">Nhập lỗi 🔴</strong>
+                    <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+                </div>
+                <div class="toast-body">
+                    ${errors.map((error, index) => `${index + 1}. ${error}`).join('<br>')}
+                </div>
+            `;
+            toast.innerHTML = toastContent;
+            toastContainer.appendChild(toast);
+
+            // Initialize and show the toast
+            const toastBootstrap = new bootstrap.Toast(toast);
+            toastBootstrap.show();            
+        }
+    })
+
     const tab1 = document.getElementById('tab1');
     const tab2 = document.getElementById('tab2');
     const tab3 = document.getElementById('tab3');
