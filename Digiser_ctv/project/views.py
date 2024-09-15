@@ -17,7 +17,7 @@ import zipfile
 import pandas as pd
 
 @login_required
-def input_redirect(request, **kwargs):
+def form_redirect(request, **kwargs):
     user_code = request.session.get('user_code')
     user = get_object_or_404(CustomUser, code=user_code)
 
@@ -83,7 +83,7 @@ def export_package(request):
 
         try:
             user = CustomUser.objects.get(code=user_id)  # Assuming user_code is unique
-            packages = Package_detail.objects.filter(Q(checker_1=user) | Q(checker_2=user))
+            packages = Package_detail.objects.filter(Q(checker_1=user) | Q(checker_2=user)) 
 
             if not packages.exists():
                 return JsonResponse({'status': 'error', 'message': 'No packages found for the provided user ID'})
@@ -175,8 +175,8 @@ def birth_certificate_document(request, document, user, role, package_detail_nam
         return {}
 
     if request.method == 'POST':
-
-        form_data = getattr(request, 'passMidleWare', None)
+        form_data = getattr(request, 'form_data', None)
+        error_list = getattr(request, 'error_list', None)
         form_data['executor'] = user
         form_instance, _ = Birth_Certificate_Document.objects.update_or_create(
             document=document, executor=user, defaults=form_data)
@@ -185,7 +185,7 @@ def birth_certificate_document(request, document, user, role, package_detail_nam
             form_instance.document.package_name.entered_tickets = Birth_Certificate_Document.objects.filter(document__package_name=package, executor=user).count()
         form_data.update(get_form_data())
         form_data.update(prepare_form_data(form_instance))
-        return render(request, 'pages/form.html', {'form': form_data, 'form_instance': 'birth_cert'})
+        return render(request, 'pages/form.html', {'form': form_data, 'form_instance': 'birth_cert', 'error_list': error_list})
     
     lock = False
     form_instance = None
