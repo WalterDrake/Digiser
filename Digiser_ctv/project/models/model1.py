@@ -56,7 +56,7 @@ class Package(models.Model):
     ('Đang xử lý', 'Đang xử lý')
 )
     payment = models.CharField(
-        _('payment'), max_length=30, choices=_PAYMENT, blank=True, null=True)
+        _('payment'), max_length=30, choices=_PAYMENT, blank=True, default='Đang xử lý')
 
     def __str__(self):
         return self.package_name
@@ -82,7 +82,7 @@ class Package_detail(models.Model):
         ('Trễ hạn nhập', 'Trễ hạn nhập')
     )
     insert_status = models.CharField(
-        _('insert status'), choices=_INSERT_STATUS, max_length=16, blank=True, null=True)
+        _('insert status'), choices=_INSERT_STATUS, max_length=16, blank=True, default='Chưa nhập')
     _CHECK_STATUS = (
         ('Hoàn thành check 1', "Hoàn thành check 1"),
         ('Hoàn thành check 2', "Hoàn thành check 2"),
@@ -91,9 +91,9 @@ class Package_detail(models.Model):
         ('Chưa check', 'Chưa check')
     )
     check_status_1 = models.CharField(
-        _('check status 1'),choices=_CHECK_STATUS, max_length=20, blank=True, null=True)
+        _('check status 1'),choices=_CHECK_STATUS, max_length=20, blank=True, default='Chưa check')
     check_status_2 = models.CharField(
-        _('check status 2'),choices=_CHECK_STATUS, max_length=20, blank=True, null=True)
+        _('check status 2'),choices=_CHECK_STATUS, max_length=20, blank=True, default='Chưa check')
     insert_url = models.CharField(
         _('package url insert'), max_length=100, blank=True, null=True)
     check_url = models.CharField(
@@ -128,11 +128,11 @@ class Document(models.Model):
         ('Nhập sai', 'Nhập sai')
     )
     status_insert = models.CharField(
-        _('status insert'),choices=_STATUS, max_length=30, blank=True, null=True)
+        _('status insert'),choices=_STATUS, max_length=30, blank=True, default='Chưa nhập')
     status_check_1 = models.CharField(
-        _('status check_1'),choices=_STATUS, max_length=30, blank=True, null=True)
+        _('status check_1'),choices=_STATUS, max_length=30, blank=True, default='Chưa check')
     status_check_2 = models.CharField(
-        _('status check_2'),choices=_STATUS, max_length=30, blank=True, null=True)
+        _('status check_2'),choices=_STATUS, max_length=30, blank=True, default='Chưa check')
     fields = models.IntegerField(_('fields'), blank=True, null=True)
     errors = models.IntegerField(
         _('errors'), blank=True, null=True)

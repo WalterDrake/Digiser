@@ -138,8 +138,8 @@ class Birth_Certificate_Document(models.Model):
         max_length=50,  null=True, verbose_name='Nơi Sinh Bằng Địa Vị Hành Chính (Người Khai Sinh)', blank=True)
     nksQueQuan = models.CharField(
         max_length=100,  null=True, verbose_name='Quê Quán (Người Khai Sinh)', blank=True)
-    nksDanToc = models.CharField(max_length=26,  null=True, choices=Options._DANTOC_LIST,
-                                 verbose_name='Dân Tộc (Người Khai Sinh)', blank=True)
+    nksDanToc = models.CharField(max_length=26, choices=Options._DANTOC_LIST,
+                                 verbose_name='Dân Tộc (Người Khai Sinh)', blank=True, default='Khác')
     nksQuocTich = models.CharField(max_length=65, choices=Options._COUNTRIES_LIST,
                                    default='Không có thông tin', verbose_name='Quốc Tịch (Người Khai Sinh)', blank=True)
     nksQuocTichKhac = models.CharField(
