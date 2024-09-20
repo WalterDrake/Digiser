@@ -1,0 +1,618 @@
+<div class="horizontal-tab-selection-item horizontal-two-columns">
+    <div id="tab3" class="horizontal-item-tab active"><i class='bx bx-edit-alt'></i>Nhập Liệu</div>
+    <div id="tab4" class="horizontal-item-tab"><i class='bx bx-info-circle'></i>Thông tin tài liệu</div>
+    <button class="horizontal-item-tab" id="Tlayoutbutton" onclick="toggleLayout()">Toggle Layout</button>
+</div>
+
+<div id="tab3-content" class="horizontal-tab-content active">
+    <form method="POST">
+        {% csrf_token %}
+        <div class="horizontal-input-form-border">
+            <div class="horizontal-form-container">
+                <!-- First Section -->
+                <div class="horizontal-form horizontal-three-columns">
+                    <div class="horizontal-form-group">
+                        <input type="number" id="horizontal-so" name="so" value="" required>
+                        <label for="horizontal-so">Số</label>
+                    </div>
+                    <div class="horizontal-form-group">
+                        <input type="number" id="horizontal-quyenSo" name="quyenSo" value="" required>
+                        <label for="horizontal-quyenSo">Quyển Sổ</label>
+                    </div>
+                    <div class="horizontal-form-group">
+                        <input type="number" id="horizontal-trangSo" name="trangSo" value="" required>
+                        <label for="horizontal-trangSo">Trang Số</label>
+                    </div>
+                </div>
+                <div class="horizontal-form horizontal-two-columns">
+                    <div class="horizontal-form-group-date">
+                        <input type="date" id="horizontal-ngayDangKy" name="ngayDangKy" value="" required>
+                        <label for="horizontal-ngayDangKy">Ngày đăng ký</label>
+                    </div>
+                    <div class="horizontal-form-group">
+                        <select id="horizontal-loaiDangKy" name="loaiDangKy">
+                            <option value="1">Đăng lần đầu</option>
+                            <option value="2">Đăng lần lại</option>
+                            <option value="3">Ghi vào sổ việc kết hôn tại cơ quan có thẩm quyền ở nước ngoài</option>
+                            <option value="0">Không có thông tin</option>
+                        </select>
+                        <label for="horizontal-loaiDangKy">Loại đăng ký</label>
+                    </div>
+                </div>
+                <div class="horizontal-form horizontal-two-columns">
+
+                </div>
+                <div class="horizontal-form horizontal-full-width">
+                    <div class="horizontal-form-group">
+                        <input type="text" id="horizontal-noiDangKy" name="noiDangKy" value="" required>
+                        <label for="horizontal-noiDangKy">Nơi Đăng Ký</label>
+                    </div>
+                </div>
+                <div class="horizontal-form horizontal-two-columns">
+                    <div class="horizontal-form-group">
+                        <input type="text" id="horizontal-nguoiKy" name="nguoiKy" value="" required>
+                        <label for="horizontal-nguoiKy">Người Ký</label>
+                    </div>
+                    <div class="horizontal-form-group">
+                        <input type="text" id="horizontal-chucVuNguoiKy" name="chucVuNguoiKy" value="" required>
+                        <label for="horizontal-chucVuNguoiKy">Chức Vụ Người Ký</label>
+                    </div>
+                </div>
+                
+                <div class="horizontal-form horizontal-full-width">
+                    <div class="horizontal-form-group">
+                        <input type="text" id="horizontal-nguoiThucHien" name="nguoiThucHien" value="" required>
+                        <label for="horizontal-nguoiThucHien">Người Thực Hiện</label>
+                    </div>
+                </div>
+                <div class="horizontal-form horizontal-full-width">
+                    <div class="horizontal-form-group textarea-active">
+                        <textarea id="horizontal-ghiChu" name="ghiChu" required></textarea>
+                        <label for="horizontal-ghiChu">Ghi Chú</label>
+                    </div>
+                </div>
+                
+                <!-- chong -->
+                <div class="horizontal-form horizontal-three-columns">
+                    <div class="horizontal-form-group">
+                        <input type="text" id="horizontal-chongHoTen" name="chongHoTen" value="" required>
+                        <label for="horizontal-chongHoTen">Họ Tên (Chồng)</label>
+                    </div>
+                    <div class="horizontal-form-group-date">
+                        <input type="date" id="horizontal-chongNgaySinh" name="chongNgaySinh" value="" required>
+                        <label for="horizontal-chongNgaySinh">Ngày Sinh (Chồng)</label>
+                    </div>
+                    <div class="horizontal-form-group">
+                        <select id="horizontal-chongDanToc" name="chongDanToc">
+                            <option value="1">Kinh</option>
+                            <option value="2">Khác</option>
+                        </select>
+                        <label for="horizontal-chongDanToc">Dân Tộc (Chồng)</label>
+                    </div>
+                </div>
+
+                <div class="horizontal-form horizontal-two-columns">
+                    <div class="horizontal-form-group">
+                        <select id="horizontal-chongQuocTich" name="chongQuocTich">
+                            <option value="1">Việt Nam</option>
+                            <option value="2">Khác</option>
+                        </select>
+                        <label for="horizontal-chongQuocTich">Quốc Tịch (Chồng)</label>
+                    </div>
+                    <div class="horizontal-form-group">
+                        <select type="text" id="horizontal-cmLoaiCuTru">
+                            <option value="1">Thường trú</option>
+                            <option value="2">Tạm Trú</option>
+                            <option value="0">Không có thông tin</option></select>
+                        <label for="horizontal-cmLoaiCuTru">Loại Cư Trú (Chồng)</label>
+                    </div>                                
+                </div>
+
+                <div class="horizontal-form horizontal-full-width">
+                    <div class="horizontal-form-group">
+                        <input type="text" id="horizontal-chongNoiCuTru" name="chongNoiCuTru" value="" required>
+                        <label for="horizontal-chongNoiCuTru">Nơi Cư Trú (Chồng)</label>
+                    </div>
+
+                </div>
+
+                <div class="horizontal-form horizontal-two-columns">
+                    <div class="horizontal-form-group">
+                        <select id="horizontal-chongLoaiGiayToTuyThan" name="chongLoaiGiayToTuyThan">
+                            <option value="1">Loại 1</option>
+                            <option value="2">Loại 2</option>
+                        </select>
+                        <label for="horizontal-chongLoaiGiayToTuyThan">Loại Giấy Tờ Tùy Thân (Chồng)</label>
+                    </div>
+                    <div class="horizontal-form-group">
+                        <input type="number" id="horizontal-chongSoGiayToTuyThan" name="chongSoGiayToTuyThan" value="" required>
+                        <label for="horizontal-chongSoGiayToTuyThan">Số Giấy Tờ Tùy Thân (Chồng)</label>
+                    </div>
+                </div>
+
+                <div class="horizontal-form horizontal-two-columns">
+                    <div class="horizontal-form-group-date">
+                        <input type="date" id="horizontal-chongNgayCapGiayToTuyThan" name="chongNgayCapGiayToTuyThan" value="" required>
+                        <label for="horizontal-chongNgayCapGiayToTuyThan">Ngày Cấp Giấy Tờ Tùy Thân (Chồng)</label>
+                    </div>
+                    <div class="horizontal-form-group">
+                        <input type="text" id="horizontal-chongNoiCapGiayToTuyThan" name="chongNoiCapGiayToTuyThan" value="" required>
+                        <label for="horizontal-chongNoiCapGiayToTuyThan">Nơi Cấp Giấy Tờ Tùy Thân (Chồng)</label>
+                    </div>
+                </div>
+
+                <!-- vo -->
+                <div class="horizontal-form horizontal-three-columns">
+                    <div class="horizontal-form-group">
+                        <input type="text" id="horizontal-voHoTen" name="voHoTen" value="" required>
+                        <label for="horizontal-voHoTen">Họ Tên (Vợ)</label>
+                    </div>
+                    <div class="horizontal-form-group-date">
+                        <input type="date" id="horizontal-voNgaySinh" name="voNgaySinh" value="" required>
+                        <label for="horizontal-voNgaySinh">Ngày Sinh (Vợ)</label>
+                    </div>
+                    <div class="horizontal-form-group">
+                        <select id="horizontal-voDanToc" name="voDanToc">
+                            <option value="1">Kinh</option>
+                            <option value="2">Khác</option>
+                        </select>
+                        <label for="horizontal-voDanToc">Dân Tộc (Vợ)</label>
+                    </div>
+                </div>
+
+                <div class="horizontal-form horizontal-two-columns">
+                    <div class="horizontal-form-group">
+                        <select id="horizontal-voQuocTich" name="voQuocTich">
+                            <option value="1">Việt Nam</option>
+                            <option value="2">Khác</option>
+                        </select>
+                        <label for="horizontal-voQuocTich">Quốc Tịch (Vợ)</label>
+                    </div>
+                    <div class="horizontal-form-group">
+                        <select type="text" id="horizontal-cmLoaiCuTru">
+                            <option value="1">Thường trú</option>
+                            <option value="2">Tạm Trú</option>
+                            <option value="0">Không có thông tin</option></select>
+                        <label for="horizontal-cmLoaiCuTru">Loại Cư Trú (Vợ)</label>
+                    </div>                                
+                </div>
+
+                <div class="horizontal-form horizontal-full-width">
+                    <div class="horizontal-form-group">
+                        <input type="text" id="horizontal-voNoiCuTru" name="voNoiCuTru" value="" required>
+                        <label for="horizontal-voNoiCuTru">Nơi Cư Trú (Vợ)</label>
+                    </div>
+
+                </div>
+
+                <div class="horizontal-form horizontal-two-columns">
+                    <div class="horizontal-form-group">
+                        <select id="horizontal-voLoaiGiayToTuyThan" name="voLoaiGiayToTuyThan">
+                            <option value="1">Loại 1</option>
+                            <option value="2">Loại 2</option>
+                        </select>
+                        <label for="horizontal-voLoaiGiayToTuyThan">Loại Giấy Tờ Tùy Thân (Vợ)</label>
+                    </div>
+                    <div class="horizontal-form-group">
+                        <input type="number" id="horizontal-voSoGiayToTuyThan" name="voSoGiayToTuyThan" value="" required>
+                        <label for="horizontal-voSoGiayToTuyThan">Số Giấy Tờ Tùy Thân (Vợ)</label>
+                    </div>
+                </div>
+
+                <div class="horizontal-form horizontal-two-columns">
+                    <div class="horizontal-form-group-date">
+                        <input type="date" id="horizontal-voNgayCapGiayToTuyThan" name="voNgayCapGiayToTuyThan" value="" required>
+                        <label for="horizontal-voNgayCapGiayToTuyThan">Ngày Cấp Giấy Tờ Tùy Thân (Vợ)</label>
+                    </div>
+                    <div class="horizontal-form-group">
+                        <input type="text" id="horizontal-voNoiCapGiayToTuyThan" name="voNoiCapGiayToTuyThan" value="" required>
+                        <label for="horizontal-voNoiCapGiayToTuyThan">Nơi Cấp Giấy Tờ Tùy Thân (Vợ)</label>
+                    </div>
+                </div>   
+
+
+
+                
+                {% comment %} <div class="horizontal-form horizontal-three-columns">
+                    <div class="horizontal-form-group">
+                        <input type="text" id="horizontal-cmHoTen" name="cmHoTen" value="" required>
+                        <label for="horizontal-cmHoTen">Họ Tên (CM)</label>
+                    </div>
+                    <div class="horizontal-form-group">
+                        <input type="number" id="horizontal-cmNgaySinh" name="cmNgaySinh" value="" required>
+                        <label for="horizontal-cmNgaySinh">Ngày Sinh (CM)</label>
+                    </div>
+                    <div class="horizontal-form-group">
+                        <select type="text" id="horizontal-cmDanToc">
+                            <option value="1">Kinh</option>
+                            <option value="2">Khác</option>
+                        </select>
+                        <label for="horizontal-cmDanToc">Dân Tộc (CM)</label>
+                    </div>
+                </div>
+                
+                <div class="horizontal-form horizontal-two-columns">
+                    <div class="horizontal-form-group">
+                        <select id="horizontal-cmQuocTich" name="cmQuocTich">
+                            <option value="1">Việt Nam</option>
+                            <option value="2">Khác</option>
+                        </select>
+                        <label for="horizontal-cmQuocTich">Quốc Tịch (CM)</label>
+                    </div>
+                    <div class="horizontal-form-group">
+                        <input type="text" id="horizontal-cmQueQuan" name="cmQueQuan" value="" required>
+                        <label for="horizontal-cmQueQuan">Quê Quán (CM)</label>
+                    </div>
+                </div>
+                
+                <div class="horizontal-form horizontal-three-columns">
+                    <div class="horizontal-form-group">
+                        <select type="text" id="horizontal-cmLoaiCuTru">
+                            <option value="1">Thường trú</option>
+                            <option value="2">Tạm Trú</option>
+                            <option value="0">Không có thông tin</option></select>
+                        <label for="horizontal-cmLoaiCuTru">Loại Cư Trú (CM)</label>
+                    </div>
+                    <div class="horizontal-form-group">
+                        <input type="text" id="horizontal-cmNoiCuTru" name="cmNoiCuTru" value="" required>
+                        <label for="horizontal-cmNoiCuTru">Nơi Cư Trú (CM)</label>
+                    </div>
+                    <div class="horizontal-form-group">
+                        <select id="horizontal-cmLoaiGiayToTuyThan" name="cmLoaiGiayToTuyThan">
+                            <option value="1">Loại 1</option>
+                            <option value="2">Loại 2</option>
+                        </select>
+                        <label for="horizontal-cmLoaiGiayToTuyThan">Loại Giấy Tờ Tùy Thân (CM)</label>
+                    </div>
+                </div>
+                
+                <div class="horizontal-form horizontal-two-columns">
+                    <div class="horizontal-form-group">
+                        <input type="text" id="horizontal-cmGiayToKhac" name="cmGiayToKhac" value="" required>
+                        <label for="horizontal-cmGiayToKhac">Giấy Tờ Khác (CM)</label>
+                    </div>
+                    <div class="horizontal-form-group">
+                        <input type="number" id="horizontal-cmSoGiayToTuyThan" name="cmSoGiayToTuyThan" value="" required>
+                        <label for="horizontal-cmSoGiayToTuyThan">Số Giấy Tờ Tùy Thân (CM)</label>
+                    </div>
+                </div>
+                
+                <div class="horizontal-form horizontal-two-columns">
+                    <div class="horizontal-form-group">
+                        <input type="number" id="horizontal-cmNgayCapGiayToTuyThan" name="cmNgayCapGiayToTuyThan" value="" required>
+                        <label for="horizontal-cmNgayCapGiayToTuyThan">Ngày Cấp Giấy Tờ Tùy Thân (CM)</label>
+                    </div>
+                    <div class="horizontal-form-group">
+                        <input type="text" id="horizontal-cmNoiCapGiayToTuyThan" name="cmNoiCapGiayToTuyThan" value="" required>
+                        <label for="horizontal-cmNoiCapGiayToTuyThan">Nơi Cấp Giấy Tờ Tùy Thân (CM)</label>
+                    </div>
+                </div>
+                <div class="horizontal-form horizontal-three-columns">
+                    <div class="horizontal-form-group">
+                        <input type="text" id="horizontal-ncHoTen" name="ncHoTen" value="" required>
+                        <label for="horizontal-ncHoTen">Họ Tên (NC)</label>
+                    </div>
+                    <div class="horizontal-form-group">
+                        <input type="number" id="horizontal-ncNgaySinh" name="ncNgaySinh" value="" required>
+                        <label for="horizontal-ncNgaySinh">Ngày Sinh (NC)</label>
+                    </div>
+                    <div class="horizontal-form-group">
+                        <select type="text" id="horizontal-ncDanToc">
+                            <option value="1">Kinh</option>
+                            <option value="2">Khác</option>
+                        </select>
+                        <label for="horizontal-ncDanToc">Dân Tộc (NC)</label>
+                    </div>
+                </div>
+                
+                <div class="horizontal-form horizontal-two-columns">
+                    <div class="horizontal-form-group">
+                        <select id="horizontal-ncQuocTich" name="ncQuocTich">
+                            <option value="1">Việt Nam</option>
+                            <option value="2">Khác</option>
+                        </select>
+                        <label for="horizontal-ncQuocTich">Quốc Tịch (NC)</label>
+                    </div>
+                    <div class="horizontal-form-group">
+                        <input type="text" id="horizontal-ncQueQuan" name="ncQueQuan" value="" required>
+                        <label for="horizontal-ncQueQuan">Quê Quán (NC)</label>
+                    </div>
+                </div>
+                
+                <div class="horizontal-form horizontal-three-columns">
+                    <div class="horizontal-form-group">
+                        <select type="text" id="horizontal-ncLoaiCuTru">
+                            <option value="1">Thường trú</option>
+                            <option value="2">Tạm Trú</option>
+                            <option value="0">Không có thông tin</option>
+                        </select>
+                        <label for="horizontal-ncLoaiCuTru">Loại Cư Trú (NC)</label>
+                    </div>
+                    <div class="horizontal-form-group">
+                        <input type="text" id="horizontal-ncNoiCuTru" name="ncNoiCuTru" value="" required>
+                        <label for="horizontal-ncNoiCuTru">Nơi Cư Trú (NC)</label>
+                    </div>
+                    <div class="horizontal-form-group">
+                        <select id="horizontal-ncLoaiGiayToTuyThan" name="ncLoaiGiayToTuyThan">
+                            <option value="1">Loại 1</option>
+                            <option value="2">Loại 2</option>
+                        </select>
+                        <label for="horizontal-ncLoaiGiayToTuyThan">Loại Giấy Tờ Tùy Thân (NC)</label>
+                    </div>
+                </div>
+                
+                <div class="horizontal-form horizontal-two-columns">
+                    <div class="horizontal-form-group">
+                        <input type="text" id="horizontal-ncGiayToKhac" name="ncGiayToKhac" value="" required>
+                        <label for="horizontal-ncGiayToKhac">Giấy Tờ Khác (NC)</label>
+                    </div>
+                    <div class="horizontal-form-group">
+                        <input type="number" id="horizontal-ncSoGiayToTuyThan" name="ncSoGiayToTuyThan" value="" required>
+                        <label for="horizontal-ncSoGiayToTuyThan">Số Giấy Tờ Tùy Thân (NC)</label>
+                    </div>
+                </div>
+                
+                <div class="horizontal-form horizontal-two-columns">
+                    <div class="horizontal-form-group">
+                        <input type="number" id="horizontal-ncNgayCapGiayToTuyThan" name="ncNgayCapGiayToTuyThan" value="" required>
+                        <label for="horizontal-ncNgayCapGiayToTuyThan">Ngày Cấp Giấy Tờ Tùy Thân (NC)</label>
+                    </div>
+                    <div class="horizontal-form-group">
+                        <input type="text" id="horizontal-ncNoiCapGiayToTuyThan" name="ncNoiCapGiayToTuyThan" value="" required>
+                        <label for="horizontal-ncNoiCapGiayToTuyThan">Nơi Cấp Giấy Tờ Tùy Thân (NC)</label>
+                    </div>
+                </div>                     {% endcomment %}
+            </div>
+        </div>
+        <div class="horizontal-buttons">
+            <button type="button" class="review">Review</button>
+            <button type="submit" class="save">Lưu</button>
+        </div>
+    </form>
+</div>
+
+<div id="tab4-content" class="horizontal-tab-content">
+    <div class="horizontal-doc-info-tab">
+        <div class="info-container">
+            <div class="form-group">
+                <label class="info-label">Tên file</label>
+                <input class="info-input" type="text" value="KT.2017.01.2018-03-26:19.pdf" disabled>
+            </div>
+            <div class="form-group">
+                <label class="info-label">Số trang</label>
+                <input class="info-input" type="text" value="1" disabled>
+            </div>
+            <div class="form-group">
+                <label class="info-label">Dung lượng</label>
+                <input class="info-input" type="text" value="714.34 Kb" disabled>
+            </div>
+            <div class="form-group">
+                <label class="info-label">Kích cỡ</label>
+                <input class="info-input" type="text" value="." disabled>
+            </div>
+            <div class="form-group">
+                <label class="info-label">Xã</label>
+                <input class="info-input" type="text" value="xaphuocnam" disabled>
+            </div>
+            <div class="form-group">
+                <label class="info-label">Loại số</label>
+                <input class="info-input" type="text" value="kt" disabled>
+            </div>
+            <div class="form-group">
+                <label class="info-label">Năm hình thành</label>
+                <input class="info-input" type="text" value="2017" disabled>
+            </div>
+            <div class="form-group">
+                <label class="info-label">Quyển số</label>
+                <input class="info-input" type="text" value="01" disabled>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<style>
+    /* CSS for Horizontal Form */
+    .horizontal-form-container {
+        overflow: auto;
+        flex: 1;
+        margin-bottom: 20px;
+        padding-top: inherit;
+        max-height: 65vh;
+    }
+
+    .horizontal-form {
+        display: grid;
+        width: 100%;
+        grid-gap: 10px;
+        padding-bottom: 15px;
+    }
+
+    .horizontal-form-group {
+        display: flex;
+        flex-direction: column;
+        position: relative;
+    }
+
+    .horizontal-form-group textarea {
+        height: 80px;
+    }
+
+    .horizontal-form-group label {
+        font-weight: bold;
+        margin-bottom: 5px;
+        font-size: 12px;
+        position: absolute;
+        top: 50%;
+        left: 10px;
+        transform: translateY(-50%);
+        transition: .5s;
+        color: #a5a5a5;
+    }
+
+    .horizontal-form-group input,
+    .horizontal-form-group select,
+    .horizontal-form-group textarea {
+        width: 100%;
+        padding: 6px;
+        border-radius: 5px;
+        border: 1px solid #ccc;
+        box-sizing: border-box;
+        font-size: 14px;
+        outline: none;
+        background: transparent;
+        transition: .5s;
+        resize: none;
+    }
+
+    .horizontal-form-group-date {
+        display: flex;
+        flex-direction: column;
+        position: relative;
+    }
+
+    .horizontal-form-group-date input[type="date"] {
+        width: 100%;
+        padding: 6px;
+        border-radius: 5px;
+        border: 1px solid #ccc;
+        box-sizing: border-box;
+        font-size: 14px;
+        outline: none;
+        background: transparent;
+    }
+
+    .horizontal-form-group-date label {
+        font-weight: bold;
+        margin-bottom: 5px;
+        font-size: 10px; 
+        color: black; 
+        padding: 0 5px;
+        position: absolute;
+        top: -8px;
+        left: 10px;
+        background: #fff;
+    }
+
+    .horizontal-form-group.textarea-active label {
+        top: 0;
+        font-size: 10px;
+        background: #fff;
+        padding: 0 5px;
+    }
+
+    .horizontal-form-group input:focus~label,
+    .horizontal-form-group input:valid~label,
+    .horizontal-form-group select:focus~label,
+    .horizontal-form-group select:valid~label,
+    .horizontal-form-group textarea:focus~label,
+    .horizontal-form-group textarea:valid~label {
+        top: 0;
+        font-size: 10px;
+        background: #fff;
+        padding: 0 5px;
+        color: black;
+    }
+
+    .horizontal-specialLabel {
+        font-weight: bold;
+        margin-bottom: 5px;
+        font-size: 12px;
+        position: absolute;
+        top: 0%;
+        left: 10px;
+        transform: translateY(-50%);
+        color: #555;
+        transition: .5s;
+    }
+
+    .horizontal-two-columns {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .horizontal-three-columns {
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+    .horizontal-four-columns {
+        grid-template-columns: repeat(4, 1fr);
+    }
+
+    .horizontal-full-width {
+        grid-column: span 4;
+    }
+
+    .horizontal-buttons {
+        display: flex;
+        justify-content: flex-end;
+        gap: 10px;
+        margin-top: 20px;
+    }
+
+    .horizontal-buttons button {
+        width: 28%;
+        padding: 10px 0;
+        border: none;
+        border-radius: 5px;
+        color: white;
+        font-weight: bold;
+        cursor: pointer;
+    }
+
+    .horizontal-buttons .review {
+        background-color: #4CAF50;
+    }
+
+    .horizontal-buttons .save {
+        background-color: #007BFF;
+    }
+
+    .horizontal-buttons button:hover {
+        opacity: 0.9;
+    }
+
+    .horizontal-input-form-border {
+        border-radius: 5px;
+        border: 1px solid #ccc;
+        box-sizing: border-box;
+        padding: 10px;
+    }
+
+    .horizontal-tab-selection-item {
+        width: 100%;
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+    .horizontal-item-tab {
+        border-radius: 5px;
+        color: black;
+        border: 1px solid #ccc;
+        padding: 5px;
+        margin: 0;
+        text-align: center;
+        cursor: pointer;
+        background-color: #f0f0f0;
+    }
+
+    .horizontal-item-tab.active {
+        background-color: #c5c5c5;
+        color: #8383ff;
+        box-shadow: 0px 3px 0px #a5a5a5 inset;
+    }
+
+    .horizontal-tab-content {
+        display: none;
+    }
+
+    .horizontal-tab-content.active {
+        display: block;
+    }
+
+    .horizontal-doc-info-tab {
+        display: grid;
+        min-width: 40%;
+        grid-gap: 10px;
+        padding-bottom: 15px;
+    }
+</style>

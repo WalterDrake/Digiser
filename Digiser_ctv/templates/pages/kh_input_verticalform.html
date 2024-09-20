@@ -1,0 +1,427 @@
+<div class="vertical-tab-selection-item vertical-two-columns">
+    <div id="tab1" class="vertical-item-tab active"><i class='bx bx-edit-alt'></i>Nhập Liệu</div>
+    <div id="tab2" class="vertical-item-tab"><i class='bx bx-info-circle'></i>Thông tin tài liệu</div>
+    <button class="vertical-item-tab" id="Tlayoutbutton" onclick="toggleLayout()">Toggle Layout</button>
+</div>
+
+<div id="tab1-content" class="vertical-tab-content active">
+    <form method="POST">
+        {% csrf_token %}
+        <div class="vertical-input-form-border">
+            <div class="vertical-form-container">
+                <!-- First Section -->
+                <div class="vertical-form vertical-three-columns">
+                    <div class="vertical-form-group">
+                        <input type="number" id="vertical-so" name="so" value="" required>
+                        <label for="vertical-so">Số</label>
+                    </div>
+                    <div class="vertical-form-group">
+                        <input type="number" id="vertical-quyenSo" name="quyenSo" value="" required>
+                        <label for="vertical-quyenSo">Quyển Sổ</label>
+                    </div>
+                    <div class="vertical-form-group">
+                        <input type="number" id="vertical-trangSo" name="trangSo" value="" required>
+                        <label for="vertical-trangSo">Trang Số</label>
+                    </div>
+                </div>
+                <div class="vertical-form vertical-two-columns">
+                    <div class="vertical-form-group-date">
+                        <input type="date" id="vertical-ngayDangKy" name="ngayDangKy"required>
+                        <label for="vertical-ngayDangKy">Ngày đăng ký</label>
+                    </div>
+                    <div class="vertical-form-group">
+                        <select id="vertical-loaiDangKy" name="loaiDangKy">
+                            <option value="1">Đăng lần đầu</option>
+                            <option value="2">Đăng lần lại</option>
+                            <option value="3">Ghi vào sổ việc kết hôn tại cơ quan có thẩm quyền ở nước ngoài</option>
+                            <option value="0">Không có thông tin</option>
+                        </select>
+                        <label for="vertical-loaiDangKy">Loại đăng ký</label>
+                    </div>
+                </div>
+                <div class="vertical-form vertical-two-columns">
+                    <div class="vertical-form-group">
+                        <input type="text" id="vertical-nguoiKy" name="nguoiKy" value="" required>
+                        <label for="vertical-nguoiKy">Người Ký</label>
+                    </div>
+                    <div class="vertical-form-group">
+                        <input type="text" id="vertical-chucVuNguoiKy" name="chucVuNguoiKy" value="" required>
+                        <label for="vertical-chucVuNguoiKy">Chức Vụ Người Ký</label>
+                    </div>
+                </div>
+                
+                <div class="vertical-form vertical-full-width">
+                    <div class="vertical-form-group">
+                        <input type="text" id="vertical-nguoiThucHien" name="nguoiThucHien" value="" required>
+                        <label for="vertical-nguoiThucHien">Người Thực Hiện</label>
+                    </div>
+                </div>
+                <div class="horizontal-form horizontal-full-width">
+                    <div class="horizontal-form-group textarea-active">
+                        <textarea id="horizontal-ghiChu" name="ghiChu" required></textarea>
+                        <label for="horizontal-ghiChu">Ghi Chú</label>
+                    </div>
+                </div>
+                
+                <div class="horizontal-form horizontal-full-width">
+                    <div class="vertical-form-group">
+                        <select id="vertical-tinhTrangKetHon" name="tinhTrangKetHon">
+                            <option value="0">Không có thông tin</option>
+                            <option value="1">Đã ly hôn</option>
+                            <option value="2">Đã hủy việc kết hôn</option>
+                            <option value="3">Đã được công nhận việc kết hôn</option>
+                        </select>
+                        <label for="vertical-tinhTrangKetHon">Tình trạng kết hôn</label>
+                    </div>
+                </div>
+
+                <!-- chong -->
+                <div class="vertical-form vertical-three-columns">
+                    <div class="vertical-form-group">
+                        <input type="text" id="vertical-chongHoTen" name="chongHoTen" value="" required>
+                        <label for="vertical-chongHoTen">Họ Tên (Chồng)</label>
+                    </div>
+                    <div class="vertical-form-group-date">
+                        <input type="date" id="vertical-chongNgaySinh" name="chongNgaySinh" value="" required>
+                        <label for="vertical-chongNgaySinh">Ngày Sinh (Chồng)</label>
+                    </div>
+                    <div class="vertical-form-group">
+                        <select id="vertical-chongDanToc" name="chongDanToc">
+                            <option value="1">Kinh</option>
+                            <option value="2">Khác</option>
+                        </select>
+                        <label for="vertical-chongDanToc">Dân Tộc (Chồng)</label>
+                    </div>
+                </div>
+                
+                <div class="vertical-form vertical-two-columns">
+                    <div class="vertical-form-group">
+                        <select id="vertical-chongQuocTich" name="chongQuocTich">
+                            <option value="1">Việt Nam</option>
+                            <option value="2">Khác</option>
+                        </select>
+                        <label for="vertical-chongQuocTich">Quốc Tịch (Chồng)</label>
+                    </div>
+                    <div class="vertical-form-group">
+                        <select type="text" id="vertical-cmLoaiCuTru">
+                            <option value="1">Thường trú</option>
+                            <option value="2">Tạm Trú</option>
+                            <option value="0">Không có thông tin</option></select>
+                        <label for="vertical-cmLoaiCuTru">Loại Cư Trú (Chồng)</label>
+                    </div>                                
+                </div>
+                
+                <div class="vertical-form vertical-full-width">
+                    <div class="vertical-form-group">
+                        <input type="text" id="vertical-chongNoiCuTru" name="chongNoiCuTru" value="" required>
+                        <label for="vertical-chongNoiCuTru">Nơi Cư Trú (Chồng)</label>
+                    </div>
+
+                </div>
+                
+                <div class="vertical-form vertical-two-columns">
+                    <div class="vertical-form-group">
+                        <select id="vertical-chongLoaiGiayToTuyThan" name="chongLoaiGiayToTuyThan">
+                            <option value="1">Loại 1</option>
+                            <option value="2">Loại 2</option>
+                        </select>
+                        <label for="vertical-chongLoaiGiayToTuyThan">Loại Giấy Tờ Tùy Thân (Chồng)</label>
+                    </div>
+                    <div class="vertical-form-group">
+                        <input type="number" id="vertical-chongSoGiayToTuyThan" name="chongSoGiayToTuyThan" value="" required>
+                        <label for="vertical-chongSoGiayToTuyThan">Số Giấy Tờ Tùy Thân (Chồng)</label>
+                    </div>
+                </div>
+                
+                <div class="vertical-form vertical-two-columns">
+                    <div class="vertical-form-group-date">
+                        <input type="date" id="vertical-chongNgayCapGiayToTuyThan" name="chongNgayCapGiayToTuyThan" value="" required>
+                        <label for="vertical-chongNgayCapGiayToTuyThan">Ngày Cấp Giấy Tờ Tùy Thân (Chồng)</label>
+                    </div>
+                    <div class="vertical-form-group">
+                        <input type="text" id="vertical-chongNoiCapGiayToTuyThan" name="chongNoiCapGiayToTuyThan" value="" required>
+                        <label for="vertical-chongNoiCapGiayToTuyThan">Nơi Cấp Giấy Tờ Tùy Thân (Chồng)</label>
+                    </div>
+                </div>
+                
+                <!-- vo -->
+                <div class="vertical-form vertical-three-columns">
+                    <div class="vertical-form-group">
+                        <input type="text" id="vertical-voHoTen" name="voHoTen" value="" required>
+                        <label for="vertical-voHoTen">Họ Tên (Vợ)</label>
+                    </div>
+                    <div class="vertical-form-group-date">
+                        <input type="date" id="vertical-voNgaySinh" name="voNgaySinh" value="" required>
+                        <label for="vertical-voNgaySinh">Ngày Sinh (Vợ)</label>
+                    </div>
+                    <div class="vertical-form-group">
+                        <select id="vertical-voDanToc" name="voDanToc">
+                            <option value="1">Kinh</option>
+                            <option value="2">Khác</option>
+                        </select>
+                        <label for="vertical-voDanToc">Dân Tộc (Vợ)</label>
+                    </div>
+                </div>
+                
+                <div class="vertical-form vertical-two-columns">
+                    <div class="vertical-form-group">
+                        <select id="vertical-voQuocTich" name="voQuocTich">
+                            <option value="1">Việt Nam</option>
+                            <option value="2">Khác</option>
+                        </select>
+                        <label for="vertical-voQuocTich">Quốc Tịch (Vợ)</label>
+                    </div>
+                    <div class="vertical-form-group">
+                        <select type="text" id="vertical-cmLoaiCuTru">
+                            <option value="1">Thường trú</option>
+                            <option value="2">Tạm Trú</option>
+                            <option value="0">Không có thông tin</option></select>
+                        <label for="vertical-cmLoaiCuTru">Loại Cư Trú (Vợ)</label>
+                    </div>                                
+                </div>
+                
+                <div class="vertical-form vertical-full-width">
+                    <div class="vertical-form-group">
+                        <input type="text" id="vertical-voNoiCuTru" name="voNoiCuTru" value="" required>
+                        <label for="vertical-voNoiCuTru">Nơi Cư Trú (Vợ)</label>
+                    </div>
+
+                </div>
+                
+                <div class="vertical-form vertical-two-columns">
+                    <div class="vertical-form-group">
+                        <select id="vertical-voLoaiGiayToTuyThan" name="voLoaiGiayToTuyThan">
+                            <option value="1">Loại 1</option>
+                            <option value="2">Loại 2</option>
+                        </select>
+                        <label for="vertical-voLoaiGiayToTuyThan">Loại Giấy Tờ Tùy Thân (Vợ)</label>
+                    </div>
+                    <div class="vertical-form-group">
+                        <input type="number" id="vertical-voSoGiayToTuyThan" name="voSoGiayToTuyThan" value="" required>
+                        <label for="vertical-voSoGiayToTuyThan">Số Giấy Tờ Tùy Thân (Vợ)</label>
+                    </div>
+                </div>
+                
+                <div class="vertical-form vertical-two-columns">
+                    <div class="vertical-form-group-date">
+                        <input type="date" id="vertical-voNgayCapGiayToTuyThan" name="voNgayCapGiayToTuyThan" value="" required>
+                        <label for="vertical-voNgayCapGiayToTuyThan">Ngày Cấp Giấy Tờ Tùy Thân (Vợ)</label>
+                    </div>
+                    <div class="vertical-form-group">
+                        <input type="text" id="vertical-voNoiCapGiayToTuyThan" name="voNoiCapGiayToTuyThan" value="" required>
+                        <label for="vertical-voNoiCapGiayToTuyThan">Nơi Cấp Giấy Tờ Tùy Thân (Vợ)</label>
+                    </div>
+                </div>              
+            <!-- ket thuc phan vo chong -->
+                
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<style>
+    .vertical-form-container {
+        overflow: auto;
+        flex: 1;
+        margin-bottom: 20px;
+        padding-top: inherit;
+        max-height: 65vh;
+    }
+
+    .vertical-form {
+        display: grid;
+        width: 100%;
+        grid-gap: 10px;
+        padding-bottom: 15px;
+    }
+
+    .vertical-form-group {
+        display: flex;
+        flex-direction: column;
+        position: relative;
+    }
+
+    .vertical-form-group textarea {
+        height: 80px;
+    }
+
+    .vertical-form-group label {
+        font-weight: bold;
+        margin-bottom: 5px;
+        font-size: 12px;
+        position: absolute;
+        top: 50%;
+        left: 10px;
+        transform: translateY(-50%);
+        transition: .5s;
+        color: #a5a5a5;
+    }
+
+    .vertical-form-group input,
+    .vertical-form-group select,
+    .vertical-form-group textarea {
+        width: 100%;
+        padding: 6px;
+        border-radius: 5px;
+        border: 1px solid #ccc;
+        box-sizing: border-box;
+        font-size: 14px;
+        outline: none;
+        background: transparent;
+        transition: .5s;
+        resize: none;
+    }
+
+    .vertical-form-group.textarea-active label {
+        top: 0;
+        font-size: 10px;
+        background: #fff;
+        padding: 0 5px;
+    }
+
+    .vertical-form-group input:focus~label,
+    .vertical-form-group input:valid~label,
+    .vertical-form-group select:focus~label,
+    .vertical-form-group select:valid~label,
+    .vertical-form-group textarea:focus~label,
+    .vertical-form-group textarea:valid~label {
+        top: 0;
+        font-size: 10px;
+        background: #fff;
+        padding: 0 5px;
+        color: black;
+    }
+
+    .vertical-form-group-date {
+        display: flex;
+        flex-direction: column;
+        position: relative;
+    }
+    
+    .vertical-form-group-date input[type="date"] {
+        width: 100%;
+        padding: 6px;
+        border-radius: 5px;
+        border: 1px solid #ccc;
+        box-sizing: border-box;
+        font-size: 14px;
+        outline: none;
+        background: transparent;
+    }
+    
+    .vertical-form-group-date label {
+        font-weight: bold;
+        margin-bottom: 5px;
+        font-size: 10px; 
+        color: black; 
+        padding: 0 5px;
+        position: absolute;
+        top: -8px;
+        left: 10px;
+        background: #fff;
+    }
+    
+    .vertical-specialLabel {
+        font-weight: bold;
+        margin-bottom: 5px;
+        font-size: 12px;
+        position: absolute;
+        top: 0%;
+        left: 10px;
+        transform: translateY(-50%);
+        color: #555;
+        transition: .5s;
+    }
+
+    .vertical-two-columns {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .vertical-three-columns {
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+    .vertical-four-columns {
+        grid-template-columns: repeat(4, 1fr);
+    }
+
+    .vertical-full-width {
+        grid-column: span 4;
+    }
+
+    .vertical-buttons {
+        display: flex;
+        justify-content: flex-end;
+        gap: 10px;
+        margin-top: 20px;
+    }
+
+    .vertical-buttons button {
+        width: 28%;
+        padding: 10px 0;
+        border: none;
+        border-radius: 5px;
+        color: white;
+        font-weight: bold;
+        cursor: pointer;
+    }
+
+    .vertical-buttons .review {
+        background-color: #4CAF50;
+    }
+
+    .vertical-buttons .save {
+        background-color: #007BFF;
+    }
+
+    .vertical-buttons button:hover {
+        opacity: 0.9;
+    }
+
+    .vertical-input-form-border {
+        border-radius: 5px;
+        border: 1px solid #ccc;
+        box-sizing: border-box;
+        padding: 10px;
+    }
+
+    .vertical-tab-selection-item {
+        width: 100%;
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+    .vertical-item-tab {
+        border-radius: 5px;
+        color: black;
+        border: 1px solid #ccc;
+        padding: 5px;
+        margin: 0;
+        text-align: center;
+        cursor: pointer;
+        background-color: #f0f0f0;
+    }
+
+    .vertical-item-tab.active {
+        background-color: #c5c5c5;
+        color: #8383ff;
+        box-shadow: 0px 3px 0px #a5a5a5 inset;
+    }
+
+    .vertical-tab-content {
+        display: none;
+    }
+
+    .vertical-tab-content.active {
+        display: block;
+    }
+
+    .vertical-doc-info-tab {
+        display: grid;
+        min-width: 40%;
+        grid-gap: 10px;
+        padding-bottom: 15px;
+        height: 78.5vh;
+    }
+</style>
