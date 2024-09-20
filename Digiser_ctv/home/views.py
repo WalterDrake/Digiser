@@ -68,6 +68,11 @@ def courses(request):
 def dashboard(request):
     return render(request, 'pages/dashboard.html')
 
+
+@login_required
+def kh_input(request):
+    return render(request, 'pages/kh_input.html')
+
 @login_required
 def info(request):
     user_code = request.session.get('user_code')
@@ -315,7 +320,7 @@ def home_admin(request):
 @login_required
 @user_passes_test(checkManager)
 def ctv_list(request):
-    users = statistic_users(request)
+    users = CustomUser.objects.all()
     return render(request, 'pages/ctv_list.html', {
         'users': users,
         'status_choices': CustomUser._STATUSES,
