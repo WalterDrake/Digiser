@@ -12,6 +12,10 @@ urlpatterns = [
     path('dashboard/', views.dashboard, name="dashboard"),
     path('info/', views.info, name='info'),
     
+    #input form urls
+    path('kh_input/', views.kh_input, name="kh_input"),
+    
+    
     # Admin urls
     path('home_admin/', views.home_admin , name="home admin"),
     path('ctv/', views.ctv_list , name="ctv list"),
