@@ -320,7 +320,7 @@ def home_admin(request):
 @login_required
 @user_passes_test(checkManager)
 def ctv_list(request):
-    users = CustomUser.objects.all()
+    users = CustomUser.objects.prefetch_related('groups').only('code', 'full_name', 'status')
     return render(request, 'pages/ctv_list.html', {
         'users': users,
         'status_choices': CustomUser._STATUSES,
