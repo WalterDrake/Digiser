@@ -3,6 +3,7 @@ from django.contrib.auth.decorators import login_required, user_passes_test
 from authentication.forms import CustomUserInfoChangeForm, CustomUserBankChangeForm
 from django.db.models import Max, Sum, Q
 from authentication.models import CustomUser, LoginLog
+from django.contrib.auth.models import Group
 from .models import Salary
 from project.models.model1 import Package_detail, Document
 import json
@@ -320,12 +321,14 @@ def home_admin(request):
 @login_required
 @user_passes_test(checkManager)
 def ctv_list(request):
-    users = CustomUser.objects.prefetch_related('groups').only('code', 'full_name', 'status')
-    return render(request, 'pages/ctv_list.html', {
-        'users': users,
+    context = {
+        'users': CustomUser.objects.prefetch_related('groups').only('code', 'full_name', 'status'),
         'status_choices': CustomUser._STATUSES,
-        })
-  
+        'groups': Group.objects.all(),
+    }
+    return render(request, 'pages/ctv_list.html', context)
+    
+    
 @login_required
 @user_passes_test(checkManager)
 def list_loginlog(request):
