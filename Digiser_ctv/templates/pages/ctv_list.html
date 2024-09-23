@@ -502,53 +502,58 @@
     event.preventDefault();
   }
 
+
+  let users = [
+    {% for user in users %}
+      {
+        code: "{{ user.code }}",
+        full_name: "{{ user.full_name }}",
+        status: "{{ user.status }}",
+        groups: [{% for group in user.groups.all %} "{{ group.name }}"{% if not forloop.last %}, {% endif %}{% endfor %}]
+      }{% if not forloop.last %},{% endif %}
+    {% endfor %}
+  ];
+  
+  function renderUsers(filteredUsers) {
+    const tbody = document.querySelector("table tbody");
+    tbody.innerHTML = "";
+  
+    filteredUsers.forEach((user) => {
+      const row = `
+        <tr>
+          <td>${user.code}</td>
+          <td>${user.full_name}</td>
+          <td>${user.groups.join(", ")}</td>
+          <td>${user.status}</td>
+          <td>100</td>
+        </tr>
+      `;
+      tbody.insertAdjacentHTML('beforeend', row);
+    });
+  }
+
+
   // Hàm tìm kiếm chi tiết
   function filterUsers() {
     // Lấy giá trị từ các input fields trong popup
     const filterId = document.getElementById("filterId").value.toLowerCase();
-    const filterName = document
-      .getElementById("filterName")
-      .value.toLowerCase();
-    const filterStatus = document
-      .getElementById("filterStatus")
-      .value.toLowerCase();
+    const filterName = document.getElementById("filterName").value.toLowerCase();
+    const filterStatus = document.getElementById("filterStatus").value.toLowerCase();
 
       const selectedGroups = Array.from(document.querySelectorAll('.list-button-for-search input[name="group"]:checked')).map(
         (checkbox) => checkbox.value.trim().toLowerCase() // 
       );
 
-      console.log("Selected Groups:", selectedGroups);
-    // Lấy tất cả các hàng (rows) của bảng users
-    const rows = document.querySelectorAll("table tbody tr");
+  const filteredUsers = users.filter((user) => {
+    const matchId = !filterId || user.code.toLowerCase().includes(filterId);
+    const matchName = !filterName || user.full_name.toLowerCase().includes(filterName);
+    const matchStatus = !filterStatus || user.status.toLowerCase() === filterStatus;
+    const matchGroup = selectedGroups.length === 0 || selectedGroups.every(group => user.groups.map(g => g.toLowerCase()).includes(group));
 
-    // Reset tìm kiếm nhanh khi dùng lọc chi tiết
-    document.getElementById("quickSearchName").value = "";
-    document.getElementById("quickSearchStatus").value = "";
+    return matchId && matchName && matchStatus && matchGroup;
+  });
 
-    // Lặp qua từng hàng và kiểm tra các điều kiện
-    rows.forEach((row) => {
-      const userId = row
-        .querySelector("td:nth-child(1)")
-        .textContent.toLowerCase();
-      const userName = row
-        .querySelector("td:nth-child(2)")
-        .textContent.toLowerCase();
-      const userStatus = row
-        .querySelector("td:nth-child(4)")
-        .textContent.toLowerCase();
-        const userGroups = row.querySelector("td:nth-child(3)").textContent.toLowerCase().split(',').map(group => group.trim());
-
-      const matchId = !filterId || userId.includes(filterId);
-      const matchName = !filterName || userName.includes(filterName);
-      const matchStatus = !filterStatus || userStatus.includes(filterStatus);
-      const matchGroup = selectedGroups.length === 0 || selectedGroups.every(group => userGroups.includes(group));
-
-      if (matchId && matchName && matchStatus && matchGroup) {
-        row.style.display = "";
-      } else {
-        row.style.display = "none";
-      }
-    });
+  renderUsers(filteredUsers);
   }
 
   // Hàm tìm kiếm nhanh kết hợp giữa Họ tên và Trạng thái
@@ -570,24 +575,13 @@
       checkbox.checked = false;
     });
 
-    rows.forEach((row) => {
-      const userName = row
-        .querySelector("td:nth-child(2)")
-        .textContent.toLowerCase();
-      const userStatus = row
-        .querySelector("td:nth-child(4)")
-        .textContent.toLowerCase();
+  const filteredUsers = users.filter((user) => {
+    const matchName = !quickSearchName || user.full_name.toLowerCase().includes(quickSearchName);
+    const matchStatus = !quickSearchStatus || user.status.toLowerCase() === quickSearchStatus;
+    return matchName && matchStatus;
+  });
 
-      const matchName = !quickSearchName || userName.includes(quickSearchName);
-      const matchStatus =
-        !quickSearchStatus || userStatus.includes(quickSearchStatus);
-
-      if (matchName && matchStatus) {
-        row.style.display = "";
-      } else {
-        row.style.display = "none";
-      }
-    });
+  renderUsers(filteredUsers);
   }
 
   // Khi người dùng nhấn nút "Lọc", thực hiện tìm kiếm chi tiết
@@ -609,5 +603,6 @@
   document
     .getElementById("quickSearchStatus")
     .addEventListener("change", quickSearchUsers);
+
 </script>
 {% endblock %}
