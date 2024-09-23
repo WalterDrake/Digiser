@@ -137,7 +137,7 @@
     display: flex;
     align-items: center;
     gap: 10px;
-    justify-content: flex-start; /* Căn sang bên trái */
+    justify-content: flex-start;
   }
 
   .quick-search {
@@ -152,11 +152,11 @@
     font-size: 14px;
     border: 1px solid #ccc;
     border-radius: 5px;
-    width: auto; /* Đảm bảo kích thước hợp lý */
+    width: auto; 
   }
 
   .quick-search select {
-    width: 150px; /* Đặt chiều rộng cho ô select */
+    width: 150px;
   }
 </style>
 <h1>Danh sach nhan vien</h1>
@@ -190,8 +190,7 @@
   id="filterModal"
   tabindex="-1"
   aria-labelledby="filterModalLabel"
-  aria-hidden="true"
->
+  aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
@@ -225,6 +224,25 @@
               placeholder="Nhập Họ và tên"
             />
           </div>
+          
+          <div class="mb-3">
+            <label class="form-label">Vai trò</label>
+            <div class="list-group">
+              <div class="list-button-for-search">
+                <div class="row">
+                  {% for group in groups %}
+                  <div class="col-md-4 mb-2"> 
+                    <input type="checkbox" class="btn-check" id="group-{{ group.id }}" name="group" value="{{ group.name }}" autocomplete="off">
+                    <label class="btn btn-outline-primary list-group-item" for="group-{{ group.id }}">{{ group.name }}</label>
+                  </div>
+                  {% empty %}
+                    <p>Không lấy được dữ liệu.</p>
+                  {% endfor %}
+                </div>
+              </div>    
+            </div>
+          </div>
+
           <div class="mb-3">
             <label for="filterStatus" class="form-label"
               >Tìm kiếm Trạng thái</label
@@ -263,18 +281,26 @@
           <th>Role</th>
           <th>Status</th>
           <th>Score</th>
-          <th>Actions</th>
+          {% comment %} <th>Actions</th> {% endcomment %}
         </tr>
       </thead>
       <tbody>
-        {% for user in users %}
+        {% for user in users|slice:":20" %}
         <tr>
           <td>{{ user.code }}</td>
           <td>{{ user.full_name }}</td>
-          <td>{{ user.role }}</td>
+          <td> 
+            {% if user.groups.all %}
+              {% for group in user.groups.all %}
+                  {{ group.name }}{% if not forloop.last %}, {% endif %}
+              {% endfor %}
+            {% else %}
+                Không thuộc nhóm nào
+            {% endif %}
+        </td>
           <td>{{ user.status }}</td>
           <td>100</td>
-          <td>
+          {% comment %} <td>
             <!-- Bootstrap Dropdown -->
             <div class="dropdown">
               {% csrf_token %}
@@ -307,7 +333,7 @@
                 </li>
               </ul>
             </div>
-          </td>
+          </td> {% endcomment %}
         </tr>
         {% endfor %}
       </tbody>
@@ -340,22 +366,26 @@
           />
         </div>
 
-        <div class="form-group">
-          <label for="role" class="form-label-inline form-label"
-            >Vai trò:</label
-          >
-          <div class="form-label-inline">
-            <p>
-              {% comment %} sau nay moi nguoi quyet dinh duoc la role hay group thi phan nay
-              se duoc phat trien them {% endcomment %}
-            </p>
+        <div class="mb-3">
+          <label class="form-label-inline">Vai trò</label>
+          <div class="list-group">
+            <div class="list-button-in-small-table">
+              <div class="row">
+                {% for group in groups %}
+                <div class="col-md-4 mb-2"> 
+                  <input type="checkbox" class="btn-check" id="group-in-table-{{ group.id }}" name="group" value="{{ group.name }}" autocomplete="off">
+                  <label class="btn btn-outline-primary list-group-item" for="group-in-table-{{ group.id }}">{{ group.name }}</label>
+                </div>
+                {% empty %}
+                  <p>Không lấy được dữ liệu.</p>
+                {% endfor %}         
+              </div>
+            </div>
           </div>
         </div>
 
         <div class="form-group">
-          <label for="status" class="form-label-inline form-label"
-            >Trạng thái:</label
-          >
+          <label for="status" class="form-label-inline form-label">Trạng thái:</label>
           <select
             class="form-select form-label-inline"
             id="status"
@@ -394,17 +424,29 @@
       // Lấy dữ liệu từ hàng và gán vào form
       const selectedId = this.querySelector("td:nth-child(1)").textContent;
       const selectedName = this.querySelector("td:nth-child(2)").textContent;
+      const selectedRoles = this.querySelector("td:nth-child(3)").textContent.split(",").map(role => role.trim()).filter(Boolean); //KHONG CHINH SUA DONG NAY
       const selectedStatus = this.querySelector("td:nth-child(4)").textContent;
 
       document.getElementById("id").value = selectedId;
       document.getElementById("name").value = selectedName;
       document.getElementById("status").value = selectedStatus;
 
+      // Bỏ chọn tất cả checkbox
+      document.querySelectorAll(".list-button-in-small-table input[type='checkbox']").forEach((checkbox) => {
+        checkbox.checked = false;
+
+        // Nếu vai trò có trong selectedRoles, thì check nó
+        if (selectedRoles.includes(checkbox.value)) {
+          checkbox.checked = true;
+        }
+      });
+
       // Lưu dữ liệu hàng được chọn vào biến
       selectedRowData = {
         id: selectedId,
         name: selectedName,
         status: selectedStatus,
+        roles: selectedRoles,
       };
     });
   });
@@ -415,7 +457,11 @@
       // Điền lại dữ liệu từ hàng đã chọn
       document.getElementById("id").value = selectedRowData.id;
       document.getElementById("name").value = selectedRowData.name;
-      document.getElementById("status").value = selectedRowData.status;
+      document.getElementById("status").value = selectedRowData.status; 
+
+      document.querySelectorAll(".list-button-in-small-table input[type='checkbox']").forEach((checkbox) => {
+        checkbox.checked = selectedRowData.roles.includes(checkbox.value);
+      });
     }
   });
 </script>
@@ -467,6 +513,11 @@
       .getElementById("filterStatus")
       .value.toLowerCase();
 
+      const selectedGroups = Array.from(document.querySelectorAll('.list-button-for-search input[name="group"]:checked')).map(
+        (checkbox) => checkbox.value.trim().toLowerCase() // 
+      );
+
+      console.log("Selected Groups:", selectedGroups);
     // Lấy tất cả các hàng (rows) của bảng users
     const rows = document.querySelectorAll("table tbody tr");
 
@@ -485,12 +536,14 @@
       const userStatus = row
         .querySelector("td:nth-child(4)")
         .textContent.toLowerCase();
+        const userGroups = row.querySelector("td:nth-child(3)").textContent.toLowerCase().split(',').map(group => group.trim());
 
       const matchId = !filterId || userId.includes(filterId);
       const matchName = !filterName || userName.includes(filterName);
       const matchStatus = !filterStatus || userStatus.includes(filterStatus);
+      const matchGroup = selectedGroups.length === 0 || selectedGroups.every(group => userGroups.includes(group));
 
-      if (matchId && matchName && matchStatus) {
+      if (matchId && matchName && matchStatus && matchGroup) {
         row.style.display = "";
       } else {
         row.style.display = "none";
@@ -513,6 +566,9 @@
     document.getElementById("filterId").value = "";
     document.getElementById("filterName").value = "";
     document.getElementById("filterStatus").value = "";
+    document.querySelectorAll(".list-button-for-search input[type='checkbox']").forEach((checkbox) => {
+      checkbox.checked = false;
+    });
 
     rows.forEach((row) => {
       const userName = row
