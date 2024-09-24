@@ -15,6 +15,7 @@ from django.db.models import Q
 import io
 import zipfile
 import pandas as pd
+from django.db.models.fields import Field
 
 @login_required
 def form_redirect(request, **kwargs):
@@ -195,8 +196,11 @@ def birth_certificate_document(request, document, user, role, package_detail_nam
                     document__package_name=package, executor=user).count()
                 package.entered_tickets = entered_tickets_count
                 package.save()  
-                form_instance.document.status_insert = 'Đã nhập'
-                form_instance.document.save()
+                all_fields = [f.name for f in form_instance._meta.get_fields() if isinstance(f, Field) and not f.auto_created]
+                non_empty_field_count = sum(1 for field in all_fields if getattr(form_instance, field))
+                if non_empty_field_count >= form_instance.document.fields:
+                    form_instance.document.status_insert = 'Đã nhập'
+                    form_instance.document.save() 
                 if entered_tickets_count == package.total_real_tickets:
                     package_detail_name.insert_status = 'Hoàn thành nhập'
                     package_detail_name.save()
