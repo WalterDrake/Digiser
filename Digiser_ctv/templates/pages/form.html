@@ -218,9 +218,8 @@
             <iframe id= "MyPDF" src="{{ form.pdf_path }}" frameborder="0"></iframe>
         </div>  
         <div class="image-buttons">
-            <button onclick="goBack()">
-                < Quay lại</button>
-            <button onclick="goNext()">Tiếp theo ></button>
+            <button id="goBackButton">Quay lại</button>
+            <button id="goNextButton">Tiếp theo</button>
         </div>
     </div>
 
@@ -408,7 +407,8 @@
         });
     });
 
-    const documentsCount = "{{form.total_real_tickets}}";
+    document.addEventListener('DOMContentLoaded', () => {
+    let documentsCount = "{{form.total_real_tickets}}";
 
     function goBack() {
         const currentUrl = window.location.href;
@@ -445,6 +445,14 @@
         urlParts[urlParts.length - 1] = newIndex;
         return urlParts.join('/');
     }
+
+    document.getElementById('goBackButton').addEventListener('click', () => {
+        goBack();
+    });
+    document.getElementById('goNextButton').addEventListener('click', () => {
+        goNext();
+    });
+});
 </script>
 
 {% endblock %}
