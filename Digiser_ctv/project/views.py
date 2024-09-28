@@ -150,11 +150,11 @@ def birth_certificate_document(request, document, user, role, package_detail_nam
     if request.method == 'POST':
         form_data = getattr(request, 'form_data', None)
         error_list = getattr(request, 'error_list', None)
-        
         if error_list:
             form_data.update(get_form_data_choices())
             form_data.update(prepare_form_data(document, date_fields=date_fields))
-            return render(request, 'pages/form.html', {'form': form_data, 'form_type': 'birth_cert', 'error_list': error_list})
+            form_data = handle_date_fields(form_data, date_fields)
+            return render(request, 'pages/ks_input.html', {'form': form_data, 'form_type': 'birth_cert', 'error_list': error_list})
         
         form_data['executor'] = user
         form_instance, _ = Birth_Certificate_Document.objects.update_or_create(
@@ -167,7 +167,7 @@ def birth_certificate_document(request, document, user, role, package_detail_nam
 
         form_data.update(get_form_data_choices())
         form_data.update(prepare_form_data(document, form_instance=form_instance, date_fields=date_fields))
-        return render(request, 'pages/form.html', {'form': form_data, 'form_type': 'birth_cert', 'error_list': None})
+        return render(request, 'pages/ks_input.html', {'form': form_data, 'form_type': 'birth_cert', 'error_list': None})
 
     # Handling GET request
     lock = False
@@ -189,6 +189,7 @@ def birth_certificate_document(request, document, user, role, package_detail_nam
 
     form_data = get_form_data_choices()
     form_data.update(prepare_form_data(document, form_instance=form_instance, lock=lock, date_fields=date_fields))
-    return render(request, 'pages/form.html', {'form': form_data, 'form_type': 'birth_cert'})
+    return render(request, 'pages/ks_input.html', {'form': form_data, 'form_type': 'birth_cert'})
 
 
+  
