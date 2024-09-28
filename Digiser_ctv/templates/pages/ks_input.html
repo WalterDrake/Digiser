@@ -246,18 +246,19 @@
 <script>
 
     document.addEventListener('DOMContentLoaded', function() {
-        // Get the error list from Django context
-        const errors = {{ error_list|safe }};
-        console.log(errors)
+        // Get the error list from Django context, default to an empty array if not available
+        const errors = {{ error_list|default:'[]'|safe }};
+        console.log(errors);
+        
         const toastContainer = document.getElementById('toast-container');
         if (errors.length > 0) {
             // Create a single toast element
             const toast = document.createElement('div');
             toast.className = 'toast align-items-center text-bg-danger border-0';
-            toast.role = 'alert';
-            toast.ariaLive = 'assertive';
-            toast.ariaAtomic = 'true';
-
+            toast.setAttribute('role', 'alert');
+            toast.setAttribute('aria-live', 'assertive');  // Use kebab-case for aria attributes
+            toast.setAttribute('aria-atomic', 'true');     // Use kebab-case for aria attributes
+    
             // Join all errors with a newline and create the toast content
             const toastContent = `
                 <div class="toast-header text-bg-light">
@@ -270,12 +271,13 @@
             `;
             toast.innerHTML = toastContent;
             toastContainer.appendChild(toast);
-
+    
             // Initialize and show the toast
             const toastBootstrap = new bootstrap.Toast(toast);
             toastBootstrap.show();            
         }
-    })
+    });
+    
 
     const tab1 = document.getElementById('tab1');
     const tab2 = document.getElementById('tab2');
