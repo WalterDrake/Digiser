@@ -98,7 +98,7 @@ _REGISTER_TYPE_PAC = (
 class Birth_Certificate_Document(models.Model):
 
     document = models.ForeignKey(
-        Document, blank=True, null=True, on_delete=models.SET_NULL)
+        Document, blank=True, null=True, on_delete=models.CASCADE)
     
     executor = models.ForeignKey(CustomUser, blank=True, null=True, on_delete=models.SET_NULL)
     # Các trường thông tin cơ bản (10 trường)
