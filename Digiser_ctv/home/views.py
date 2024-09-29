@@ -4,9 +4,6 @@ from authentication.forms import CustomUserInfoChangeForm, CustomUserBankChangeF
 from django.db.models import Q
 from authentication.models import CustomUser, LoginLog
 from django.contrib.auth.models import Group
-from .models import Salary
-from project.models.model1 import Package_detail, Document
-import json
 from .utils import *
 
 @login_required
