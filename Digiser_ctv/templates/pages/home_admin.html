@@ -7,16 +7,65 @@
         </div>
         <ul>
             <li><a href="/ctv">Quản lý CTV</a></li>
-            <li>Rating Score</li>
+            <li>Điểm đánh giá</li>
         </ul>
-        <div class="icon user"></div>
+        <div class="icon-manager user">
+            <i class='bx bxs-user-detail' style='color:#0071bc'  ></i>
+        </div>
     </div>
     <div class="card">
         <div class="header-bg">
-            <h3>System Configuration</h3>
+            <h3>Nhập Dữ Liệu</h3>
+        </div>
+        <ul>    
+            <li>Nhập dữ liệu truy cập</li>
+            <li>Nhập dữ liệu check</li>
+            <li>Nhập lương</li>
+            <li>Thiết lập dữ liệu nhập</li>
+        </ul>
+        <div class="icon-manager configuration">
+            <i class='bx bx-import' style='color:#0071bc' ></i>
+        </div>
+    </div>
+    <div class="card">
+        <div class="header-bg">
+            <h3>Xuất dữ liệu</h3>
         </div>
 
-        <div class="icon configuration"></div>
+        <ul>
+            <li>Xuất thống kê DA</li>
+            <li>Xuất file PDF</li>
+        </ul>
+        <div class="icon-manager logs">
+            <i class='bx bxs-file' style='color:#0071bc'  ></i>
+        </div>
+    </div>
+    <div class="card">
+        <div class="header-bg">
+            <h3>Ngôn ngữ</h3>
+        </div>
+
+        <ul>
+            <li>Tiếng Việt</li>
+            <li>Tiếng Anh</li>
+        </ul>
+        <div class="icon-manager language">
+            <i class='bx bxs-message-rounded-add' style='color:#0071bc' ></i>
+        </div>
+    </div>
+    <div class="card">
+        <div class="header-bg">
+            <h3>Hàm Tự Động</h3>
+        </div>
+
+        <ul>
+            <li>Phân công tự động</li>
+            <li>Ràng buộc tự động</li>
+            <li>OCR</li>
+        </ul>
+        <div class="icon-manager automatic">
+            <i class='bx bxs-magic-wand' style='color:#0071bc'  ></i>
+        </div>
     </div>
     <div class="card">
         <div class="header-bg">
@@ -25,66 +74,40 @@
 
         <ul>
             <li><a href="/loginlog">Nhật Ký Truy Cập</a></li>
-            <li>Edit Log</li>
+            <li>Nhật ký chỉnh sửa</li>
+            <li>Xuất dữ liệu hoạt động</li>
         </ul>
-        <div class="icon logs"></div>
+        <div class="icon-manager logs">
+            <i class='bx bxs-time-five' style='color:#0071bc' ></i>
+        </div>
     </div>
     <div class="card">
         <div class="header-bg">
-            <h3>Language</h3>
+            <h3>Thiết Lập Dự Án</h3>
         </div>
 
         <ul>
-            <li>Vietnamese</li>
-            <li>English</li>
-        </ul>
-        <div class="icon language"></div>
-    </div>
-    <div class="card">
-        <div class="header-bg">
-            <h3>Automatic Function</h3>
-        </div>
-
-        <ul>
-            <li>Automatic Assignment</li>
-            <li>Automatic Binding</li>
-            <li>OCR</li>
-        </ul>
-        <div class="icon automatic"></div>
-    </div>
-    <div class="card">
-        <div class="header-bg">
-            <h3>Log Management</h3>
-        </div>
-
-        <ul>
-            <li>Export user activity data</li>
-        </ul>
-        <div class="icon log-management"></div>
-    </div>
-    <div class="card">
-        <div class="header-bg">
-            <h3>Data</h3>
-        </div>
-
-        <ul>
-            <li>Import data</li>
+            <li>Cấu hình dữ liệu</li>
+            <li>Import data</li>          
             <li>Export data</li>
         </ul>
-        <div class="icon data"></div>
+        <div class="icon-manager data">
+            <i class='bx bx-move-vertical' style='color:#0071bc' ></i>
+        </div>
     </div>
     <div class="card">
         <div class="header-bg">
-            <h3>Statistics</h3>
+            <h3>Thống Kê</h3>
         </div>
-
         <ul>
-            <li>Project construction progress</li>
-            <li>Statistics by personnel</li>
-            <li>Statistics by data</li>
-            <li>Worth the results</li>
+            <li>Tiến độ thi công dự án</li>
+            <li>Thống kê theo nhân sự</li>
+            <li>Thống kê theo nhân sự</li>
+            <li>Đánh giá kết quả</li>
         </ul>
-        <div class="icon statistics"></div>
+        <div class="icon-manager statistics">
+            <i class='bx bx-line-chart' style='color:#0071bc' ></i>
+        </div>
     </div>
 </div>
 
@@ -101,38 +124,50 @@
     }
     
     .container {
-        display: grid;
+        display: flex;
+        flex-wrap: wrap;
         grid-template-columns: repeat(4, 1fr);
         gap: 50px;
-        padding: 80px;
+        padding: 50px;
         max-width: 1400px;
+        min-width: 275px;
         margin: 0 auto;
+        justify-content: center;  
+        height:800px;
+        overflow-y: auto;
+        scrollbar-width: none; /*hidden scrollbar*/
     }
     
     .card {
         background-color: #fff;
-        border-radius: 8px;
-        box-shadow: 0 4px 8px rgba(34, 0, 0, 0.1);
+        border-radius: 25px;
+        box-shadow: 0 5px 5px rgba(0, 0, 0, 0.3);
         position: relative;
+        min-width: 250px;
+        height: 200px;
+        display: flex;
+        flex-direction: column;
  /* Added padding to make space for the gray header */
     }
     
     /* Full-width but with rounded gray header */
     .header-bg {
         position: absolute;
-        top: -20px; /* Adjusted to move it slightly down */
+        top: 0px; /* Adjusted to move it slightly down */
         left: 50%;
         transform: translateX(-50%);
         width: 100%; /* Keeps the width of the rounded rectangle narrower than the card */
         height: 40px;
-        background-color: #e0e0e0;
+        background-color: #D9D9D9;
         border-radius: 20px; /* Rounded edges for a pill-like appearance */
         display: flex;
         align-items: center; /* Vertically center the title inside */
         justify-content: center; /* Horizontally center the title */
+        font-weight: bold;
     }
     
     .card h3 {
+        font-weight: bold;
         font-size: 18px;
         color: #555;
         margin: 0; /* No margin to center properly inside header-bg */
@@ -140,16 +175,29 @@
     
     /* Spacing for the rest of the content under the header */
     .card ul {
-        list-style: none;
+        top:30px;
+        position: relative;
+        list-style:inside;
         margin-bottom: 15px;
         padding-top: 20px; /* Space between the gray rectangle and the content */
     }
     
     .card ul li {
+        list-style-type: "🔵  ";
         font-size: 14px;
         color: #777;
         margin: 5px 0;
-        padding-left: 40px;
+        padding-left: 15px;
+    }
+
+    .icon-manager{
+        position: absolute;
+        bottom: -15px;
+        right: 10px;
+        font-size:50px;
+        margin: 0 auto;
+        background-repeat: no-repeat;
+        background-size: cover;
     }
     
     .icon {
