@@ -453,6 +453,18 @@
   </div>
 </div>
 
+
+<div class="dropdown-container">
+  <label for="userLimitDropdown">Giới hạn lượt xuất:</label>
+  <select id="userLimitDropdown">
+    <option value="20">20</option>
+    <option value="40">40</option>
+    <option value="60">60</option>
+    <option value="-1">Không giới hạn</option> <!-- -1 for unlimited -->
+  </select>
+</div>
+
+
 <script>
   // Biến lưu trữ dữ liệu của hàng được chọn
   let selectedRowData = null;
@@ -561,11 +573,15 @@
     {% endfor %}
   ];
   
+  let userLimit = 40;
+
   function renderUsers(filteredUsers) {
     const tbody = document.querySelector("table tbody");
     tbody.innerHTML = "";
   
-    filteredUsers.forEach((user) => {
+    const displayedUsers = userLimit === -1 ? filteredUsers : filteredUsers.slice(0, userLimit);
+
+    displayedUsers.forEach((user) => {
       const row = `
         <tr>
           <td>${user.code}</td>
@@ -579,6 +595,10 @@
     });
   }
 
+  document.getElementById('userLimitDropdown').addEventListener('change', function() {
+    userLimit = parseInt(this.value, 10);  // Parse value to number, -1 means no limit
+    filterUsers();  // Reapply current filters and update the display
+  });
 
   // Hàm tìm kiếm chi tiết
   function filterUsers() {
