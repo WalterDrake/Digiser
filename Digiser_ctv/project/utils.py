@@ -106,13 +106,13 @@ def is_valid_package_id(package_id):
 
 
 def prepare_form_data(document, form_instance=None, lock=False, date_fields=None):
-    document_name = form_instance.document.document_name.split('.') if form_instance else document.document_name.split('.')
+    document_name = document.document_name.split('.')
     common_data = {
-        'pdf_path': form_instance.document.document_path if form_instance else document.document_path,
+        'pdf_path': document.document_path,
         'lock': lock,
-        'total_fields': form_instance.document.package_name.total_fields if form_instance else document.package_name.total_fields,
-        'entered_tickets': form_instance.document.package_name.entered_tickets if form_instance else document.package_name.entered_tickets or 0,
-        'total_real_tickets': form_instance.document.package_name.total_real_tickets if form_instance else document.package_name.total_real_tickets,
+        'total_fields': document.fields or 0,
+        'entered_tickets': document.package_name.entered_tickets or 0,
+        'total_real_tickets': document.package_name.total_real_tickets or 0,
         'so': document_name[4] if len(document_name) > 0 else "",
         'quyenSo': document_name[2] if len(document_name) > 0 else ""
     }
@@ -127,6 +127,7 @@ def handle_package_status(package, user, form_instance):
     entered_tickets_count = Birth_Certificate_Document.objects.filter(
         document__package_name=package, executor=user).count()
     package.entered_tickets = entered_tickets_count
+    package.not_entered_tickets = package.total_real_tickets - package.entered_tickets
     package.save()
 
     all_fields = [f.name for f in form_instance._meta.get_fields() if isinstance(f, Field) and not f.auto_created]

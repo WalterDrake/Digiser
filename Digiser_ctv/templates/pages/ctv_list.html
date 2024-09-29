@@ -137,7 +137,7 @@
     display: flex;
     align-items: center;
     gap: 10px;
-    justify-content: flex-start; /* Căn sang bên trái */
+    justify-content: flex-start;
   }
 
   .quick-search {
@@ -152,11 +152,11 @@
     font-size: 14px;
     border: 1px solid #ccc;
     border-radius: 5px;
-    width: auto; /* Đảm bảo kích thước hợp lý */
+    width: auto; 
   }
 
   .quick-search select {
-    width: 150px; /* Đặt chiều rộng cho ô select */
+    width: 150px;
   }
 </style>
 <h1>Danh sach nhan vien</h1>
@@ -190,8 +190,7 @@
   id="filterModal"
   tabindex="-1"
   aria-labelledby="filterModalLabel"
-  aria-hidden="true"
->
+  aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
@@ -225,6 +224,25 @@
               placeholder="Nhập Họ và tên"
             />
           </div>
+          
+          <div class="mb-3">
+            <label class="form-label">Vai trò</label>
+            <div class="list-group">
+              <div class="list-button-for-search">
+                <div class="row">
+                  {% for group in groups %}
+                  <div class="col-md-4 mb-2"> 
+                    <input type="checkbox" class="btn-check" id="group-{{ group.id }}" name="group" value="{{ group.name }}" autocomplete="off">
+                    <label class="btn btn-outline-primary list-group-item" for="group-{{ group.id }}">{{ group.name }}</label>
+                  </div>
+                  {% empty %}
+                    <p>Không lấy được dữ liệu.</p>
+                  {% endfor %}
+                </div>
+              </div>    
+            </div>
+          </div>
+
           <div class="mb-3">
             <label for="filterStatus" class="form-label"
               >Tìm kiếm Trạng thái</label
@@ -263,18 +281,26 @@
           <th>Role</th>
           <th>Status</th>
           <th>Score</th>
-          <th>Actions</th>
+          {% comment %} <th>Actions</th> {% endcomment %}
         </tr>
       </thead>
       <tbody>
-        {% for user in users %}
+        {% for user in users|slice:":20" %}
         <tr>
           <td>{{ user.code }}</td>
           <td>{{ user.full_name }}</td>
-          <td>{{ user.role }}</td>
+          <td> 
+            {% if user.groups.all %}
+              {% for group in user.groups.all %}
+                  {{ group.name }}{% if not forloop.last %}, {% endif %}
+              {% endfor %}
+            {% else %}
+                Không thuộc nhóm nào
+            {% endif %}
+        </td>
           <td>{{ user.status }}</td>
           <td>100</td>
-          <td>
+          {% comment %} <td>
             <!-- Bootstrap Dropdown -->
             <div class="dropdown">
               {% csrf_token %}
@@ -307,7 +333,7 @@
                 </li>
               </ul>
             </div>
-          </td>
+          </td> {% endcomment %}
         </tr>
         {% endfor %}
       </tbody>
@@ -340,22 +366,26 @@
           />
         </div>
 
-        <div class="form-group">
-          <label for="role" class="form-label-inline form-label"
-            >Vai trò:</label
-          >
-          <div class="form-label-inline">
-            <p>
-              {% comment %} sau nay moi nguoi quyet dinh duoc la role hay group thi phan nay
-              se duoc phat trien them {% endcomment %}
-            </p>
+        <div class="mb-3">
+          <label class="form-label-inline">Vai trò</label>
+          <div class="list-group">
+            <div class="list-button-in-small-table">
+              <div class="row">
+                {% for group in groups %}
+                <div class="col-md-4 mb-2"> 
+                  <input type="checkbox" class="btn-check" id="group-in-table-{{ group.id }}" name="group" value="{{ group.name }}" autocomplete="off">
+                  <label class="btn btn-outline-primary list-group-item" for="group-in-table-{{ group.id }}">{{ group.name }}</label>
+                </div>
+                {% empty %}
+                  <p>Không lấy được dữ liệu.</p>
+                {% endfor %}         
+              </div>
+            </div>
           </div>
         </div>
 
         <div class="form-group">
-          <label for="status" class="form-label-inline form-label"
-            >Trạng thái:</label
-          >
+          <label for="status" class="form-label-inline form-label">Trạng thái:</label>
           <select
             class="form-select form-label-inline"
             id="status"
@@ -394,17 +424,29 @@
       // Lấy dữ liệu từ hàng và gán vào form
       const selectedId = this.querySelector("td:nth-child(1)").textContent;
       const selectedName = this.querySelector("td:nth-child(2)").textContent;
+      const selectedRoles = this.querySelector("td:nth-child(3)").textContent.split(",").map(role => role.trim()).filter(Boolean); //KHONG CHINH SUA DONG NAY
       const selectedStatus = this.querySelector("td:nth-child(4)").textContent;
 
       document.getElementById("id").value = selectedId;
       document.getElementById("name").value = selectedName;
       document.getElementById("status").value = selectedStatus;
 
+      // Bỏ chọn tất cả checkbox
+      document.querySelectorAll(".list-button-in-small-table input[type='checkbox']").forEach((checkbox) => {
+        checkbox.checked = false;
+
+        // Nếu vai trò có trong selectedRoles, thì check nó
+        if (selectedRoles.includes(checkbox.value)) {
+          checkbox.checked = true;
+        }
+      });
+
       // Lưu dữ liệu hàng được chọn vào biến
       selectedRowData = {
         id: selectedId,
         name: selectedName,
         status: selectedStatus,
+        roles: selectedRoles,
       };
     });
   });
@@ -415,7 +457,11 @@
       // Điền lại dữ liệu từ hàng đã chọn
       document.getElementById("id").value = selectedRowData.id;
       document.getElementById("name").value = selectedRowData.name;
-      document.getElementById("status").value = selectedRowData.status;
+      document.getElementById("status").value = selectedRowData.status; 
+
+      document.querySelectorAll(".list-button-in-small-table input[type='checkbox']").forEach((checkbox) => {
+        checkbox.checked = selectedRowData.roles.includes(checkbox.value);
+      });
     }
   });
 </script>
@@ -456,46 +502,58 @@
     event.preventDefault();
   }
 
+
+  let users = [
+    {% for user in users %}
+      {
+        code: "{{ user.code }}",
+        full_name: "{{ user.full_name }}",
+        status: "{{ user.status }}",
+        groups: [{% for group in user.groups.all %} "{{ group.name }}"{% if not forloop.last %}, {% endif %}{% endfor %}]
+      }{% if not forloop.last %},{% endif %}
+    {% endfor %}
+  ];
+  
+  function renderUsers(filteredUsers) {
+    const tbody = document.querySelector("table tbody");
+    tbody.innerHTML = "";
+  
+    filteredUsers.forEach((user) => {
+      const row = `
+        <tr>
+          <td>${user.code}</td>
+          <td>${user.full_name}</td>
+          <td>${user.groups.join(", ")}</td>
+          <td>${user.status}</td>
+          <td>100</td>
+        </tr>
+      `;
+      tbody.insertAdjacentHTML('beforeend', row);
+    });
+  }
+
+
   // Hàm tìm kiếm chi tiết
   function filterUsers() {
     // Lấy giá trị từ các input fields trong popup
     const filterId = document.getElementById("filterId").value.toLowerCase();
-    const filterName = document
-      .getElementById("filterName")
-      .value.toLowerCase();
-    const filterStatus = document
-      .getElementById("filterStatus")
-      .value.toLowerCase();
+    const filterName = document.getElementById("filterName").value.toLowerCase();
+    const filterStatus = document.getElementById("filterStatus").value.toLowerCase();
 
-    // Lấy tất cả các hàng (rows) của bảng users
-    const rows = document.querySelectorAll("table tbody tr");
+      const selectedGroups = Array.from(document.querySelectorAll('.list-button-for-search input[name="group"]:checked')).map(
+        (checkbox) => checkbox.value.trim().toLowerCase() // 
+      );
 
-    // Reset tìm kiếm nhanh khi dùng lọc chi tiết
-    document.getElementById("quickSearchName").value = "";
-    document.getElementById("quickSearchStatus").value = "";
+  const filteredUsers = users.filter((user) => {
+    const matchId = !filterId || user.code.toLowerCase().includes(filterId);
+    const matchName = !filterName || user.full_name.toLowerCase().includes(filterName);
+    const matchStatus = !filterStatus || user.status.toLowerCase() === filterStatus;
+    const matchGroup = selectedGroups.length === 0 || selectedGroups.every(group => user.groups.map(g => g.toLowerCase()).includes(group));
 
-    // Lặp qua từng hàng và kiểm tra các điều kiện
-    rows.forEach((row) => {
-      const userId = row
-        .querySelector("td:nth-child(1)")
-        .textContent.toLowerCase();
-      const userName = row
-        .querySelector("td:nth-child(2)")
-        .textContent.toLowerCase();
-      const userStatus = row
-        .querySelector("td:nth-child(4)")
-        .textContent.toLowerCase();
+    return matchId && matchName && matchStatus && matchGroup;
+  });
 
-      const matchId = !filterId || userId.includes(filterId);
-      const matchName = !filterName || userName.includes(filterName);
-      const matchStatus = !filterStatus || userStatus.includes(filterStatus);
-
-      if (matchId && matchName && matchStatus) {
-        row.style.display = "";
-      } else {
-        row.style.display = "none";
-      }
-    });
+  renderUsers(filteredUsers);
   }
 
   // Hàm tìm kiếm nhanh kết hợp giữa Họ tên và Trạng thái
@@ -513,25 +571,17 @@
     document.getElementById("filterId").value = "";
     document.getElementById("filterName").value = "";
     document.getElementById("filterStatus").value = "";
-
-    rows.forEach((row) => {
-      const userName = row
-        .querySelector("td:nth-child(2)")
-        .textContent.toLowerCase();
-      const userStatus = row
-        .querySelector("td:nth-child(4)")
-        .textContent.toLowerCase();
-
-      const matchName = !quickSearchName || userName.includes(quickSearchName);
-      const matchStatus =
-        !quickSearchStatus || userStatus.includes(quickSearchStatus);
-
-      if (matchName && matchStatus) {
-        row.style.display = "";
-      } else {
-        row.style.display = "none";
-      }
+    document.querySelectorAll(".list-button-for-search input[type='checkbox']").forEach((checkbox) => {
+      checkbox.checked = false;
     });
+
+  const filteredUsers = users.filter((user) => {
+    const matchName = !quickSearchName || user.full_name.toLowerCase().includes(quickSearchName);
+    const matchStatus = !quickSearchStatus || user.status.toLowerCase() === quickSearchStatus;
+    return matchName && matchStatus;
+  });
+
+  renderUsers(filteredUsers);
   }
 
   // Khi người dùng nhấn nút "Lọc", thực hiện tìm kiếm chi tiết
@@ -553,5 +603,6 @@
   document
     .getElementById("quickSearchStatus")
     .addEventListener("change", quickSearchUsers);
+
 </script>
 {% endblock %}
