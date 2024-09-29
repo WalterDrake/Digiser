@@ -419,16 +419,15 @@
 
 
 <script>
-  // Biến lưu trữ dữ liệu của hàng được chọn
-  let selectedRowData = null;
+// Biến lưu trữ dữ liệu của hàng được chọn
+let selectedRowData = null;
 
-  // Lấy dữ liệu từ dòng đã chọn của bảng to để gán qua bảng nhỏ
+// Hàm thêm sự kiện click vào các hàng của bảng
+function addRowClickListeners() {
   document.querySelectorAll("table tbody tr").forEach((row) => {
     row.addEventListener("click", function () {
       // Bỏ chọn các dòng khác
-      document
-        .querySelectorAll("table tbody tr")
-        .forEach((row) => row.classList.remove("selected"));
+      document.querySelectorAll("table tbody tr").forEach((row) => row.classList.remove("selected"));
 
       // Chọn dòng hiện tại
       this.classList.add("selected");
@@ -436,7 +435,10 @@
       // Lấy dữ liệu từ hàng và gán vào form
       const selectedId = this.querySelector("td:nth-child(1)").textContent;
       const selectedName = this.querySelector("td:nth-child(2)").textContent;
-      const selectedRoles = this.querySelector("td:nth-child(3)").textContent.split(",").map(role => role.trim()).filter(Boolean); //KHONG CHINH SUA DONG NAY
+      const selectedRoles = this.querySelector("td:nth-child(3)").textContent
+        .split(",")
+        .map((role) => role.trim())
+        .filter(Boolean); //KHÔNG CHỈNH SỬA DÒNG NÀY
       const selectedStatus = this.querySelector("td:nth-child(4)").textContent;
 
       document.getElementById("id").value = selectedId;
@@ -462,6 +464,7 @@
       };
     });
   });
+}
 
   // Khi nhấn nút Đặt lại, điền lại dữ liệu từ hàng đã chọn
   document.querySelector(".reset-btn").addEventListener("click", function () {
@@ -526,7 +529,7 @@
     {% endfor %}
   ];
   
-  let userLimit = 40;
+  let userLimit = 20;
 
   function renderUsers(filteredUsers) {
     const tbody = document.querySelector("table tbody");
@@ -546,11 +549,13 @@
       `;
       tbody.insertAdjacentHTML('beforeend', row);
     });
+    addRowClickListeners(); //add ham click khi da tim kiem
   }
-
+  addRowClickListeners(); //add ham click khi chua tim kiem
+  
   document.getElementById('userLimitDropdown').addEventListener('change', function() {
-    userLimit = parseInt(this.value, 10);  // Parse value to number, -1 means no limit
-    filterUsers();  // Reapply current filters and update the display
+    userLimit = parseInt(this.value, 10); 
+    filterUsers();  
   });
 
   // Hàm tìm kiếm chi tiết
