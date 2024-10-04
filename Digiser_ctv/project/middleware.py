@@ -127,7 +127,7 @@ class DataCrossValidator_Middleware:
         # Check name duplication
         if nycHoTen is not None and nksHoTen is not None:
             if nycHoTen == nksHoTen:
-                error_list.append("NYC:Họ tên và NYC:Khai sinh không được trùng nhau")
+                error_list.append("NYC:Họ tên và NYC:Họ tên không được trùng nhau")
 
         # Check if ngayDangKy is not None
         if ngayDangKy is not None:
