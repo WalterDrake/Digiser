@@ -6,14 +6,17 @@
     border-collapse: collapse;
   }
 
-  th,
-  td {
-    border: 1px solid #ddd;
+  th,td {
+    border: 1px solid black;
     padding: 8px;
   }
 
   th {
     background-color: #f2f2f2;
+  }
+
+  thead th {
+    width: 15%;
   }
 
   .selected {
@@ -165,7 +168,6 @@
 
   .quick-search {
     display: flex;
-    align-items: center;
     gap: 10px;
   }
 
@@ -194,11 +196,39 @@
     appearance: none;
   }
 
-  .filter-button i{
+  .filter-buttonIcon{
     font-size: 40px;
     position: relative;
     left: -50px;
-    bottom: -11px;    
+    bottom: -2px;  
+    z-index: 4;  
+  }
+
+  .btn-filter{
+    display: flex;
+    gap: 10px;
+  }
+
+  .quick-search .btn-inPut{
+    width: 125px;
+    height: 45px;
+    background-color: #038CFD;
+    border-radius: 15px;
+  }
+
+.iconBtn-inPut{
+    font-size: 25px;
+  }
+
+  .quick-search .btn-outPut{
+    width: 125px;
+    height: 45px;
+    background-color: #038CFD;
+    border-radius: 15px;
+  }
+
+.iconBtn-outPut{
+    font-size: 25px;
   }
 </style>
 <h1 class="title-name">QUẢN LÝ CTV</h1>
@@ -218,16 +248,32 @@
   <!-- Tìm kiếm nhanh với các ô nhập liệu -->
   <div class="quick-search">
     <input type="text" id="quickSearchName"placeholder="Họ tên" />
-    <div class="filter-button">
+    <div class="btn-filter">
       <select id="quickSearchStatus">
         <option value="">Trạng thái 
         </option>
         {% for status_value, status_label in status_choices %}
         <option value="{{ status_value }}">{{ status_label }}</option>
         {% endfor %}
+        <i class='bx bxs-chevron-down filter-buttonIcon' style='color:#0071bc'  ></i>
       </select>
-      <i class='bx bxs-chevron-down' style='color:#0071bc'  ></i>
+      <select id="quickSearchStatus">
     </div>
+    <div class="btn-filter">
+      <option>
+        Điểm đánh giá
+      </option>
+      <option>
+        Cao nhất
+      </option>
+      <option>
+        Thấp nhất
+      </option>
+      <i class='bx bxs-chevron-down filter-buttonIcon' style='color:#0071bc'  ></i>
+    </select>
+    </div>
+    <button class="btn-inPut"><i class='bx bx-plus iconBtn-inPut' style='color:#fbfbfb'  ></i> Nhập</button>
+    <button class="btn-outPut"><i class='bx bx-revision iconBtn-inPut' style='color:#ffffff'  ></i> Xuất</button>
   </div>
 </div>
 
@@ -324,10 +370,10 @@
       <thead>
         <tr>
           <th>ID</th>
-          <th>Fullname</th>
-          <th>Role</th>
-          <th>Status</th>
-          <th>Score</th>
+          <th>Họ & Tên</th>
+          <th>Vai Trò</th>
+          <th>Trạng Thái</th>
+          <th>ĐIểm Đánh giá</th>
           {% comment %} <th>Actions</th> {% endcomment %}
         </tr>
       </thead>
