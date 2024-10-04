@@ -179,6 +179,42 @@
         color: white;
     }
 
+    .table {
+        width: 100%;
+        border-collapse: collapse;
+        table-layout: fixed;
+        border-collapse: collapse;
+    }
+
+    .table-set-height{
+        overflow-y: auto;
+        height: 700px;
+        margin-top: 10px;
+        border: 5px;
+    }
+
+    .table th {
+        padding: 2px 0 0 12px;
+        position: -webkit-sticky;
+        position: sticky;
+        top: -1px;
+        background-color: #cecece;
+        color: black;
+        padding: 10px;
+    }
+
+    .table th,
+    .table td {
+        border: 1px solid #c7c7c7;
+        padding: 8px;
+        overflow: hidden;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        font-size: small;
+        vertical-align: middle;
+    }
+
     .table th:nth-child(1),
     .table td:nth-child(1) {
         width: 5%;
@@ -341,78 +377,79 @@
 
 {% csrf_token %}
 
-<table class="table table-hover table-bordered mt-3">
-    <thead class="thead-light">
-        <tr>
-            <th>ID</th>
-            <th class="tong_phieu">Tên dữ liệu</th>
-            <th class="so_phieu">Số phiếu</th>
-            <th class="so_truong">Số trường</th>
-            <th class="loai_cv">Loại công việc</th>
-            <th class="trang_thai">Trạng thái</th>
-            <th class="ngay_nhan">Ngày nhận</th>
-            <th class="deadline">Deadline</th>
-            <th class="so_loi">Số lỗi</th>
-            <th class="loai_file">Loại file</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for package in packages %}
-        <tr class="parent toggle" data-id="{{ forloop.counter }}">
-            <td>{{ forloop.counter }}</td>
-            <td colspan="1">
-                <i class='bx bx-chevron-right toggle-icon'></i>{{ package.package }}
-            </td>
-            <td class="tong_phieu">{{ package.total_tickets }}</td>
-            <td class="tong_truong"></td>
-            <td class="loai_cv">{{ package.executor }}</td>
-            <td class="trang_thai">
-                <span class="badge 
-                    {% if package.status_package == 'Đã nhập' %} bg-primary 
-                    {% elif ppackage.status_package == 'Chưa check' %} bg-warning 
-                    {% elif package.status_package == 'Báo lỗi' %} bg-danger 
-                    {% elif package.status_package == 'Hoàn thành' %} bg-success 
-                    {% else %} bg-default 
-                    {% endif %}">
-                    {{ package.status_package }}
-                </span>
-            </td>
-            <td>{{ package.received_day }}</td>
-            <td>{{ package.deadline_day }}</td>
-            <td></td>
-            <td></td>
-        </tr>
-        {% for record in package.datarecord_set %}
-        <tr class="child" data-parent="{{ forloop.parentloop.counter }}" style="display: none;">
-            <td></td> <!-- Cột ID cho bản ghi con -->
-            <td class="ten_du_lieu">{{ record.ten_du_lieu }}</td> <!-- Tên dữ liệu -->
-            <td class="document-handle tong_phieu" onclick="openDocument('{{ record.parent }}', {{ forloop.counter0 }})" style="cursor: pointer;">
-                {{ record.document_name }}
-            </td> <!-- Số phiếu -->
-            <td class="tong_truong">{{ record.fields }}</td> <!-- Số trường -->
-            <td class="loai_cv"></td> <!-- Cột Loại công việc, để trống -->
-            <td class="trang_thai">
-                <span class="badge 
-                    {% if record.status == 'Đã nhập' %} bg-primary 
-                    {% elif record.status == 'Chưa check' %} bg-warning 
-                    {% elif record.status == 'Báo lỗi' %} bg-danger 
-                    {% elif record.status == 'Hoàn thành' %} bg-success 
-                    {% else %} bg-default 
-                    {% endif %}">
-                    {{ record.status }}
-                </span>
-            </td> <!-- Trạng thái -->
-            <td class="ngay_nhan"></td> <!-- Ngày nhận -->
-            <td class="deadline"></td> <!-- Deadline -->
-            <td class="so_loi">{{ record.errors }}</td> <!-- Số lỗi -->
-            <td class="loai_file">{{ record.type }}</td> <!-- Loại file -->
-        </tr>
-        {% endfor %}
-        
-        {% endfor %}
-    </tbody>
-</table>
-
+<div class="table-set-height">
+    <table class="table table-hover table-bordered">
+        <thead class="thead-light">
+            <tr>
+                <th>ID</th>
+                <th class="tong_phieu">Tên dữ liệu</th>
+                <th class="so_phieu">Số phiếu</th>
+                <th class="so_truong">Số trường</th>
+                <th class="loai_cv">Loại công việc</th>
+                <th class="trang_thai">Trạng thái</th>
+                <th class="ngay_nhan">Ngày nhận</th>
+                <th class="deadline">Deadline</th>
+                <th class="so_loi">Số lỗi</th>
+                <th class="loai_file">Loại file</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for package in packages %}
+            <tr class="parent toggle" data-id="{{ forloop.counter }}">
+                <td>{{ forloop.counter }}</td>
+                <td colspan="1">
+                    <i class='bx bx-chevron-right toggle-icon'></i>{{ package.package }}
+                </td>
+                <td class="tong_phieu">{{ package.total_tickets }}</td>
+                <td class="tong_truong"></td>
+                <td class="loai_cv">{{ package.executor }}</td>
+                <td class="trang_thai">
+                    <span class="badge 
+                        {% if package.status_package == 'Đã nhập' %} bg-primary 
+                        {% elif ppackage.status_package == 'Chưa check' %} bg-warning 
+                        {% elif package.status_package == 'Báo lỗi' %} bg-danger 
+                        {% elif package.status_package == 'Hoàn thành' %} bg-success 
+                        {% else %} bg-default 
+                        {% endif %}">
+                        {{ package.status_package }}
+                    </span>
+                </td>
+                <td>{{ package.received_day }}</td>
+                <td>{{ package.deadline_day }}</td>
+                <td></td>
+                <td></td>
+            </tr>
+            {% for record in package.datarecord_set %}
+            <tr class="child" data-parent="{{ forloop.parentloop.counter }}" style="display: none;">
+                <td></td> <!-- Cột ID cho bản ghi con -->
+                <td class="ten_du_lieu">{{ record.ten_du_lieu }}</td> <!-- Tên dữ liệu -->
+                <td class="document-handle tong_phieu" onclick="openDocument('{{ record.parent }}', {{ forloop.counter0 }})" style="cursor: pointer;">
+                    {{ record.document_name }}
+                </td> <!-- Số phiếu -->
+                <td class="tong_truong">{{ record.fields }}</td> <!-- Số trường -->
+                <td class="loai_cv"></td> <!-- Cột Loại công việc, để trống -->
+                <td class="trang_thai">
+                    <span class="badge 
+                        {% if record.status == 'Đã nhập' %} bg-primary 
+                        {% elif record.status == 'Chưa check' %} bg-warning 
+                        {% elif record.status == 'Báo lỗi' %} bg-danger 
+                        {% elif record.status == 'Hoàn thành' %} bg-success 
+                        {% else %} bg-default 
+                        {% endif %}">
+                        {{ record.status }}
+                    </span>
+                </td> <!-- Trạng thái -->
+                <td class="ngay_nhan"></td> <!-- Ngày nhận -->
+                <td class="deadline"></td> <!-- Deadline -->
+                <td class="so_loi">{{ record.errors }}</td> <!-- Số lỗi -->
+                <td class="loai_file">{{ record.type }}</td> <!-- Loại file -->
+            </tr>
+            {% endfor %}
+            
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
 
 <div class="pagination-container">    
     <div class="total-records">

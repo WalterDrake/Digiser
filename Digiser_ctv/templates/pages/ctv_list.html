@@ -6,14 +6,17 @@
     border-collapse: collapse;
   }
 
-  th,
-  td {
-    border: 1px solid #ddd;
+  th,td {
+    border: 1px solid black;
     padding: 8px;
   }
 
   th {
     background-color: #f2f2f2;
+  }
+
+  thead th {
+    width: 15%;
   }
 
   .selected {
@@ -129,11 +132,34 @@
     border-radius: 5px;
     border: 1px solid #ccc;
   }
+
+  .btn-search .quick-filter-button{
+    background-color: #D9D9D9;
+    color: black;
+    font-size: 20px;
+    border-radius: 15px;
+    box-shadow: none;
+  }
+
+  .btn-search .quick-filter-button:hover{
+    box-shadow: none;
+  }
+
+  .btn-search .quick-filter-button i{
+    font-size: 25px;
+  }
+
+  .title-name{
+    color: #0071BC;
+    font-size: 30px;
+    font-weight: bold;
+  }
 </style>
 
 <!-- Thêm CSS để định dạng các nút tìm kiếm nhanh -->
 <style>
   .search-container {
+    margin-bottom: 10px;
     display: flex;
     align-items: center;
     gap: 10px;
@@ -142,45 +168,112 @@
 
   .quick-search {
     display: flex;
-    align-items: center;
     gap: 10px;
   }
 
   .quick-search input,
   .quick-search select {
     padding: 8px;
-    font-size: 14px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    width: auto; 
+    background-color: #D9D9D9;
+    color: black;
+    font-size: 20px;
+    border-radius: 15px;
+    width: 200px;
+  }
+
+  ::placeholder {
+    color: rgb(0, 0, 0);
+    opacity: 1; /* Firefox */
+  }
+
+  ::-ms-input-placeholder { /* Edge 12-18 */
+    color: rgb(0, 0, 0);
   }
 
   .quick-search select {
-    width: 150px;
+    width: 200px;
+    height: 45px;
+    appearance: none;
+  }
+
+  .filter-buttonIcon{
+    font-size: 40px;
+    position: relative;
+    left: -50px;
+    bottom: -2px;  
+    z-index: 4;  
+  }
+
+  .btn-filter{
+    display: flex;
+    gap: 10px;
+  }
+
+  .quick-search .btn-inPut{
+    width: 125px;
+    height: 45px;
+    background-color: #038CFD;
+    border-radius: 15px;
+  }
+
+.iconBtn-inPut{
+    font-size: 25px;
+  }
+
+  .quick-search .btn-outPut{
+    width: 125px;
+    height: 45px;
+    background-color: #038CFD;
+    border-radius: 15px;
+  }
+
+.iconBtn-outPut{
+    font-size: 25px;
   }
 </style>
-<h1>Danh sach nhan vien</h1>
+<h1 class="title-name">QUẢN LÝ CTV</h1>
 <!-- Thanh tìm kiếm nhanh và nút lọc -->
 <div class="search-container">
   <!-- Nút lọc -->
-  <button
-    type="button"
-    class="btn btn-primary"
+  <div class="btn-search">
+    <button
+    type=""
+    class="quick-filter-button"
     data-bs-toggle="modal"
     data-bs-target="#filterModal"
-  >
-    <i class="bx bx-filter-alt"></i> Lọc
-  </button>
-
+    >
+      <i class='bx bx-slider' style='color:#0071bc'  ></i>Lọc 
+    </button>
+  </div>
   <!-- Tìm kiếm nhanh với các ô nhập liệu -->
   <div class="quick-search">
-    <input type="text" id="quickSearchName" placeholder="Họ tên" />
-    <select id="quickSearchStatus">
-      <option value="">Trạng thái</option>
-      {% for status_value, status_label in status_choices %}
-      <option value="{{ status_value }}">{{ status_label }}</option>
-      {% endfor %}
+    <input type="text" id="quickSearchName"placeholder="Họ tên" />
+    <div class="btn-filter">
+      <select id="quickSearchStatus">
+        <option value="">Trạng thái 
+        </option>
+        {% for status_value, status_label in status_choices %}
+        <option value="{{ status_value }}">{{ status_label }}</option>
+        {% endfor %}
+        <i class='bx bxs-chevron-down filter-buttonIcon' style='color:#0071bc'  ></i>
+      </select>
+      <select id="quickSearchStatus">
+    </div>
+    <div class="btn-filter">
+      <option>
+        Điểm đánh giá
+      </option>
+      <option>
+        Cao nhất
+      </option>
+      <option>
+        Thấp nhất
+      </option>
+      <i class='bx bxs-chevron-down filter-buttonIcon' style='color:#0071bc'  ></i>
     </select>
+    </div>
+    <button class="btn-inPut"><i class='bx bx-plus iconBtn-inPut' style='color:#fbfbfb'  ></i> Nhập</button>
+    <button class="btn-outPut"><i class='bx bx-revision iconBtn-inPut' style='color:#ffffff'  ></i> Xuất</button>
   </div>
 </div>
 
@@ -277,10 +370,10 @@
       <thead>
         <tr>
           <th>ID</th>
-          <th>Fullname</th>
-          <th>Role</th>
-          <th>Status</th>
-          <th>Score</th>
+          <th>Họ & Tên</th>
+          <th>Vai Trò</th>
+          <th>Trạng Thái</th>
+          <th>ĐIểm Đánh giá</th>
           {% comment %} <th>Actions</th> {% endcomment %}
         </tr>
       </thead>
@@ -406,6 +499,18 @@
   </div>
 </div>
 
+
+<div class="dropdown-container">
+  <label for="userLimitDropdown">Giới hạn lượt xuất:</label>
+  <select id="userLimitDropdown">
+    <option value="20">20</option>
+    <option value="40">40</option>
+    <option value="60">60</option>
+    <option value="-1">Không giới hạn</option> <!-- -1 for unlimited -->
+  </select>
+</div>
+
+
 <script>
   // Biến lưu trữ dữ liệu của hàng được chọn
   let selectedRowData = null;
@@ -514,11 +619,15 @@
     {% endfor %}
   ];
   
+  let userLimit = 40;
+
   function renderUsers(filteredUsers) {
     const tbody = document.querySelector("table tbody");
     tbody.innerHTML = "";
   
-    filteredUsers.forEach((user) => {
+    const displayedUsers = userLimit === -1 ? filteredUsers : filteredUsers.slice(0, userLimit);
+
+    displayedUsers.forEach((user) => {
       const row = `
         <tr>
           <td>${user.code}</td>
@@ -532,6 +641,10 @@
     });
   }
 
+  document.getElementById('userLimitDropdown').addEventListener('change', function() {
+    userLimit = parseInt(this.value, 10);  // Parse value to number, -1 means no limit
+    filterUsers();  // Reapply current filters and update the display
+  });
 
   // Hàm tìm kiếm chi tiết
   function filterUsers() {
