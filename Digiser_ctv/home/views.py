@@ -125,6 +125,5 @@ def ctv_list(request):
 @login_required
 @user_passes_test(checkManager)
 def list_loginlog(request):
-    ekjqwbfdkjqbenf
     loginlogs = LoginLog.objects.all()
     return render(request, 'pages/login_log.html', {'loginlogs': loginlogs})
