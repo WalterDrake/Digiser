@@ -80,11 +80,6 @@
     border-radius: 5px;
   }
 
-  select {
-    height: 40px;
-    background-color: white;
-  }
-
   input[readonly] {
     background-color: #f1f1f1;
   }
@@ -231,6 +226,44 @@
     font-size: 25px;
   }
 </style>
+<!-- Thanh drop down-->
+<style>
+  .pagination-container {
+    display: flex;
+    justify-content: space-between;
+    background-color:#c7c7c7;
+    align-items: center;
+    margin-top: 20px;
+    border-radius: 15px;
+    font-size: 14px;
+    padding: 5px;
+    color: #333;
+    font-weight: bold;
+    padding-left: 50px;
+    padding-right: 50px;
+    position: fixed;
+    bottom: 20px;
+    width: 91%;
+}
+
+.pagination-container select {
+    margin-left: 10px;
+    padding: 3px;
+    font-size: 14px;
+    border-radius: 10px;
+    border: 1px solid #ccc;
+}
+
+.pagination-container span {
+    margin-left: 5px;
+}
+
+.pagination-container .total-records {
+    font-weight: bold;
+    color: #333;
+}
+</style>
+
 <h1 class="title-name">QUẢN LÝ CTV</h1>
 <!-- Thanh tìm kiếm nhanh và nút lọc -->
 <div class="search-container">
@@ -500,14 +533,20 @@
 </div>
 
 
-<div class="dropdown-container">
-  <label for="userLimitDropdown">Giới hạn lượt xuất:</label>
-  <select id="userLimitDropdown">
-    <option value="20">20</option>
-    <option value="40">40</option>
-    <option value="60">60</option>
-    <option value="-1">Không giới hạn</option> <!-- -1 for unlimited -->
-  </select>
+<div class="pagination-container">    
+  <div class="total-records">
+      Có tổng {{ packages.paginator.count }} bản ghi
+  </div>
+  <div id="pagination-form" style="display: flex; align-items: center;">
+      <span for="records-per-page">Hiển&nbsp;thị</span>
+      <select id="records-per-page">
+          <option value="20">20</option>
+          <option value="40">40</option>
+          <option value="60">60</option>
+          <option value="-1">U</option>
+      </select>
+      <span>Bản&nbsp;ghi</span>
+  </div>
 </div>
 
 
@@ -641,9 +680,9 @@
     });
   }
 
-  document.getElementById('userLimitDropdown').addEventListener('change', function() {
+  document.getElementById('records-per-page').addEventListener('change', function() {
     userLimit = parseInt(this.value, 10);  // Parse value to number, -1 means no limit
-    filterUsers();  // Reapply current filters and update the display
+    filterUsers(); 
   });
 
   // Hàm tìm kiếm chi tiết
