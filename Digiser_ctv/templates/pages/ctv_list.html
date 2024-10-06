@@ -27,6 +27,11 @@
     padding: 8px;
   }
 
+  tr:hover{
+    background: #88bddc;
+    color: rgb(0, 0, 0);
+  }
+
   th {
     background-color: #4689b8;
   }
@@ -37,6 +42,26 @@
 
   .selected {
     background-color: #d1dfe7;
+  }
+
+  /* Demonstrate a "mostly customized" scrollbar
+  * (won't be visible otherwise if width/height is specified) */
+  .mostly-customized-scrollbar::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+    border-radius: 10px;
+    background-color: #5c7d94; /* or add it to the track */
+  }
+
+  /* Add a thumb */
+  .mostly-customized-scrollbar::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    background: #54a6e0;
+  }
+
+  /* Add a hover scrollBar */
+  .mostly-customized-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: #88c3ee;
   }
 </style>
 
@@ -414,7 +439,7 @@
   </div>
 </div>
 <div class="row">
-  <div style="overflow: auto; height: 650px" class="col-xs-7 col-sm-6 col-lg-8">
+  <div style="overflow: auto; height: 650px" class="col-xs-7 col-sm-6 col-lg-8 mostly-customized-scrollbar">
     <table>
       <thead>
         <tr>
