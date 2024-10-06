@@ -6,13 +6,29 @@
     border-collapse: collapse;
   }
 
+  table th{
+    padding: 5px 5px 5px 12px;
+    position: -webkit-sticky;
+    position: sticky;
+    top: -1px;  
+    color: white;
+    text-align: center;
+    font-size: 20px;
+  }
+
+  .iconThTable{
+    font-size: 25px;
+    position: relative;
+    top: 2px;
+  }
+
   th,td {
     border: 1px solid black;
     padding: 8px;
   }
 
   th {
-    background-color: #f2f2f2;
+    background-color: #4689b8;
   }
 
   thead th {
@@ -20,7 +36,7 @@
   }
 
   .selected {
-    background-color: #d1e7dd;
+    background-color: #d1dfe7;
   }
 </style>
 
@@ -305,8 +321,8 @@
       <i class='bx bxs-chevron-down filter-buttonIcon' style='color:#0071bc'  ></i>
     </select>
     </div>
-    <button class="btn-inPut"><i class='bx bx-plus iconBtn-inPut' style='color:#fbfbfb'  ></i> Nhập</button>
-    <button class="btn-outPut"><i class='bx bx-revision iconBtn-inPut' style='color:#ffffff'  ></i> Xuất</button>
+    <button class="btn-inPut"><i class='bx bx-arrow-to-bottom iconBtn-inPut' style='color:#ffffff'></i> Nhập</button>
+    <button class="btn-outPut"><i class='bx bx-arrow-from-bottom iconBtn-inPut' style='color:#ffffff'></i> Xuất</button>
   </div>
 </div>
 
@@ -398,15 +414,15 @@
   </div>
 </div>
 <div class="row">
-  <div style="overflow: auto; height: 700px" class="col-xs-7 col-sm-6 col-lg-8">
+  <div style="overflow: auto; height: 650px" class="col-xs-7 col-sm-6 col-lg-8">
     <table>
       <thead>
         <tr>
-          <th>ID</th>
-          <th>Họ & Tên</th>
-          <th>Vai Trò</th>
-          <th>Trạng Thái</th>
-          <th>ĐIểm Đánh giá</th>
+          <th>ID <i class='bx bxs-chevron-down iconThTable' style='color:#ffffff' ></i></th>
+          <th>Họ & Tên <i class='bx bxs-chevron-down iconThTable' style='color:#ffffff' ></i></th>
+          <th>Vai Trò <i class='bx bxs-chevron-down iconThTable' style='color:#ffffff' ></i></th>
+          <th>Trạng Thái <i class='bx bxs-chevron-down iconThTable' style='color:#ffffff' ></i></th>
+          <th>ĐIểm Đánh giá <i class='bx bxs-chevron-down iconThTable' style='color:#ffffff' ></i></th>
           {% comment %} <th>Actions</th> {% endcomment %}
         </tr>
       </thead>
