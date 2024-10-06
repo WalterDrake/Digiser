@@ -1,4 +1,5 @@
 {% extends 'bases/base.html' %} {% block content %}
+{% load extras %}
 
 <style>
   table {
@@ -242,43 +243,6 @@
     font-size: 25px;
   }
 </style>
-<!-- Thanh drop down-->
-<style>
-  .pagination-container {
-    display: flex;
-    justify-content: space-between;
-    background-color:#c7c7c7;
-    align-items: center;
-    margin-top: 20px;
-    border-radius: 15px;
-    font-size: 14px;
-    padding: 5px;
-    color: #333;
-    font-weight: bold;
-    padding-left: 50px;
-    padding-right: 50px;
-    position: fixed;
-    bottom: 20px;
-    width: 91%;
-}
-
-.pagination-container select {
-    margin-left: 10px;
-    padding: 3px;
-    font-size: 14px;
-    border-radius: 10px;
-    border: 1px solid #ccc;
-}
-
-.pagination-container span {
-    margin-left: 5px;
-}
-
-.pagination-container .total-records {
-    font-weight: bold;
-    color: #333;
-}
-</style>
 
 <h1 class="title-name">QUẢN LÝ CTV</h1>
 <!-- Thanh tìm kiếm nhanh và nút lọc -->
@@ -427,7 +391,7 @@
         </tr>
       </thead>
       <tbody>
-        {% for user in users|slice:":20" %}
+        {% for user in users_page %}
         <tr>
           <td>{{ user.code }}</td>
           <td>{{ user.full_name }}</td>
@@ -442,40 +406,6 @@
         </td>
           <td>{{ user.status }}</td>
           <td>100</td>
-          {% comment %} <td>
-            <!-- Bootstrap Dropdown -->
-            <div class="dropdown">
-              {% csrf_token %}
-              <button
-                class="btn btn-secondary dropdown-toggle"
-                type="button"
-                id="dropdownMenuButton{{ forloop.counter }}"
-                data-bs-toggle="dropdown"
-                aria-expanded="false"
-              >
-                Actions
-              </button>
-              <ul
-                class="dropdown-menu"
-                aria-labelledby="dropdownMenuButton{{ forloop.counter }}"
-              >
-                <li>
-                  <a
-                    class="dropdown-item"
-                    href="#"
-                    style="color: lightgreen"
-                    onclick="exportDocument('{{ user.code }}')"
-                    >Export</a
-                  >
-                </li>
-                <li>
-                  <a class="dropdown-item" href="#" style="color: coral"
-                    >Delete</a
-                  >
-                </li>
-              </ul>
-            </div>
-          </td> {% endcomment %}
         </tr>
         {% endfor %}
       </tbody>
@@ -549,234 +479,53 @@
 </div>
 
 
-<div class="pagination-container">    
-  <div class="total-records">
-      Có tổng {{ packages.paginator.count }} bản ghi
-  </div>
-  <div id="pagination-form" style="display: flex; align-items: center;">
-      <span for="records-per-page">Hiển&nbsp;thị</span>
-      <select id="records-per-page">
-          <option value="20">20</option>
-          <option value="40">40</option>
-          <option value="60">60</option>
-          <option value="-1">U</option>
-      </select>
-      <span>Bản&nbsp;ghi</span>
-  </div>
+
+<div class="pagination">
+  <span class="step-links">
+    {% if page_obj.has_previous %}
+      <a href="?page=1">&laquo; First</a>
+      <a href="?page={{ page_obj.previous_page_number }}">Previous</a>
+    {% endif %}
+
+    {% with total_pages=page_obj.paginator.num_pages current_page=page_obj.number %}
+      {% if total_pages > 5 %}
+        <!-- Calculate the start and end of the pagination range -->
+        {% if current_page <= 3 %}
+          {% set start_page = 1 %}
+          {% set end_page = 5 %}
+        {% elif current_page > total_pages|add:'-3' %}
+          {% set start_page = total_pages|add:'-4' %}
+          {% set end_page = total_pages %}
+        {% else %}
+          {% set start_page = current_page|add:'-2' %}
+          {% set end_page = current_page|add:'2' %}
+        {% endif %}
+
+        <!-- Render page numbers within the calculated range -->
+        {% for page_num in start_page|default:1|add:0|get_range:end_page %}
+          {% if page_num == page_obj.number %}
+            <span class="current" style="padding: 5px; font-weight: bold; border: 1px solid #4689b8; background-color: #4689b8; color: white;">{{ page_num }}</span>
+          {% else %}
+            <a href="?page={{ page_num }}" style="padding: 5px; border: 1px solid #ccc;">{{ page_num }}</a>
+          {% endif %}
+        {% endfor %}
+      {% else %}
+        <!-- If less than 5 pages, display all pages -->
+        {% for page_num in page_obj.paginator.page_range %}
+          {% if page_num == page_obj.number %}
+            <span class="current" style="padding: 5px; font-weight: bold; border: 1px solid #4689b8; background-color: #4689b8; color: white;">{{ page_num }}</span>
+          {% else %}
+            <a href="?page={{ page_num }}" style="padding: 5px; border: 1px solid #ccc;">{{ page_num }}</a>
+          {% endif %}
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+
+    {% if page_obj.has_next %}
+      <a href="?page={{ page_obj.next_page_number }}">Next</a>
+      <a href="?page={{ page_obj.paginator.num_pages }}">Last &raquo;</a>
+    {% endif %}
+  </span>
 </div>
 
-
-<script>
-// Biến lưu trữ dữ liệu của hàng được chọn
-let selectedRowData = null;
-
-// Hàm thêm sự kiện click vào các hàng của bảng
-function addRowClickListeners() {
-  document.querySelectorAll("table tbody tr").forEach((row) => {
-    row.addEventListener("click", function () {
-      // Bỏ chọn các dòng khác
-      document.querySelectorAll("table tbody tr").forEach((row) => row.classList.remove("selected"));
-
-      // Chọn dòng hiện tại
-      this.classList.add("selected");
-
-      // Lấy dữ liệu từ hàng và gán vào form
-      const selectedId = this.querySelector("td:nth-child(1)").textContent;
-      const selectedName = this.querySelector("td:nth-child(2)").textContent;
-      const selectedRoles = this.querySelector("td:nth-child(3)").textContent
-        .split(",")
-        .map((role) => role.trim())
-        .filter(Boolean); //KHÔNG CHỈNH SỬA DÒNG NÀY
-      const selectedStatus = this.querySelector("td:nth-child(4)").textContent;
-
-      document.getElementById("id").value = selectedId;
-      document.getElementById("name").value = selectedName;
-      document.getElementById("status").value = selectedStatus;
-
-      // Bỏ chọn tất cả checkbox
-      document.querySelectorAll(".list-button-in-small-table input[type='checkbox']").forEach((checkbox) => {
-        checkbox.checked = false;
-
-        // Nếu vai trò có trong selectedRoles, thì check nó
-        if (selectedRoles.includes(checkbox.value)) {
-          checkbox.checked = true;
-        }
-      });
-
-      // Lưu dữ liệu hàng được chọn vào biến
-      selectedRowData = {
-        id: selectedId,
-        name: selectedName,
-        status: selectedStatus,
-        roles: selectedRoles,
-      };
-    });
-  });
-}
-
-  // Khi nhấn nút Đặt lại, điền lại dữ liệu từ hàng đã chọn
-  document.querySelector(".reset-btn").addEventListener("click", function () {
-    if (selectedRowData) {
-      // Điền lại dữ liệu từ hàng đã chọn
-      document.getElementById("id").value = selectedRowData.id;
-      document.getElementById("name").value = selectedRowData.name;
-      document.getElementById("status").value = selectedRowData.status; 
-
-      document.querySelectorAll(".list-button-in-small-table input[type='checkbox']").forEach((checkbox) => {
-        checkbox.checked = selectedRowData.roles.includes(checkbox.value);
-      });
-    }
-  });
-</script>
-
-<script>
-  function getCsrfToken() {
-    return document.querySelector("[name=csrfmiddlewaretoken]").value;
-  }
-
-  function exportDocument(user_code) {
-    // Create a form element
-    const form = document.createElement("form");
-    form.method = "POST";
-    form.action = "/document/export/user/";
-    form.style.display = "none"; // Hide the form
-
-    // Add CSRF token to the form
-    const csrfInput = document.createElement("input");
-    csrfInput.type = "hidden";
-    csrfInput.name = "csrfmiddlewaretoken";
-    csrfInput.value = getCsrfToken();
-    form.appendChild(csrfInput);
-
-    // Add user_id to the form
-    const userIdInput = document.createElement("input");
-    userIdInput.type = "hidden";
-    userIdInput.name = "user_id";
-    userIdInput.value = user_code;
-    form.appendChild(userIdInput);
-
-    // Append form to the body and submit it
-    document.body.appendChild(form);
-    form.submit();
-
-    // Remove the form from the DOM
-    document.body.removeChild(form);
-
-    event.preventDefault();
-  }
-
-
-  let users = [
-    {% for user in users %}
-      {
-        code: "{{ user.code }}",
-        full_name: "{{ user.full_name }}",
-        status: "{{ user.status }}",
-        groups: [{% for group in user.groups.all %} "{{ group.name }}"{% if not forloop.last %}, {% endif %}{% endfor %}]
-      }{% if not forloop.last %},{% endif %}
-    {% endfor %}
-  ];
-  
-  let userLimit = 20;
-
-  function renderUsers(filteredUsers) {
-    const tbody = document.querySelector("table tbody");
-    tbody.innerHTML = "";
-  
-    const displayedUsers = userLimit === -1 ? filteredUsers : filteredUsers.slice(0, userLimit);
-
-    displayedUsers.forEach((user) => {
-      const row = `
-        <tr>
-          <td>${user.code}</td>
-          <td>${user.full_name}</td>
-          <td>${user.groups.join(", ")}</td>
-          <td>${user.status}</td>
-          <td>100</td>
-        </tr>
-      `;
-      tbody.insertAdjacentHTML('beforeend', row);
-    });
-    addRowClickListeners(); //add ham click khi da tim kiem
-  }
-
-  addRowClickListeners(); //add ham click khi chua tim kiem
-  
-  document.getElementById('records-per-page').addEventListener('change', function() {
-    userLimit = parseInt(this.value, 10);  // Parse value to number, -1 means no limit
-    filterUsers(); 
-  });
-
-  // Hàm tìm kiếm chi tiết
-  function filterUsers() {
-    // Lấy giá trị từ các input fields trong popup
-    const filterId = document.getElementById("filterId").value.toLowerCase();
-    const filterName = document.getElementById("filterName").value.toLowerCase();
-    const filterStatus = document.getElementById("filterStatus").value.toLowerCase();
-
-      const selectedGroups = Array.from(document.querySelectorAll('.list-button-for-search input[name="group"]:checked')).map(
-        (checkbox) => checkbox.value.trim().toLowerCase() // 
-      );
-
-  const filteredUsers = users.filter((user) => {
-    const matchId = !filterId || user.code.toLowerCase().includes(filterId);
-    const matchName = !filterName || user.full_name.toLowerCase().includes(filterName);
-    const matchStatus = !filterStatus || user.status.toLowerCase() === filterStatus;
-    const matchGroup = selectedGroups.length === 0 || selectedGroups.every(group => user.groups.map(g => g.toLowerCase()).includes(group));
-
-    return matchId && matchName && matchStatus && matchGroup;
-  });
-
-  renderUsers(filteredUsers);
-  }
-
-  // Hàm tìm kiếm nhanh kết hợp giữa Họ tên và Trạng thái
-  function quickSearchUsers() {
-    const quickSearchName = document
-      .getElementById("quickSearchName")
-      .value.toLowerCase()
-      .trim();
-    const quickSearchStatus = document
-      .getElementById("quickSearchStatus")
-      .value.toLowerCase();
-    const rows = document.querySelectorAll("table tbody tr");
-
-    // Reset dữ liệu lọc chi tiết khi dùng tìm kiếm nhanh
-    document.getElementById("filterId").value = "";
-    document.getElementById("filterName").value = "";
-    document.getElementById("filterStatus").value = "";
-    document.querySelectorAll(".list-button-for-search input[type='checkbox']").forEach((checkbox) => {
-      checkbox.checked = false;
-    });
-
-  const filteredUsers = users.filter((user) => {
-    const matchName = !quickSearchName || user.full_name.toLowerCase().includes(quickSearchName);
-    const matchStatus = !quickSearchStatus || user.status.toLowerCase() === quickSearchStatus;
-    return matchName && matchStatus;
-  });
-
-  renderUsers(filteredUsers);
-  }
-
-  // Khi người dùng nhấn nút "Lọc", thực hiện tìm kiếm chi tiết
-  document
-    .getElementById("filterSubmit")
-    .addEventListener("click", function () {
-      filterUsers();
-      const modal = document.querySelector("#filterModal");
-      const modalInstance = bootstrap.Modal.getInstance(modal);
-      modalInstance.hide();
-    });
-
-  // Kích hoạt tìm kiếm khi người dùng nhập vào ô Họ tên (tìm kiếm nhanh)
-  document
-    .getElementById("quickSearchName")
-    .addEventListener("input", quickSearchUsers);
-
-  // Kích hoạt tìm kiếm khi người dùng chọn Trạng thái (tìm kiếm nhanh)
-  document
-    .getElementById("quickSearchStatus")
-    .addEventListener("change", quickSearchUsers);
-
-</script>
 {% endblock %}

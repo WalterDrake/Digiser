@@ -42,7 +42,8 @@ INSTALLED_APPS = [
     'rest_framework',
     'authentication',
     'home',
-    'project'
+    'project',
+    'Home_admin',
 ]
 
 MIDDLEWARE = [
