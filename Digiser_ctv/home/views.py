@@ -3,7 +3,7 @@ from django.contrib.auth.decorators import login_required, user_passes_test
 from authentication.forms import CustomUserInfoChangeForm, CustomUserBankChangeForm
 from django.db.models import Q
 from authentication.models import CustomUser, LoginLog
-from django.contrib.auth.models import Group
+
 from .utils import *
 
 @login_required
@@ -101,29 +101,3 @@ def show_data_check(request):
         return render(request, 'pages/check.html', {'packages': filter_packages(request, packages)})                         
     
     return render(request, 'pages/check.html', {'packages': packages})
-
-
-
-@login_required
-@user_passes_test(checkManager)
-def home_admin(request):
-    return render(request, 'pages/home_admin.html')
-
-
-@login_required
-@user_passes_test(checkManager)
-def ctv_list(request):
-    context = {
-        'users': CustomUser.objects.prefetch_related('groups').only('code', 'full_name', 'status'),
-        'status_choices': CustomUser._STATUSES,
-        'groups': Group.objects.all(),
-    }
-    return render(request, 'pages/ctv_list.html', context)
-  
-  
-
-@login_required
-@user_passes_test(checkManager)
-def list_loginlog(request):
-    loginlogs = LoginLog.objects.all()
-    return render(request, 'pages/login_log.html', {'loginlogs': loginlogs})
