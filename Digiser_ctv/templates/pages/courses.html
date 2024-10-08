@@ -8,42 +8,39 @@
   <ul class="nav nav-tabs" id="courses-tab" role="tablist">
     <li class="nav-item" role="presentation">
       <a
-        data-mdb-tab-init
+        data-bs-toggle="tab"
         class="nav-link active"
         id="civil-tab"
         href="#civil"
         role="tab"
         aria-controls="civil"
         aria-selected="true"
-        >Hộ tịch</a
-      >
+      >Hộ tịch</a>
     </li>
     <li class="nav-item" role="presentation">
       <a
-        data-mdb-tab-init
+        data-bs-toggle="tab"
         class="nav-link"
         id="admin-documents-tab"
         href="#admin-documents"
         role="tab"
         aria-controls="admin-documents"
         aria-selected="false"
-        >Văn bản hành chánh</a
-      >
+      >Văn bản hành chánh</a>
     </li>
     <li class="nav-item" role="presentation">
       <a
-        data-mdb-tab-init
+        data-bs-toggle="tab"
         class="nav-link"
         id="other-documents-tab"
         href="#other-documents"
         role="tab"
         aria-controls="other-documents"
         aria-selected="false"
-        >Giấy tờ khác</a
-      >
+      >Giấy tờ khác</a>
     </li>
   </ul>
-
+  
   <div
     class="modal fade"
     id="videoModal"
@@ -70,9 +67,9 @@
   </div>
 
   <!-- Tab panes -->
-  <div class="tab-content">
+  <div class="tab-content" id="myTabContent">
     <div
-      class="tab-pane active"
+      class="tab-pane fade show active"
       id="civil"
       role="tabpanel"
       aria-labelledby="civil-tab"
@@ -224,10 +221,10 @@
       </div>
     </div>
     <div
-      class="tab-pane"
-      id="admin-documents"
-      role="tabpanel"
-      aria-labelledby="admin-documents-tab"
+    class="tab-pane fade"
+    id="admin-documents"
+    role="tabpanel"
+    aria-labelledby="admin-documents-tab"
     >
     <div class="tab-pane-content">
       <div class="card">
@@ -305,16 +302,30 @@
     </div>
     </div>
     <div
-      class="tab-pane"
-      id="other-documents"
-      role="tabpanel"
-      aria-labelledby="other-documents-tab"
+    class="tab-pane fade"
+    id="other-documents"
+    role="tabpanel"
+    aria-labelledby="other-documents-tab"
     >
       Coming soon
     </div>
   </div>
 </div>
 <script>
+  document.querySelectorAll('.nav-link').forEach(tab => {
+    tab.addEventListener('click', function (event) {
+      event.preventDefault(); // Ngăn chuyển trang nếu href không dẫn tới đâu
+      // Xóa lớp 'active' khỏi tất cả các tab và nội dung
+      document.querySelectorAll('.nav-link').forEach(t => t.classList.remove('active'));
+      document.querySelectorAll('.tab-pane').forEach(pane => pane.classList.remove('show', 'active'));
+  
+      // Thêm lớp 'active' cho tab hiện tại và nội dung tương ứng
+      this.classList.add('active');
+      const paneId = this.getAttribute('href');
+      document.querySelector(paneId).classList.add('show', 'active');
+    });
+  });
+  
   const videoModal = document.getElementById("videoModal");
   if (videoModal) {
     videoModal.addEventListener("show.bs.modal", (event) => {
@@ -340,7 +351,7 @@
       const modalIframe = videoModal.querySelector("iframe");
       modalIframe.src = "";
     });
-  }
+  };
 </script>
 
 {% endblock %}
