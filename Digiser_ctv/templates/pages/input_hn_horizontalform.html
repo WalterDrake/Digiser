@@ -30,13 +30,7 @@
                         <label for="horizontal-ngayDangKy">Ngày Đăng Ký</label>
                     </div>
                     <div class="horizontal-form-group">
-                        <select id="horizontal-loaiDangKy" name="noiCap" required>
-                            {% for value, display in form.noiCap %}
-                                <option value="{{ value }}" {% if value == form.noiCap %}selected{% endif %}>
-                                    {{ display }}
-                                </option>
-                            {% endfor %}
-                        </select>
+                        <input type="text" id="horizontal-noiCap" name="noiCap" value="{{form.noiCap}}" required>
                         <label for="horizontal-noiCap">Nơi cấp</label>
                     </div>
                 </div>
@@ -67,10 +61,11 @@
                         <label for="horizontal-nxnHoTen">NXN: Họ và tên</label>
                     </div>
                     <div class="horizontal-form-group">
-                        <select id="vertihorizontalcal-nxnGioiTinh" name="nxnGioiTinh" required>
-                            <option value="Nam" unselev> Nam</option>
-                            <option value="Nữ" unselev> Nữ</option>
-                            <option value="Khác..." unselev> Khác...</option>
+                        <select id="horizontal-nxnGioiTinh" name="nxnGioiTinh" required>
+                            {% for value, display in form.GioiTinh %}
+                                <option value="{{ value }}" {% if value == form.nxnGioiTinh %}selected{% endif %}>
+                                    {{ display }}</option>
+                            {% endfor %}
                         </select>
                         <label for="horizontal-nksGioiTinh">NXN: Giới Tính</label>
                     </div>
@@ -81,14 +76,22 @@
                         <label for="horizontal-nxnNgaySinh">NXN: Ngày Sinh</label>
                     </div>
                     <div class="horizontal-form-group">
-                        <select type="text" id="horizontal-nxnDanToc" name="nxnDanToc" value="{{form.nxnDanToc}}" required>
-                            <option value="Kinh">Kinh</option>
+                        <select id="horizontal-nxnDanToc" name="nxnDanToc" required>
+                            {% for value, display in form.DanToc %}
+                            <option value="{{ value }}" {% if value == form.nxnDanToc %}selected{% endif %}>
+                                {{ display }}
+                            </option>
+                        {% endfor %}
                         </select>
                         <label for="horizontal-nxnDanToc">NXN: Dân tộc</label>
                     </div>
                     <div class="horizontal-form-group">
-                        <select type="text" id="horizontal-nxnQuocTich" name="nxnQuocTich" value="{{form.nxnQuocTich}}" required>
-                            <option value="VietNam">Việt Nam</option>
+                        <select id="horizontal-nxnQuocTich" name="nxnQuocTich" required>
+                            {% for value, display in form.QuocTich %}
+                                <option value="{{ value }}" {% if value == form.nxnQuocTich %}selected{% endif %}>
+                                    {{ display }}
+                                </option>
+                            {% endfor %}
                         </select>
                         <label for="horizontal-nxnQuocTich">NXN: Quốc tịch</label>
                     </div>
@@ -96,102 +99,110 @@
                 <div class="horizontal-form vertical-two-columns">
                     <div class="horizontal-form-group">
                         <select id="horizontal-nxnLoaiCuTru" name="nxnLoaiCuTru" required>
-                            <option value=""></option>
+                            {% for value, display in form.LoaiCuTru %}
+                            <option value="{{ value }}" {% if value == form.nxnLoaiCuTru %}selected{% endif %}>{{ display }}</option>
+                        {% endfor %}
                         </select>
                         <label for="horizontal-nxnLoaiCuTru">NXN: Loại cư trú</label>
                     </div>
                     <div class="horizontal-form-group">
-                        <select id="horizontal-nxnNoiCuTru" name="nxnNoiCuTru" required>
-                            <option value=""></option>
-                        </select>
+                        <input type="text" id="horizontal-nxnNoiCuTru" name="nxnNoiCuTru" value="{{form.nxnNoiCuTru}}" required>
                         <label for="horizontal-nxnNoiCuTru">NXN: Nơi cư trú</label>
                     </div>
                 </div>
                 <div class="horizontal-form horizontal-two-columns">
                     <div class="horizontal-form-group">
-                        <select id="horizontal-nxLoaiGiayToTuyThan" name="nxnLoaiGiayToTuyThan" required>
-                            <option value=""></option>
+                        <select id="horizontal-nxLoaiGiayToTuyThan" name="nxLoaiGiayToTuyThan" required>
+                            {% for value, display in form.LoaiGiayToTuyThan %}
+                                <option value="{{ value }}" {% if value == form.nxLoaiGiayToTuyThan %}selected{% endif %}>{{ display }}</option>
+                            {% endfor %}
                         </select>
                         <label for="horizontal-nxnLoaiGiayToTuyThan">NXN: Loại giấy tờ tùy thân</label>
                     </div>
                     <div class="horizontal-form-group">
-                        <input id="horizontal-nxnSoGiayToTuyThan" name="nxnSoGiayToTuyThan" required>
+                        <input id="horizontal-nxnSoGiayToTuyThan" name="nxnSoGiayToTuyThan" value="{{form.nxnSoGiayToTuyThan}}" required>
                         <label for="horizontal-nxnSoGiayToTuyThan">NXN: Số giấy tờ tùy thân</label>
                     </div>
                 </div>
                 <div class="horizontal-form horizontal-two-columns">
                     <div class="horizontal-form-group">
-                        <input id="horizontal-nxnNgayCapGiayToTuyThan" name="nxnNgayCapGiayToTuyThan" required>
+                        <input id="horizontal-nxnNgayCapGiayToTuyThan" name="nxnNgayCapGiayToTuyThan" value="{{form.nxnNgayCapGiayToTuyThan}}" required>
                         <label for="horizontal-nxnNgayCapGiayToTuyThan">NXN: Ngày cấp giấy tờ tùy thân</label>
                     </div>
                     <div class="horizontal-form-group">
-                        <input id="horizontal-nxnNoiCapGiayToTuyThan" name="nxnNoiCapGiayToTuyThan" required>
+                        <input id="horizontal-nxnNoiCapGiayToTuyThan" name="nxnNoiCapGiayToTuyThan" value="{{form.nxnNoiCapGiayToTuyThan}}" required>
                         <label for="horizontal-nxnNoiCapGiayToTuyThan">NXN: Nơi cấp giấy tờ tùy thân</label>
                     </div>
                 </div>
                 <div class="horizontal-form horizontal-full-width">
                     <div class="horizontal-form-group">
-                        <input id="horizontal-nxnThoiGianCuTruTai" name="nxnThoiGianCuTruTai" required>
+                        <input id="horizontal-nxnThoiGianCuTruTai" name="nxnThoiGianCuTruTai" value="{{form.nxnThoiGianCuTruTai}}" required>
                         <label for="horizontal-nxnThoiGianCuTruTai">NXN: Thời gian cư trú tại</label>
                     </div>
                 </div>
                 <div class="horizontal-form horizontal-two-columns">
                     <div class="horizontal-form-group">
-                        <input id="horizontal-nxnThoiGianCuTruTu" name="nxnThoiGianCuTruTu" required>
+                        <input id="horizontal-nxnThoiGianCuTruTu" name="nxnThoiGianCuTruTu" value="{{form.nxnThoiGianCuTruTu}}" required>
                         <label for="horizontal-nxnThoiGianCuTruTu">NXN: Thời gian cư trú từ</label>
                     </div>
                     <div class="horizontal-form-group">
-                        <input id="horizontal-nxnThoiGianCuTruDen" name="nxnThoiGianCuTruDen" required>
+                        <input id="horizontal-nxnThoiGianCuTruDen" name="nxnThoiGianCuTruDen" value="{{form.nxnThoiGianCuTruDen}}" required>
                         <label for="horizontal-nxnThoiGianCuTruDen">NXN: Thời gian cư trú đến</label>
                     </div>
                 </div>
                 <div class="horizontal-form horizontal-full-width">
                     <div class="horizontal-form-group">
-                        <input id="horizontal-nxnTinhTrangHonNhan" name="nxnTinhTrangHonNhan" required>
+                        <input id="horizontal-nxnTinhTrangHonNhan" name="nxnTinhTrangHonNhan" value="{{form.nxnTinhTrangHonNhan}}" required>
                         <label for="horizontal-nxnTinhTrangHonNhan">NXN: Tình trạng hôn nhân</label>
                     </div>
                 </div>
                 <div class="horizontal-form horizontal-two-columns">
                     <div class="horizontal-form-group">
-                        <input id="horizontal-nxnMucDichSuDung" name="nxnMucDichSuDung" required>
+                        <input id="horizontal-nxnMucDichSuDung" name="nxnMucDichSuDung" value="{{form.nxnMucDichSuDung}}" required>
                         <label for="horizontal-nxnMucDichSuDung">NXN: Mục đích sử dụng</label>
                     </div>
                     <div class="horizontal-form-group">
                         <select id="horizontal-nxnLoaiMucDichSuDung" name="nxnLoaiMucDichSuDung" required>
-                            <option value=""></option>
+                            {% for value, display in form.LoaiMucDichSuDung %}
+                                <option value="{{ value }}" {% if value == form.nxnLoaiMucDichSuDung %}selected{% endif %}>
+                                    {{ display }}
+                                </option>
+                            {% endfor %}
                         </select>
                         <label for="horizontal-nxnLoaiMucDichSuDung">NXN: Loại mục đích sử dụng</label>
                     </div>
                 </div>
                 <div class="horizontal-form horizontal-two-columns">
                     <div class="horizontal-form-group">
-                        <input id="horizontal-nycHoTen" name="nycHoTen" required>
+                        <input id="horizontal-nycHoTen" name="nycHoTen" value="{{form.nycHoTen}}" required>
                         <label for="horizontal-nycHoTen">NYC: Họ Tên</label>
                     </div>
                     <div class="horizontal-form-group">
-                        <input id="horizontal-nycQuanHe" name="nycQuanHe" required>
+                        <input id="horizontal-nycQuanHe" name="nycQuanHe" value="{{form.nycQuanHe}}" required>
                         <label for="horizontal-nycQuanHe">NYC: Quan Hệ</label>
                     </div>
                 </div>
                 <div class="horizontal-form horizontal-two-columns">
                     <div class="horizontal-form-group">
                         <select id="horizontal-nycLoaiGiayToTuyThan" name="nycLoaiGiayToTuyThan" required>
-                            <option value=""></option>
+                            {% for value, display in form.LoaiGiayToTuyThan %}
+                                <option value="{{ value }}" {% if value == form.nycLoaiGiayToTuyThan %}selected{% endif %}>{{ display }}</option>
+                            {% endfor %}
                         </select>
                         <label for="horizontal-nycLoaiGiayToTuyThan">NYC: Loại giấy tờ tùy thân</label>
                     </div>
                     <div class="horizontal-form-group">
-                        <input id="horizontal-nycSoGiayToTuyThan" name="nycSoGiayToTuyThan" required>
+                        <input id="horizontal-nycSoGiayToTuyThan" name="nycSoGiayToTuyThan" value="{{form.nycSoGiayToTuyThan}}" required>
                         <label for="horizontal-nycSoGiayToTuyThan">NYC: Số giấy tờ tùy thân</label>
                     </div>
                 </div>
                 <div class="horizontal-form horizontal-two-columns">
                     <div class="horizontal-form-group">
-                        <input id="horizontal-nycNgayCapGiayToTuyThan" name="nycNgayCapGiayToTuyThan" required>
+                        <input id="horizontal-nycNgayCapGiayToTuyThan" name="nycNgayCapGiayToTuyThan" value="{{form.nycNgayCapGiayToTuyThan}}" required>
                         <label for="horizontal-nycNgayCapGiayToTuyThan">NYC: Ngay cap giấy tờ tùy thân</label>
                     </div>
                     <div class="horizontal-form-group">
-                        <input id="horizontal-nycNoiCapGiayToTuyThan" name="nycNoiCapGiayToTuyThan" required>
+                        <input id="horizontal-nycNoiCapGiayToTuyThan" name="nycNoiCapGiayToTuyThan" value="{{form.nycNoiCapGiayToTuyThan}}" required>
                         <label for="horizontal-nycNoiCapGiayToTuyThan">NYC: Nơi cấp giấy tờ tùy thân</label>
                     </div>
                 </div>
@@ -209,35 +220,35 @@
         <div class="info-container">
             <div class="form-group">
                 <label class="info-label">Tên file</label>
-                <input class="info-input" type="text" value="KT.2017.01.2018-03-26:19.pdf" disabled>
+                <input class="info-input" type="text" value="{{form.name}}" disabled>
             </div>
             <div class="form-group">
                 <label class="info-label">Số trang</label>
-                <input class="info-input" type="text" value="1" disabled>
+                <input class="info-input" type="text" value="{{form.so}}" disabled>
             </div>
             <div class="form-group">
                 <label class="info-label">Dung lượng</label>
-                <input class="info-input" type="text" value="714.34 Kb" disabled>
+                <input class="info-input" type="text" value="{{none}}" disabled>
             </div>
             <div class="form-group">
                 <label class="info-label">Kích cỡ</label>
-                <input class="info-input" type="text" value="." disabled>
+                <input class="info-input" type="text" value="{{none}}" disabled>
             </div>
             <div class="form-group">
                 <label class="info-label">Xã</label>
-                <input class="info-input" type="text" value="xaphuocnam" disabled>
+                <input class="info-input" type="text" value="{{none}}" disabled>
             </div>
             <div class="form-group">
                 <label class="info-label">Loại số</label>
-                <input class="info-input" type="text" value="kt" disabled>
+                <input class="info-input" type="text" value="{{form.type}}" disabled>
             </div>
             <div class="form-group">
                 <label class="info-label">Năm hình thành</label>
-                <input class="info-input" type="text" value="2017" disabled>
+                <input class="info-input" type="text" value="{{none}}" disabled>
             </div>
             <div class="form-group">
                 <label class="info-label">Quyển số</label>
-                <input class="info-input" type="text" value="01" disabled>
+                <input class="info-input" type="text" value="{{form.quyenSo}}" disabled>
             </div>
         </div>
     </div>
