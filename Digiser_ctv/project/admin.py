@@ -1,6 +1,6 @@
 from django.contrib import admin
 from .models.model1 import Project, Package, Package_detail, Document
-from .models.model2 import Birth_Certificate_Document
+from .models.model2 import Birth_Certificate_Document, Marriage_Status_Document, Marriage_Certificate_Document
 # Register your models here.
 class CustomProjectsite(admin.ModelAdmin):
     model = Project
@@ -24,7 +24,20 @@ class CustomBirthCertificateDocumentsite(admin.ModelAdmin):
     list_display = ('document','executor',)
     search_fields= ('document__document_path',)
 
+class CustomMarriageCertificateDocumentsite(admin.ModelAdmin):
+    model = Marriage_Certificate_Document
+    list_display = ('document','executor',)
+    search_fields= ('document__document_path',)
+    
+
+class CustomMarriageStatusDocumentsite(admin.ModelAdmin):
+    model = Marriage_Status_Document
+    list_display = ('document','executor',)
+    search_fields= ('document__document_path',)
+
 admin.site.register(Birth_Certificate_Document, CustomBirthCertificateDocumentsite)
+admin.site.register(Marriage_Certificate_Document, CustomMarriageCertificateDocumentsite)
+admin.site.register(Marriage_Status_Document, CustomMarriageStatusDocumentsite)
 admin.site.register(Project,CustomProjectsite)
 admin.site.register(Package,CustomPackagesite)
 admin.site.register(Package_detail,CustomPackageDetailsite)
