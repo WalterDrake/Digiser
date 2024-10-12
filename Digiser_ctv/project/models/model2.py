@@ -257,8 +257,8 @@ class Marriage_Status_Document(models.Model):
         max_length=10, default='', verbose_name='Quyển Số', blank=True)
     trangSo = models.CharField(
         max_length=10, default='', verbose_name='Trang Số', blank=True)
-    ngayDangKy = models.CharField(
-        max_length=12, default='', verbose_name='Ngày Đăng Ký', blank=True)
+    ngayDangKy = models.DateField(
+        verbose_name='Ngày Đăng Ký', blank=True)
     noiCap = models.CharField(
         max_length=40, default='', verbose_name='Nơi Cấp', blank=True)
     nguoiKy = models.CharField(
@@ -274,8 +274,8 @@ class Marriage_Status_Document(models.Model):
         max_length=30, default='', verbose_name='nxn_Họ Tên', blank=True)
     nxnGioiTinh = models.CharField(
         max_length=1, choices=Options._SEX_TYPE, default='3', verbose_name='nxn_Giới Tính', blank=True)
-    nxnNgaySinh = models.CharField(
-        max_length=12, default='', verbose_name='nxn_Ngày Sinh', blank=True)
+    nxnNgaySinh = models.DateField(
+        verbose_name='nxn_Ngày Sinh', blank=True, null=True)
     nxnDanToc = models.CharField(max_length=26, choices=Options._DANTOC_LIST,
                                  default='', verbose_name='nxn_Dân Tộc', blank=True)
     nxnQuocTich = models.CharField(max_length=65, choices=Options._COUNTRIES_LIST,
@@ -292,8 +292,8 @@ class Marriage_Status_Document(models.Model):
         max_length=20, default='', verbose_name='nxn_Giấy Tờ Khác', blank=True)
     nxnSoGiayToTuyThan = models.CharField(
         max_length=1, default='', verbose_name='nxn_Số Giấy Tờ Tùy Thân', blank=True)
-    nxnNgayCapGiayToTuyThan = models.CharField(
-        max_length=12, default='', verbose_name='nxn_Ngày Cấp Giấy Tờ Tùy Thân', blank=True)
+    nxnNgayCapGiayToTuyThan = models.DateField(
+        verbose_name='nxn_Ngày Cấp Giấy Tờ Tùy Thân', blank=True, null=True)
     nxnNoiCapGiayToTuyThan = models.CharField(
         max_length=30, default='', verbose_name='nxn_Nơi Cấp Giấy Tờ Tùy Thân', blank=True)
     nxnThoiGianCuTruTai = models.CharField(
@@ -319,8 +319,8 @@ class Marriage_Status_Document(models.Model):
         max_length=10, default='', verbose_name='nyc_Giấy Tờ Khác', blank=True)
     nycSoGiayToTuyThan = models.CharField(
         max_length=12, default='', verbose_name='nyc_Số Giấy Tờ Tùy Thân', blank=True)
-    nycNgayCapGiayToTuyThan = models.CharField(
-        max_length=12, default='', verbose_name='nyc_Ngày Cấp Giấy Tờ Tùy Thân', blank=True)
+    nycNgayCapGiayToTuyThan = models.DateField(
+        verbose_name='nyc_Ngày Cấp Giấy Tờ Tùy Thân', blank=True, null=True)
     nycNoiCapGiayToTuyThan = models.CharField(
         max_length=15, default='', verbose_name='nyc_Nơi Cấp Giấy Tờ Tùy Thân', blank=True)
 
@@ -339,8 +339,8 @@ class Marriage_Certificate_Document(models.Model):
                           verbose_name='Số', blank=True)
     trangSo = models.CharField(
         max_length=10, default='', verbose_name='Trang Số', blank=True)
-    ngayDangKy = models.CharField(
-        max_length=12, default='', verbose_name='Ngày Đăng Ký', blank=True)
+    ngayDangKy = models.DateField(
+        verbose_name='Ngày Đăng Ký', blank=True)
     loaiDangKy = models.CharField(max_length=50, choices=Options._REGISTER_STATUS,
                                   default='1', verbose_name='Loại Đăng Ký', blank=True)
     nguoiKy = models.CharField(
@@ -355,8 +355,8 @@ class Marriage_Certificate_Document(models.Model):
 
     chongHoTen = models.CharField(
         max_length=100, default=' ', verbose_name='Chồng_Họ tên', blank=True)
-    chongNgaySinh = models.CharField(
-        max_length=20, default=' ', verbose_name='Chồng_Ngày sinh', blank=True)
+    chongNgaySinh = models.DateField(
+        verbose_name='Chồng_Ngày sinh', blank=True, null=True)
     chongDanToc = models.CharField(max_length=30, choices=Options._DANTOC_LIST,
                                    default='', verbose_name='Chồng_Dân tộc', blank=True)
     chongQuocTich = models.CharField(max_length=63, choices=Options._COUNTRIES_LIST,
@@ -368,14 +368,14 @@ class Marriage_Certificate_Document(models.Model):
         max_length=30, choices=Options._IDENTIFICATION_TYPE, default='9', verbose_name='Chồng_Loại giấy tờ tùy thân', blank=True)
     chongSoGiayToTuyThan = models.CharField(
         max_length=50, default=' ', verbose_name='Chồng_Số giấy tờ tùy thân', blank=True)
-    chongNgayCapGiayToTuyThan = models.CharField(
-        max_length=20, default=' ', verbose_name='Chồng_Ngày cấp giấy tờ tùy thân', blank=True)
+    chongNgayCapGiayToTuyThan = models.DateField(
+        verbose_name='Chồng_Ngày cấp giấy tờ tùy thân', blank=True, null=True)
     chongNoiCapGiayToTuyThan = models.CharField(max_length=500, default=' ', verbose_name='Chồng_Nơi cấp giấy tờ tùy thân', blank=True)
 
     voHoTen = models.CharField(
         max_length=100, default=' ', verbose_name='Vợ_Họ tên', blank=True)
-    voNgaySinh = models.CharField(
-        max_length=20, default=' ', verbose_name='Vợ_Ngày sinh', blank=True)
+    voNgaySinh = models.DateField(
+        verbose_name='Vợ_Ngày sinh', blank=True, null=True)
     voDanToc = models.CharField(max_length=100, choices=Options._DANTOC_LIST,
                                 default='', verbose_name='Vợ_Dân tộc', blank=True)
     voQuocTich = models.CharField(max_length=100, choices=Options._COUNTRIES_LIST,
@@ -389,8 +389,8 @@ class Marriage_Certificate_Document(models.Model):
         max_length=30, choices=Options._IDENTIFICATION_TYPE, default='9', verbose_name='Vợ_Loại giấy tờ tùy thân', blank=True)
     voSoGiayToTuyThan = models.CharField(
         max_length=50, default=' ', verbose_name='Vợ_Số giấy tờ tùy thân', blank=True)
-    voNgayCapGiayToTuyThan = models.CharField(
-        max_length=20, default=' ', verbose_name='Vợ_Ngày cấp giấy tờ tùy thân', blank=True)
+    voNgayCapGiayToTuyThan =  models.DateField(
+        verbose_name='Vợ_Ngày cấp giấy tờ tùy thân', blank=True, null=True)
     voNoiCapGiayToTuyThan = models.CharField(max_length=500, default=' ', verbose_name='Vợ_Nơi cấp giấy tờ tùy thân', blank=True)
 
     def __str__(self):
