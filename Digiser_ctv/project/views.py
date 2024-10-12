@@ -38,6 +38,20 @@ def form_redirect(request, **kwargs):
             return birth_certificate_document(request, document, user, role="checker_1")
         elif user == package_detail.checker_2:
             return birth_certificate_document(request, document, user, role="checker_2")
+    elif document.type == "HN":
+        if user == package_detail.inserter:
+            return marriage_status_document(request, document, user, role="inserter", package_detail_name=package_detail)
+        elif user == package_detail.checker_1:
+            return marriage_status_document(request, document, user, role="checker_1")
+        elif user == package_detail.checker_2:
+            return marriage_status_document(request, document, user, role="checker_2")
+    elif document.type == "KH":
+        if user == package_detail.inserter:
+            return marriage_certificate_document(request, document, user, role="inserter", package_detail_name=package_detail)
+        elif user == package_detail.checker_1:
+            return marriage_certificate_document(request, document, user, role="checker_1")
+        elif user == package_detail.checker_2:
+            return marriage_certificate_document(request, document, user, role="checker_2")
     else:
         raise Http404("Document type not supported")
     
@@ -192,4 +206,99 @@ def birth_certificate_document(request, document, user, role, package_detail_nam
     return render(request, 'pages/ks_input.html', {'form': form_data, 'form_type': 'birth_cert'})
 
 
-  
+def marriage_status_document(request, document, user, role, package_detail_name=None):
+    date_fields = ['ngayDangKy', 'nxnNgaySinh', 'nxnNgayCapGiayToTuyThan', 'nycNgayCapGiayToTuyThan']
+
+    # Handling POST request
+    if request.method == 'POST':
+        form_data = getattr(request, 'form_data', None)
+        error_list = getattr(request, 'error_list', None)
+        if error_list:
+            form_data.update(get_form_data_choices())
+            form_data.update(prepare_form_data(document, date_fields=date_fields))
+            form_data = handle_date_fields(form_data, date_fields)
+            return render(request, 'pages/input_hn.html', {'form': form_data, 'form_type': 'marriage_status', 'error_list': error_list})
+        
+        form_data['executor'] = user
+        form_instance, _ = Marriage_Status_Document.objects.update_or_create(
+            document=document, executor=user, defaults=form_data)
+
+        if role == 'inserter' and package_detail_name:
+            package = Package.objects.filter(package_name=package_detail_name).first()
+            if package:
+                handle_package_status(package, user, form_instance)
+
+        form_data.update(get_form_data_choices())
+        form_data.update(prepare_form_data(document, form_instance=form_instance, date_fields=date_fields))
+        return render(request, 'pages/input_hn.html', {'form': form_data, 'form_type': 'marriage_status', 'error_list': None})
+
+    # Handling GET request
+    lock = False
+    form_instance = None
+
+    if role == 'inserter':
+        form_instance = Marriage_Status_Document.objects.filter(document=document).first()
+        if form_instance and form_instance.document.status_insert == 'Đã nhập':
+            lock = True
+    else:
+        form_instance = Marriage_Status_Document.objects.filter(document=document, executor=user).first()
+        if not form_instance and role == 'checker_2':
+            form_instance = Marriage_Status_Document.objects.filter(document=document, executor=user)[1:2].first()
+        if not form_instance:
+            form_instance = Marriage_Status_Document.objects.filter(document=document).first()
+        if form_instance and (form_instance.document.status_check_1 == 'Hoàn thành' or 
+                              form_instance.document.status_check_2 == 'Hoàn thành'):
+            lock = True
+
+    form_data = get_form_data_choices()
+    form_data.update(prepare_form_data(document, form_instance=form_instance, lock=lock, date_fields=date_fields))
+    return render(request, 'pages/input_hn.html', {'form': form_data, 'form_type': 'marriage_status'})
+
+
+def marriage_certificate_document(request, document, user, role, package_detail_name=None):
+    date_fields = ['ngayDangKy', 'chongNgaySinh', 'chongNgayCapGiayToTuyThan', 'voNgaySinh', 'voNgayCapGiayToTuyThan']
+
+    # Handling POST request
+    if request.method == 'POST':
+        form_data = getattr(request, 'form_data', None)
+        error_list = getattr(request, 'error_list', None)
+        if error_list:
+            form_data.update(get_form_data_choices())
+            form_data.update(prepare_form_data(document, date_fields=date_fields))
+            form_data = handle_date_fields(form_data, date_fields)
+            return render(request, 'pages/kh_input.html', {'form': form_data, 'form_type': 'marriage_cert', 'error_list': error_list})
+        
+        form_data['executor'] = user
+        form_instance, _ = Marriage_Certificate_Document.objects.update_or_create(
+            document=document, executor=user, defaults=form_data)
+
+        if role == 'inserter' and package_detail_name:
+            package = Package.objects.filter(package_name=package_detail_name).first()
+            if package:
+                handle_package_status(package, user, form_instance)
+
+        form_data.update(get_form_data_choices())
+        form_data.update(prepare_form_data(document, form_instance=form_instance, date_fields=date_fields))
+        return render(request, 'pages/kh_input.html', {'form': form_data, 'form_type': 'marriage_cert', 'error_list': None})
+
+    # Handling GET request
+    lock = False
+    form_instance = None
+
+    if role == 'inserter':
+        form_instance = Marriage_Certificate_Document.objects.filter(document=document).first()
+        if form_instance and form_instance.document.status_insert == 'Đã nhập':
+            lock = True
+    else:
+        form_instance = Marriage_Certificate_Document.objects.filter(document=document, executor=user).first()
+        if not form_instance and role == 'checker_2':
+            form_instance = Marriage_Certificate_Document.objects.filter(document=document, executor=user)[1:2].first()
+        if not form_instance:
+            form_instance = Marriage_Certificate_Document.objects.filter(document=document).first()
+        if form_instance and (form_instance.document.status_check_1 == 'Hoàn thành' or 
+                              form_instance.document.status_check_2 == 'Hoàn thành'):
+            lock = True
+
+    form_data = get_form_data_choices()
+    form_data.update(prepare_form_data(document, form_instance=form_instance, lock=lock, date_fields=date_fields))
+    return render(request, 'pages/kh_input.html', {'form': form_data, 'form_type': 'marriage_cert'})
