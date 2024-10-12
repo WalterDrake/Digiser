@@ -116,7 +116,9 @@ def prepare_form_data(document, form_instance=None, lock=False, date_fields=None
         'entered_tickets': document.package_name.entered_tickets or 0,
         'total_real_tickets': document.package_name.total_real_tickets or 0,
         'so': document_name[4] if len(document_name) > 0 else "",
-        'quyenSo': document_name[2] if len(document_name) > 0 else ""
+        'quyenSo': document_name[2] if len(document_name) > 0 else "",
+        'type': document.type,
+        'name': document.document_name
     }
     
     form_data = handle_date_fields(model_to_dict(form_instance), date_fields) if form_instance else {}
