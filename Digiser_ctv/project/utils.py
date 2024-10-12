@@ -1,5 +1,5 @@
 import pandas as pd
-from .models.model2 import Birth_Certificate_Document
+from .models.model2 import *
 from typing import List
 from datetime import date
 import re
@@ -86,6 +86,8 @@ def get_form_data_choices():
             'LoaiCuTru': Birth_Certificate_Document._meta.get_field('meLoaiCuTru').choices,
             'LoaiGiayToTuyThan': Birth_Certificate_Document._meta.get_field('meLoaiGiayToTuyThan').choices,
             'LoaiKhaiSinh': Birth_Certificate_Document._meta.get_field('nksLoaiKhaiSinh').choices,
+            'LoaiMucDichSuDung': Marriage_Status_Document._meta.get_field('nxnLoaiMucDiSuDung').choices,
+            'TinhTrangKetHon': Marriage_Certificate_Document._meta.get_field('tinhTrangKetHon').choices,
         }
 
 
